@@ -747,3 +747,14 @@ def test_metricas_honestas_de_stp_e_itv(tmp_path):
     assert "stp_one_click_pct" not in m and "itv_incendio_no_sugerido_mediana" not in m   # a métrica circular saiu
     assert 0 < m["um_toque_pct_dos_elegiveis"] < m["sem_pessoa_pct_dos_elegiveis"] <= 100
     assert 0 < m["itv_sugerido_sobre_pessimista_mediana"] <= 1
+
+
+def test_casa_com_familia_sempre_recebe_a_oferta_da_rc(todas, teste):
+    # decisão de 29/10: numa casa, a família vira PERGUNTA de RC; ela não pode sumir atrás das perguntas de valor
+    cli = teste["clientes"].set_index("cliente_id")
+    for f in todas:
+        c = cli.loc[f["cliente_id"]]
+        familia = (c.quantidade_dependentes or 0) > 0 or c.possui_pet_informado == "SIM"
+        if familia and f["plano"] != "TOTAL" and not f["adicionais"]:
+            # só pode ficar de fora se as 3 vagas forem de perguntas mais importantes (obrigatórias ou que mudam o plano)
+            assert any(p["codigo"] == "RC_FAMILIA" for p in f["perguntas"]) or                 (len(f["perguntas"]) == 3 and all(p["prioridade"] > 59 for p in f["perguntas"])), f["imovel_id"]

@@ -876,7 +876,8 @@ def montar_perguntas(r, pendencias, tipo, uso, vinculo, area, bens, plano=None, 
     if vinculo["valor"] == "PROPRIETARIO":
         cand.append((30, "O imóvel é seu e já está quitado?", "VINCULO"))
     if plano and plano != "TOTAL" and any(familia_declarada(r)) and not coberturas_adicionais(r, tipo, plano):
-        cand.append((45, "Há dependentes ou pet na sua casa. Quer proteção para danos que eles causem a terceiros? "
+        # prioridade 59: antes das perguntas de valor, porque muda o que está coberto (decisão de 29/10)
+        cand.append((59, "Há dependentes ou pet na sua casa. Quer proteção para danos que eles causem a terceiros? "
                          "Ela entra como cobertura adicional.", "RC_FAMILIA"))
     cand.sort(key=lambda x: -x[0])
     vdi = vdi if imovel else {}

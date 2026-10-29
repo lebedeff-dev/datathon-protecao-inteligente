@@ -301,7 +301,10 @@ def casos_contrastantes(fichas):
             and (motivo(f, "ELETRONICOS") or motivo(f, "VIDROS")),
             lambda f: eleg(f) and tipo(f) == "APARTAMENTO" and f["plano"] == "PRATICO"),
         "perfil_B_casa_familiar": primeiro(
-            lambda f: eleg(f) and tipo(f).startswith("CASA") and f["plano"] == "TOTAL"
+            # casa com família: RC familiar como adicional (condomínio) ou oferecida na pergunta (casa)
+            lambda f: eleg(f) and tipo(f).startswith("CASA") and uso(f) == "RESIDENCIAL_HABITUAL"
+            and any(a["cobertura"] == "RESPONSABILIDADE_CIVIL_FAMILIAR" for a in f.get("adicionais", [])),
+            lambda f: eleg(f) and tipo(f).startswith("CASA") and uso(f) == "RESIDENCIAL_HABITUAL"
             and any(p["codigo"] == "RC_FAMILIA" for p in f["perguntas"]),
             lambda f: eleg(f) and tipo(f).startswith("CASA") and f["plano"] == "TOTAL"),
         "perfil_C_casa_lazer": primeiro(

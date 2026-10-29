@@ -150,7 +150,8 @@ def sinistros_pct(cobertura):
     return float(l["pct_acionamentos"]) if l else None
 
 
-FONTE_SINISTROS = "Acionamentos do Seguro Residencial BB Seguros, jan/2023 a mai/2026 (Monitor Mercantil, 22/07/2026)"
+# Fonte SECUNDÁRIA (dado da BB Seguros divulgado à imprensa, sem API nem relatório oficial): só contexto no texto.
+FONTE_SINISTROS = "BB Seguros, dado divulgado à imprensa (Monitor Mercantil, 22/07/2026): acionamentos jan/2023 a mai/2026 [fonte secundária]"
 
 
 # --- Território: desastres (Atlas/S2iD) e quedas de energia (ANEEL), por município ---
