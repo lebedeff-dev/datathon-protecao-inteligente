@@ -34,6 +34,18 @@ Cabeçalho azul com "Olá, Ricardo" e a busca. Um cartão por cliente: iniciais,
 | Sugestões | Cada uma com título, motivo, efeito no preço e uma chave liga/desliga | `sugestoesDoGerente()` |
 | Rodapé | Nova mensalidade (com a antiga riscada) e "Enviar para {nome}" | `aplicarSugestoes()` |
 
+### Editar a proposta (edição manual)
+Abaixo das sugestões, **"Editar plano e coberturas"** abre o **mesmo seletor de planos e a mesma lista de coberturas do Personalizar do cliente** (componentes compartilhados `SeletorPlanos` e `ListaCoberturas`, em `src/ui/`), agindo sobre a proposta em edição e não sobre o app do cliente:
+- trocar o plano (Essencial, Prático ou Total), com o preço de cada um;
+- tocar no valor de uma cobertura para digitar o valor exato ou usar Mínimo / Sugerido / Máximo, dentro do limite do produto, com o aviso quando fica abaixo da faixa do motor (escrito para o gerente: "parte pode ficar com o cliente");
+- ligar e desligar as coberturas que o cliente pode tirar;
+- "Desfazer edições" volta à proposta só com as sugestões.
+
+Regras:
+- A edição manual fica **por cima das sugestões**. Se o gerente editar à mão o mesmo item de uma sugestão (ex.: roubo), **vale a edição**; a sugestão mostra "Você editou este item abaixo: vale a sua edição".
+- Só o que difere é guardado (`Ajustes` em `gerente.ts`: plano, valores, ligadas). Cada mudança vira uma frase para o cliente: "Mudou o plano para o Total.", "Danos por água: de R$ 40.500 para R$ 3.000.", "Incluiu danos a terceiros.", "Tirou vidros da proposta."
+- O cabeçalho da seção resume: "Plano Total · 3 mudanças para o cliente".
+
 Ao enviar: folha de confirmação com as frases que o cliente vai ler → aviso na tela de bloqueio do cliente → **Proposta ajustada** só com o que o gerente deixou ligado.
 
 ## Regras de negócio das sugestões
@@ -54,8 +66,9 @@ O gerente **confirma dados e ajusta valores dentro da faixa do motor**. Ele não
 - Respostas padrão das perguntas sensíveis: **"Não"** para "já tem outro seguro" e "está em obra".
 
 ## Onde está no código
-- `app-expo/src/logica/gerente.ts`: código do cliente, fila, sugestões, aplicar, efeito no preço.
-- `app-expo/src/app/painel/index.tsx` (fila) e `app-expo/src/app/painel/[codigo].tsx` (pedido).
+- `app-expo/src/logica/gerente.ts`: código do cliente, fila, sugestões, edição manual (`Ajustes`, `somaAjustes`) e a proposta final (`propostaDoGerente`), efeito no preço.
+- `app-expo/src/app/painel.tsx` (fila) e `app-expo/src/app/painel/[codigo].tsx` (pedido). A fila fica em `painel.tsx` e não em `painel/index.tsx` porque as rotas tipadas do Expo tratavam o índice como `/painel/index`.
+- `app-expo/src/ui/coberturas.tsx` (lista editável, compartilhada com o Personalizar) e `app-expo/src/ui/seletor.tsx` (seletor de planos, compartilhado com o Passo 2).
 - `Estado.notasGerente` guarda as frases que o cliente lê em `ajustada.tsx`.
 - Nomes fictícios dos clientes: `NOME_CLIENTE` em `produto.ts` (o motor só tem o código do cliente).
 - Ajuda do portal: `useAjuda("painel", { semGerente: true })`, com dúvidas próprias (de onde vem o código, posso mudar a regra?, o cliente precisa aceitar?, por que não aparecem renda e idade?).

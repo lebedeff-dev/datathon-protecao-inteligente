@@ -1,18 +1,22 @@
 // Portal do gerente · pedido de um cliente, aberto pelo código. Tudo já vem preenchido:
 // dados do imóvel (com a origem e a confiança), o que o cliente montou e por que o motor indicou
-// o plano. O gerente liga ou desliga as sugestões, vê o preço novo e envia; o cliente decide.
+// o plano. O gerente liga ou desliga as sugestões, edita plano e coberturas se quiser, vê o preço
+// novo e envia; o cliente decide.
 import { Feather } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { FICHAS, porQueDoPlano } from "@/dados/contrato";
 import { ajustado, incluidas, nivelDaAnalise, preco, useEstado } from "@/logica/estado";
-import { aplicarSugestoes, efeitoNoPreco, estadoDoPedido, filaDoGerente, sugestoesDoGerente } from "@/logica/gerente";
+import { Ajustes, efeitoNoPreco, estadoDoPedido, filaDoGerente, propostaDoGerente, SEM_AJUSTES, somaAjustes, sugestoesDoGerente, temAjustes } from "@/logica/gerente";
 import { COB, PLANOS } from "@/logica/produto";
 import { brl, brl2, cidade, entre, NOME_TIPO, NOME_USO, NOME_VINCULO, titulo, uf } from "@/logica/textos";
-import { Botao, Card, Chave, Contador, Entra, haptic, Rotulo, SeloAjustado, T } from "@/ui/base";
-import { useFolha } from "@/ui/folha";
 import { useAjuda } from "@/ui/ajuda";
+import { Botao, Card, Chave, Contador, Entra, haptic, Rotulo, SeloAjustado, T, Toque } from "@/ui/base";
+import { ListaCoberturas, Mudar } from "@/ui/coberturas";
+import { useFolha } from "@/ui/folha";
+import { SeletorPlanos } from "@/ui/seletor";
 import { Tela } from "@/ui/tela";
 import { C, F, TIPO } from "@/ui/tema";
 
@@ -38,6 +42,9 @@ export default function PedidoDoCliente() {
   const sugs = base ? sugestoesDoGerente(base) : [];
   const [sel, setSel] = useState<string[] | null>(null);
   const ligadas = sel ?? sugs.map((x) => x.id);
+  // Edição manual do gerente (plano e coberturas), por cima das sugestões
+  const [ajustes, setAjustes] = useState<Ajustes>(SEM_AJUSTES);
+  const [editando, setEditando] = useState(false);
 
   if (!pedido || !base) {
     return (
@@ -47,10 +54,14 @@ export default function PedidoDoCliente() {
     );
   }
 
-  const f = base.f, b = f.campos.bens, proposta = aplicarSugestoes(base, ligadas);
+  const f = base.f, b = f.campos.bens, proposta = propostaDoGerente(base, ligadas, ajustes);
   const antes = preco(base), depois = preco(proposta), nivel = nivelDaAnalise(base).nivel;
   const cobs = incluidas(base).filter((k) => base.ligadas[k] !== false);
   const alterna = (id: string) => setSel(ligadas.includes(id) ? ligadas.filter((x) => x !== id) : [...ligadas, id]);
+  // A lista e o seletor editam a proposta; aqui a mudança vira ajuste guardado (só o que difere)
+  const mudar: Mudar = (fn) => setAjustes((a) => { const atual = propostaDoGerente(base, ligadas, a); return somaAjustes(a, atual, fn(atual)); });
+  const editados = new Set<string>([...Object.keys(ajustes.valores), ...Object.keys(ajustes.ligadas), ...(ajustes.plano ? ["plano"] : [])]);
+  const nMudancas = proposta.notasGerente.filter((n) => !n.startsWith("Revisou")).length;
 
   const enviar = () => {
     haptic.leve();
@@ -146,13 +157,38 @@ export default function PedidoDoCliente() {
               <View style={{ flex: 1, gap: 3 }}>
                 <T s={[TIPO.destaque, { color: on ? C.texto : C.suave }]}>{x.titulo}</T>
                 <T s={[TIPO.apoio, { color: C.suave }]}>{x.porque}</T>
-                <T s={[TIPO.legenda, { color: C.azul }]}>{!x.muda ? "Só orientação" : Math.abs(d) < 0.005 ? "Não muda o preço" : `${d > 0 ? "+" : "−"} ${brl2(Math.abs(d))} por mês`}</T>
+                <T s={[TIPO.legenda, { color: C.azul }]}>{editados.has(x.id) ? "Você editou este item abaixo: vale a sua edição" : !x.muda ? "Só orientação" : Math.abs(d) < 0.005 ? "Não muda o preço" : `${d > 0 ? "+" : "−"} ${brl2(Math.abs(d))} por mês`}</T>
               </View>
               <Chave on={on} onChange={() => alterna(x.id)} />
             </View>
           );
         }) : <T s={[TIPO.apoio, { color: C.suave, paddingVertical: 12 }]}>Nada a ajustar: a proposta já está dentro do que o motor calculou.</T>}
       </Card>
+
+      {/* Edição manual: o mesmo seletor e a mesma lista do Personalizar do cliente, sobre a proposta em edição */}
+      <Rotulo>Editar a proposta</Rotulo>
+      <Card i={7} style={{ padding: 0 }}>
+        <Toque onPress={() => { haptic.toque(); setEditando(!editando); }} rotulo={editando ? "Fechar edição do plano e das coberturas" : "Editar plano e coberturas"}
+          style={{ flexDirection: "row", alignItems: "center", gap: 12, padding: 16 }}>
+          <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: C.azulClaro, alignItems: "center", justifyContent: "center" }}><Feather name="sliders" size={18} color={C.azul} /></View>
+          <View style={{ flex: 1 }}>
+            <T s={TIPO.destaque}>Editar plano e coberturas</T>
+            <T s={[TIPO.apoio, { color: C.suave }]}>{temAjustes(ajustes) ? `Plano ${PLANOS[proposta.plano].nome} · ${nMudancas} ${nMudancas === 1 ? "mudança" : "mudanças"} para o cliente` : "Troque o plano ou o valor de cada cobertura"}</T>
+          </View>
+          <Feather name={editando ? "chevron-up" : "chevron-down"} size={20} color={C.azulEscuro} />
+        </Toque>
+      </Card>
+      {editando ? (
+        <Animated.View entering={FadeIn.duration(200)} exiting={FadeOut.duration(120)} style={{ marginBottom: 14 }}>
+          <SeletorPlanos e={proposta} mudar={mudar} />
+          <ListaCoberturas e={proposta} mudar={mudar} gerente />
+          {temAjustes(ajustes) ? (
+            <Toque onPress={() => { haptic.leve(); setAjustes(SEM_AJUSTES); }} rotulo="Desfazer as edições manuais" style={{ alignSelf: "center", flexDirection: "row", alignItems: "center", gap: 6, paddingVertical: 12, marginTop: 6 }}>
+              <Feather name="rotate-ccw" size={15} color={C.azulEscuro} /><T s={{ fontFamily: F.s, fontSize: 14, color: C.azulEscuro }}>Desfazer edições</T>
+            </Toque>
+          ) : null}
+        </Animated.View>
+      ) : null}
       <View style={{ flexDirection: "row", gap: 8, alignItems: "center", paddingHorizontal: 4 }}>
         <Feather name="info" size={14} color={C.suave} />
         <T s={{ flex: 1, fontSize: 12.5, color: C.suave, lineHeight: 17 }}>As sugestões ficam dentro da faixa do motor. O cliente vê o que mudou e decide; nada é contratado sem ele.</T>

@@ -84,7 +84,9 @@ export default function Meu() {
           <View style={{ flexDirection: "row", alignItems: "center", gap: 7, alignSelf: "flex-start", backgroundColor: "rgba(255,255,255,0.16)", borderRadius: 999, paddingHorizontal: 11, paddingVertical: 5 }}>
             <Pulso /><T s={{ fontFamily: F.b, fontSize: 13, color: C.branco }}>Ativo a partir de amanhã</T>
           </View>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 12 }}><T s={{ fontFamily: F.x, fontSize: 24, lineHeight: 30, color: C.branco }}>Plano {p.nome}</T>{ajustado(s) ? <SeloAjustado claro gerente={s.ajustada} /> : null}</View>
+          {/* selo numa linha própria: a casa ilustrada ocupa o canto direito do cartão */}
+          <T s={{ fontFamily: F.x, fontSize: 24, lineHeight: 30, color: C.branco, marginTop: 12 }}>Plano {p.nome}</T>
+          {ajustado(s) ? <View style={{ marginTop: 2, marginBottom: 2 }}><SeloAjustado claro gerente={s.ajustada} /></View> : null}
           <T s={{ fontSize: 14, color: C.branco, opacity: 0.9, maxWidth: 210 }}>{titulo(f.complemento)} · {cidade(f)}/{uf(f)}</T>
           <View style={{ flexDirection: "row", gap: 18, marginTop: 16 }}>
             {[["Apólice", "BB 4021-7781"], ["Vigência", `${s.vig} ${s.vig > 1 ? "anos" : "ano"}`], ["Por mês", brl2(precoFinal(s))]].map(([k, v]) => (

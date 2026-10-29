@@ -3,14 +3,16 @@
 import { useEffect, useState } from "react";
 import { LayoutChangeEvent, Pressable, View } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-import { preco, useEstado } from "../logica/estado";
+import { Estado, preco, useEstado } from "../logica/estado";
 import { ORDEM_PLANO, PLANOS, Plano } from "../logica/produto";
 import { brl } from "../logica/textos";
 import { haptic, T } from "./base";
 import { C, EASE_IN_OUT, F, SOMBRA } from "./tema";
 
-export function SeletorPlanos() {
-  const { s, set } = useEstado();
+/** Sem props, muda o plano do cliente; com `e` e `mudar`, muda uma proposta em edição (portal do gerente). */
+export function SeletorPlanos({ e, mudar }: { e?: Estado; mudar?: (fn: (x: Estado) => Estado) => void } = {}) {
+  const app = useEstado();
+  const s = e ?? app.s, set = mudar ?? app.set;
   const [medidas, setMedidas] = useState<Record<string, { x: number; w: number }>>({});
   const x = useSharedValue(0), w = useSharedValue(0);
   useEffect(() => {

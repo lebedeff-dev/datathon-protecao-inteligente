@@ -40,7 +40,7 @@ export default function PlanoTela() {
                 {on ? <Feather name="check-circle" size={24} color={C.azulEscuro} /> : <View style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: "#8D9199" }} />}
                 <T s={{ fontFamily: F.m, fontSize: 15.5 }}>12x de <T s={{ fontFamily: F.x, fontSize: 17 }}>{brl2(preco(s, k))}</T></T>
               </View>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginTop: 10 }}><T s={{ fontFamily: F.x, fontSize: 24, lineHeight: 30, color: on ? C.azulEscuro : C.texto }}>{p.nome}</T>{on && ajustado(s) ? <SeloAjustado gerente={s.ajustada} /> : null}</View>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", columnGap: 8, rowGap: 4, marginTop: 10 }}><T s={{ fontFamily: F.x, fontSize: 24, lineHeight: 30, color: on ? C.azulEscuro : C.texto }}>{p.nome}</T>{on && ajustado(s) ? <SeloAjustado gerente={s.ajustada} /> : null}</View>
               <T s={{ fontSize: 15, color: "#3a3d44" }}>{n} coberturas</T>
               <T s={{ fontSize: 15, color: "#3a3d44" }}>{p.pacotes} {p.pacotes > 1 ? "assistências" : "assistência"}</T>
               <T s={{ fontSize: 14.5, marginTop: 8 }}>{p.frase}</T>

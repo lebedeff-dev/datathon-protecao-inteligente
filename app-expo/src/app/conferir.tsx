@@ -25,11 +25,13 @@ function Linha({ ic, rot, titulo: t, sub }: { ic: string; rot?: string; titulo: 
     </View>
   );
 }
-function Secao({ rot, alterar, children, i }: { rot: string; alterar?: () => void; children: React.ReactNode; i: number }) {
+/** Seção do checkout. `selo` fica no cabeçalho, ao lado do nome da seção: nunca por cima do conteúdo. */
+function Secao({ rot, alterar, children, i, selo }: { rot: string; alterar?: () => void; children: React.ReactNode; i: number; selo?: React.ReactNode }) {
   return (
     <Card i={i}>
-      <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 10 }}>
         <T s={{ ...TIPO.rotulo, color: C.suave }}>{rot}</T>
+        <View style={{ flex: 1, flexDirection: "row" }}>{selo}</View>
         {alterar ? <Pressable onPress={alterar} hitSlop={12} accessibilityRole="button" accessibilityLabel={`Alterar ${rot.toLowerCase()}`}><T s={{ fontFamily: F.s, fontSize: 14, color: C.azulEscuro }}>Alterar</T></Pressable> : null}
       </View>
       {children}
@@ -104,8 +106,7 @@ export default function Conferir() {
       <Secao i={1} rot="Imóvel protegido" alterar={() => router.navigate("/casa")}>
         <Linha ic="map-pin" titulo={titulo(f.complemento)} sub={`${cidade(f)}/${uf(f)} · ${NOME_TIPO[tipoAtual(s)].toLowerCase()} de ${f.campos.area.classe === "OBSERVADO" ? "" : "cerca de "}${f.campos.area.valor} m²`} />
       </Secao>
-      <Secao i={2} rot="Seu plano" alterar={() => router.navigate("/plano")}>
-        {ajustado(s) ? <View style={{ position: "absolute", right: 16, top: 38 }}><SeloAjustado gerente={s.ajustada} /></View> : null}
+      <Secao i={2} rot="Seu plano" alterar={() => router.navigate("/plano")} selo={ajustado(s) ? <SeloAjustado gerente={s.ajustada} /> : null}>
         <Linha ic="shield" titulo={nomePlano} sub={`${incluidas(s).filter((k) => s.ligadas[k] !== false).length} coberturas · ${p.pacotes} ${p.pacotes > 1 ? "assistências" : "assistência"} · incêndio até ${aprox(s.valores.incendio)}`} />
       </Secao>
       <Secao i={3} rot="Vigência">

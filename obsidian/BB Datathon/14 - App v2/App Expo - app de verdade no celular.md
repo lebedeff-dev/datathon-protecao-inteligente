@@ -15,6 +15,11 @@ pasta: app-expo/
 
 Substitui o [[Protótipo v4 - app do cliente]] (HTML) para a gravação. O HTML continua no repositório como referência e para mostrar o raio-X do motor no computador.
 
+## Rodada 6 (29/10): gerente edita a proposta; selo sem sobrepor
+- **Gerente edita plano e coberturas** no pedido do cliente, com o mesmo seletor e a mesma lista do Personalizar; cada mudança vira frase para o cliente. Regras em [[Portal do gerente]].
+- **Bug do selo "ajustado pelo gerente":** no Conferir ele ficava em `position: absolute` por cima do nome do plano. Agora fica **no cabeçalho da seção, ao lado de "SEU PLANO"**, no fluxo normal. Regra para todo o app (skills better-layout/better-ui): selo nunca absoluto sobre conteúdo; em linha com quebra (`flexWrap`) ou numa linha própria. Ajustado também em Plano, Personalizar (rodapé) e Meu seguro (linha própria, porque a casa ilustrada ocupa o canto do cartão).
+- Refatoração: a lista de coberturas saiu do `ajuste.tsx` para `src/ui/coberturas.tsx` (controlada por `e` + `mudar`), e o `SeletorPlanos` aceita uma proposta em edição. O texto de aviso muda a pessoa: o cliente lê "você", o gerente lê "o cliente".
+
 ## Rodada 5 (29/10): portal do gerente e prompt das ilustrações
 - **Portal do gerente** no mesmo app: fila de pedidos com o **código de cada cliente** (`SR-XXXX-XX`, só o gerente vê), pedido já preenchido com a ficha do motor e o que o cliente montou, sugestões de ajuste com chave e efeito no preço, e "Enviar". O cliente recebe só o que o gerente deixou ligado. Detalhes e regras em [[Portal do gerente]].
 - No fluxo: "Chamar o Ricardo" → **"Abrir o portal do gerente"** (ou "Pular: simular resposta"). Atalho: segurar o relógio → "Abrir o portal do gerente". O cliente não vê mais protocolo nenhum.

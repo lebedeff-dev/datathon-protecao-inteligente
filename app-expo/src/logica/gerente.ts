@@ -4,7 +4,7 @@
 // "ajustado pelo gerente" e decide.
 import { porQueDoPlano } from "../dados/contrato";
 import { estadoDoCaso, Estado, incluidas, preco, sugeridoDe } from "./estado";
-import { COB, Cob, NOME_CLIENTE, PLANOS } from "./produto";
+import { COB, Cob, NOME_CLIENTE, Plano, PLANOS } from "./produto";
 import { aprox, brl, OPCOES, perguntaCliente, temAdicional } from "./textos";
 
 const ALFABETO = "23456789ABCDEFGHJKMNPQRSTUVWXYZ"; // sem 0/O, 1/I/L: fácil de ditar por telefone
@@ -122,13 +122,57 @@ export function sugestoesDoGerente(s: Estado): Sugestao[] {
   return l;
 }
 
-/** Aplica as sugestões escolhidas (na ordem da lista) e marca a proposta como ajustada pelo gerente. */
-export function aplicarSugestoes(s: Estado, ids: string[]): Estado {
-  let e = s;
+// ---------- edição manual do gerente ----------
+/** O que o gerente mudou à mão, por cima das sugestões. Só guarda o que difere: o resto segue a proposta. */
+export type Ajustes = { plano?: Plano; valores: Partial<Record<Cob, number>>; ligadas: Partial<Record<Cob, boolean>> };
+export const SEM_AJUSTES: Ajustes = { valores: {}, ligadas: {} };
+export const temAjustes = (a: Ajustes) => !!a.plano || Object.keys(a.valores).length > 0 || Object.keys(a.ligadas).length > 0;
+
+function comAjustes(e: Estado, a: Ajustes): Estado {
+  const plano = a.plano ?? e.plano;
+  const ligadas = { ...e.ligadas, ...(a.plano === "TOTAL" ? { rc: true } : {}), ...a.ligadas };
+  return { ...e, plano, valores: { ...e.valores, ...a.valores }, ligadas };
+}
+
+/** Junta a mudança feita na tela (antes → depois) aos ajustes que já existiam. */
+export function somaAjustes(a: Ajustes, antes: Estado, depois: Estado): Ajustes {
+  const r: Ajustes = { plano: a.plano, valores: { ...a.valores }, ligadas: { ...a.ligadas } };
+  if (depois.plano !== antes.plano) r.plano = depois.plano;
+  (Object.keys(COB) as Cob[]).forEach((k) => {
+    if (depois.valores[k] !== antes.valores[k]) r.valores[k] = depois.valores[k];
+    if (depois.ligadas[k] !== antes.ligadas[k]) r.ligadas[k] = depois.ligadas[k];
+  });
+  return r;
+}
+
+/** Frases para o cliente sobre o que o gerente mudou à mão (comparado com o que o cliente tinha). */
+function notasDosAjustes(base: Estado, fim: Estado, a: Ajustes): string[] {
+  const n: string[] = [];
+  if (a.plano && fim.plano !== base.plano) n.push(`Mudou o plano para o ${PLANOS[fim.plano].nome}.`);
+  (Object.keys(a.ligadas) as Cob[]).forEach((k) => {
+    if (fim.ligadas[k] !== base.ligadas[k]) n.push(fim.ligadas[k] ? `Incluiu ${COB[k].curto.toLowerCase()}.` : `Tirou ${COB[k].curto.toLowerCase()} da proposta.`);
+  });
+  (Object.keys(a.valores) as Cob[]).forEach((k) => {
+    if (fim.valores[k] !== base.valores[k] && incluidas(fim).includes(k) && fim.ligadas[k] !== false)
+      n.push(`${COB[k].curto}: de ${brl(base.valores[k])} para ${brl(fim.valores[k])}.`);
+  });
+  return n;
+}
+
+/** Proposta que o gerente envia: sugestões ligadas + edição manual. Se ele editou à mão o mesmo item
+ *  de uma sugestão, vale a edição (e só ela vira frase para o cliente). */
+export function propostaDoGerente(base: Estado, ids: string[], a: Ajustes = SEM_AJUSTES): Estado {
+  const editados = new Set<string>([...Object.keys(a.valores), ...Object.keys(a.ligadas), ...(a.plano ? ["plano"] : [])]);
+  let e = base;
   const notas: string[] = [];
-  sugestoesDoGerente(s).filter((x) => ids.includes(x.id)).forEach((x) => { e = x.aplicar(e); notas.push(x.nota(e)); });
+  sugestoesDoGerente(base).filter((x) => ids.includes(x.id)).forEach((x) => { e = x.aplicar(e); if (!editados.has(x.id)) notas.push(x.nota(e)); });
+  e = comAjustes(e, a);
+  notas.push(...notasDosAjustes(base, e, a));
   return { ...e, ajustada: true, notasGerente: notas.length ? notas : ["Revisou a proposta com você e manteve como estava."] };
 }
+
+/** Só as sugestões escolhidas, sem edição manual. */
+export const aplicarSugestoes = (s: Estado, ids: string[]): Estado => propostaDoGerente(s, ids);
 
 /** Resposta padrão do gerente (atalho "Simular resposta"): todas as sugestões. */
 export const comAjusteDoGerente = (s: Estado): Estado => (s.ajustada ? s : aplicarSugestoes(s, sugestoesDoGerente(s).map((x) => x.id)));

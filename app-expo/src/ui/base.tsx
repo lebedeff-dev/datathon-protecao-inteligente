@@ -86,7 +86,7 @@ export function Selo({ texto, tipo }: { texto: string; tipo: "obs" | "est" | "co
 /** Selo discreto de plano ajustado pelo cliente (o nome do plano não muda). */
 export function SeloAjustado({ claro = false, gerente = false }: { claro?: boolean; gerente?: boolean }) {
   return (
-    <View accessibilityLabel={gerente ? "Plano ajustado pelo gerente" : "Plano ajustado por você"} style={{ flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: claro ? "rgba(255,255,255,0.18)" : C.azulClaro, borderRadius: 999, paddingHorizontal: 7, paddingVertical: 2 }}>
+    <View accessibilityLabel={gerente ? "Plano ajustado pelo gerente" : "Plano ajustado por você"} style={{ flexDirection: "row", alignItems: "center", alignSelf: "flex-start", flexShrink: 0, gap: 4, backgroundColor: claro ? "rgba(255,255,255,0.18)" : C.azulClaro, borderRadius: 999, paddingHorizontal: 7, paddingVertical: 2 }}>
       <Feather name={gerente ? "user-check" : "sliders"} size={11} color={claro ? C.branco : C.azulEscuro} />
       <T s={{ fontFamily: F.b, fontSize: 11.5, lineHeight: 15, color: claro ? C.branco : C.azulEscuro }}>{gerente ? "ajustado pelo gerente" : "ajustado"}</T>
     </View>

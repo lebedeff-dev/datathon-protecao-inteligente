@@ -54,6 +54,9 @@ Linha do tempo das decisões, para quem chega agora. Detalhes em cada nota ligad
 - Portal do gerente dentro do app: código fixo por cliente (só o gerente vê), pedido pré-preenchido, sugestões dentro da faixa do motor, envio para o cliente decidir. Regras em [[Portal do gerente]].
 - Prompt para o ChatGPT gerar as 17 ilustrações finais, com as regras das skills dentro do próprio prompt. Enviado ao time; o app troca o SVG pela imagem quando o PNG chega. Ver [[Prompt das ilustrações (ChatGPT)]].
 
+## 29/10: gerente edita a proposta (rodada 6)
+- O gerente agora edita plano e coberturas antes de devolver a proposta (mesmos componentes do Personalizar). O selo "ajustado pelo gerente" que cobria o texto no Conferir foi para o cabeçalho da seção. Ver [[Portal do gerente]].
+
 ## Números atuais do motor (base comum, 138 casos)
 | Métrica | Valor |
 |---|---|
