@@ -138,10 +138,7 @@ def motivos_de_patrimonio(vinculo, bens):
     e = bens["eletricos"]
     valem = "estimamos que seus eletrônicos e eletrodomésticos valem" if bens.get("regional") else \
         "seus eletrônicos e eletrodomésticos valem hoje"
-    texto = f"{valem} {faixa_reais(e['min'], e['max'])}"
-    pct = P.sinistros_pct("DANOS_ELETRICOS")
-    if pct is not None:
-        texto += f", e danos elétricos são {str(pct).replace('.', ',')}% dos acionamentos do residencial da BB"
+    texto = f"{valem} {faixa_reais(e['min'], e['max'])}, e um pico de energia pode queimar vários de uma vez"
     motivos.append(("APARELHOS", texto))
     return [{"plano": "ESSENCIAL", "peso": 0, "codigo": c, "texto": t} for c, t in motivos]
 

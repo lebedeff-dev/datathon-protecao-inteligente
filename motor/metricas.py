@@ -264,10 +264,7 @@ def metricas_de_mercado(fichas):
     - ITV (insurance-to-value): importância segurada de incêndio ÷ valor em risco estimado (meio da
       estimativa), no máximo e no mínimo da faixa. O mercado usa 80% como piso (cláusula de
       ITV/rateio); abaixo disso, há subseguro. Mostra o risco de o cliente escolher o mínimo;
-    - faixas limitadas pelo produto: a estimativa passa do limite da cobertura;
-    - aderência aos sinistros reais: % das recomendações com as coberturas que mais
-      geram acionamentos na carteira residencial da BB Seguros."""
-    n = len(fichas)
+    - faixas limitadas pelo produto: a estimativa passa do limite da cobertura."""
     eleg = sum(f["elegibilidade"] == "SIM" for f in fichas)
     pess = [c["sugerido"] / c["valor_em_risco_max"] for f in fichas for c in f["coberturas"]
             if c["cobertura"] == "INCENDIO_RAIO_EXPLOSAO_FUMACA" and c.get("valor_em_risco_max")]
@@ -280,7 +277,6 @@ def metricas_de_mercado(fichas):
             itv_max.append(c["max"] / c["valor_em_risco"])
             itv_min.append(c["min"] / c["valor_em_risco"])
     limitadas = Counter(c["cobertura"] for f in fichas for c in f["coberturas"] if c.get("limitada_pelo_produto"))
-    mais_acionadas = [c for c in ("DANOS_ELETRICOS", "DANOS_POR_AGUA", "VENDAVAL_GRANIZO") if P.sinistros_pct(c) is not None]
     return {
         # STP honesto (crítica da banca): 1 toque = nenhuma pergunta obrigatória; "sem pessoa" inclui o app com perguntas
         "um_toque_pct_dos_elegiveis": round(100 * sum(f["jornada"] == "UM_TOQUE" for f in fichas) / max(1, eleg), 1),
@@ -297,9 +293,6 @@ def metricas_de_mercado(fichas):
         "itv_sugerido_sobre_pessimista_mediana": round(statistics.median(pess), 2) if pess else None,
         "sugerido_cobre_80pct_do_pessimista_casos": sum(v >= 0.8 for v in pess),
         "faixas_limitadas_pelo_produto": dict(limitadas),
-        "recomendacoes_com_coberturas_mais_acionadas_pct": round(100 * sum(
-            set(mais_acionadas) <= {c["cobertura"] for c in f["coberturas"]} for f in fichas) / n, 1),
-        "acionamentos_bb_cobertos_por_elas_pct": round(sum(P.sinistros_pct(c) for c in mais_acionadas), 1),
     }
 
 

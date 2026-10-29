@@ -33,7 +33,7 @@ Exemplo real (`IMO_CASO_00004_01`, Brasília, Prático):
 | 1 | **A casa dele** | tipo, área e cidade da ficha. Área cadastrada: "105 m²"; estimada: "**cerca de** 105 m²"; da região: sem área | Fala do imóvel dele, não do plano. "Cerca de" porque estimativa não é fato (RN-09) |
 | 2 | **O porquê** | as **provas** das necessidades (ver [[02 - O motor passo a passo]]): aluguel, roubo e vidros, terceiros | É a razão do plano, com o dado do cliente |
 | 3 | **O fato que diferencia** | `comparar_com_vizinhos`: o cliente contra os clientes da mesma cidade e tipo | Mostra que olhamos para **ele**, não para a média |
-| 4 | **O risco da cidade** | ANEEL (quedas de energia) e Atlas de Desastres / Defesa Civil (chuva, alagamento, vendaval) | Conscientização (mentoria de 28/10): o risco de onde ele mora |
+| 4 | **O risco da cidade** | ANEEL (quedas de energia) e Atlas de Desastres / Defesa Civil (chuva, alagamento, vendaval). O dado de sinistros da BB (imprensa) saiu em 29/10 | Conscientização (mentoria de 28/10): o risco de onde ele mora |
 | 5 | **O que fica descoberto, em reais** | os bens comprovados (ou o aluguel) | Aversão à perda: "R$ 13 mil descobertos" pesa mais que "roubo não coberto" |
 | 6 | **A confiança, com o acerto medido** | o boletim de `assertividade.py` | Honestidade: "erro abaixo de 20% em 2 de cada 3 testes" |
 

@@ -167,7 +167,7 @@
  "familia_declarada_muda_valor_ou_confianca": 0,
  "sensibilidade_area_10pct_incendio_media_pct": 4.05,
  "sensibilidade_area_casos_com_queda": 0,
- "tempo_segundos": 0.7,
+ "tempo_segundos": 1.1,
  "backtest_fora_da_amostra": {
   "metodo": "validação cruzada em 5 dobras na base de desenvolvimento (aprende em 4/5, mede no 1/5 que não viu)",
   "area_casos": 1016,
@@ -216,9 +216,7 @@
    "PERDA_PAGAMENTO_ALUGUEL": 18,
    "DESPESAS_EMERGENCIAIS": 10,
    "ROUBO_FURTO_ARROMBAMENTO": 24
-  },
-  "recomendacoes_com_coberturas_mais_acionadas_pct": 100.0,
-  "acionamentos_bb_cobertos_por_elas_pct": 79.4
+  }
  },
  "qualidade_do_motivo": {
   "motivos_genericos": 0,

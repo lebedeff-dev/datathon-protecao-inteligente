@@ -84,7 +84,6 @@ Todas saem em `entrega/metricas.json` a cada execução.
 | **Jornada** | 1 toque · app com perguntas · gerente | 63 · 49 · **26** (gerente: 19%, só obra ou sem app) |
 | **Mercado** ([[Métricas do mercado x as nossas]]) | 1 toque puro · sem pessoa no meio | 45,7% · 81,2% dos elegíveis |
 | | esforço: perguntas × campos de cotação comum | 2,7 × 19,9 (86% menos) |
-| | aderência aos sinistros reais da BB | 100% com as coberturas de 79% dos acionamentos |
 | | ITV do incêndio (segurado ÷ valor em risco) | máximo 1,48 · mínimo 0,62 · sugerido ÷ pessimista 0,67 |
 | **Validação fora da amostra** | erro da área · faixa contém a real · padrão pelo IPTU | 15% · 80,9% (73,9% na base de teste) · 98% |
 
@@ -98,7 +97,6 @@ Todas saem em `entrega/metricas.json` a cada execução.
 | **IPCA** (Banco Central) | Compras a preço de hoje | ✅ **API SGS**, ao vivo | até set/2026 |
 | **CUB** (Sinduscons) | Custo máximo do m² | Site/PDF oficial (7 de 10 estados) | set/2026 |
 | **FipeZAP** (Fipe) | Aluguel por m² (perda de aluguel) | PDF | set/2026 |
-| **Sinistros BB** | "Danos elétricos são 53% dos acionamentos" (só no texto) | Matéria com dado da BB | jan/2023–mai/2026 |
 | **[[Atlas Digital de Desastres]] / S2iD** | Chuvas e vendavais na cidade (só no texto) | Arquivo oficial (sem API) | 1991–2025 |
 | **[[ANEEL continuidade]]** | Quedas de energia da distribuidora (só no texto) | Ranking oficial | 2025 |
 | Condições Gerais BB v1.4 | As regras do produto | PDF | v1.4 |

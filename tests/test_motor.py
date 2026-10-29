@@ -363,13 +363,16 @@ def test_locador_avisa_que_conteudo_e_do_inquilino(ficha):
     assert "locatário" in _cob(f, "INCENDIO_RAIO_EXPLOSAO_FUMACA")["observacao"]
 
 
-def test_motivo_cita_sinistros_reais_sem_mudar_valor(ficha, monkeypatch):
-    com = ficha(APTO_CURITIBA)
-    assert "53,3%" in _cob(com, "DANOS_ELETRICOS")["justificativa"]
-    monkeypatch.setattr(motor.P, "sinistros_pct", lambda cob: None)   # sem o arquivo externo
-    sem = ficha(APTO_CURITIBA)
-    assert [(c["min"], c["max"]) for c in com["coberturas"]] == [(c["min"], c["max"]) for c in sem["coberturas"]]
-    assert "acionamentos" not in _cob(sem, "DANOS_ELETRICOS")["justificativa"]
+def test_sem_dado_de_sinistro_da_bb(todas):
+    # 29/10: o dado de acionamentos da BB era de fonte secundária (matéria de imprensa), sem como
+    # auditar. Saiu do motor, do texto, das fontes e das métricas; nenhum plano ou valor dependia dele.
+    assert not hasattr(motor.P, "sinistros_pct") and not hasattr(motor.P, "FONTE_SINISTROS")
+    from pathlib import Path
+    assert not (Path(motor.__file__).parent / "externos" / "sinistros_residencial_bb.csv").exists()
+    for f in todas:
+        textos = [motor.justificativa(f)] + [c["justificativa"] for c in f["coberturas"]]
+        assert not any("acionamentos" in t or "53,3%" in t for t in textos), f["imovel_id"]
+        assert not any("imprensa" in fonte for fonte in f["fontes"])
 
 
 def test_territorio_entra_so_no_texto(ficha, monkeypatch):

@@ -15,7 +15,7 @@ flowchart LR
   D[(dados/<br>desenvolvimento)] -->|calibrar| C[calibração<br>+ backtest]
   T[(dados/<br>teste_comum)] --> P[processar_caso]
   C --> P
-  X[(motor/externos<br>SINAPI · CUB · IPCA · FipeZAP<br>sinistros BB · S2iD · ANEEL)] --> PA[parametros.py]
+  X[(motor/externos<br>SINAPI · CUB · IPCA · FipeZAP<br>S2iD · ANEEL)] --> PA[parametros.py]
   PA --> P
   P --> F[ficha JSON]
   F --> G[gerar.py → 2 planilhas<br>+ metricas.json]
@@ -121,7 +121,6 @@ flowchart LR
 | `FRACAO_ACABAMENTOS` | 25%–40% da reconstrução no segundo risco | CG cl. 15.2 |
 | `FATOR_IPCA` | Compras de 36 meses a preço de hoje | Banco Central, série 433 |
 | `aluguel_m2(uf)` | Aluguel por m² da capital | FipeZAP set/2026 |
-| `sinistros_pct(cob)` | % dos acionamentos do residencial BB por cobertura (só no texto) | BB Seguros, jan/2023–mai/2026 |
 | `desastres(codigo_ibge)` | Registros de água e vento no município (só no texto) | Atlas Digital de Desastres / S2iD |
 | `continuidade_energia(codigo_ibge)` | Distribuidora e posição no ranking de quedas de energia (só no texto) | ANEEL, ranking 2025 |
 | `LIMITES_PRODUTO` | Mínimo e máximo de cada cobertura | Prints do app; os máximos sem print são premissa |
@@ -135,7 +134,7 @@ flowchart LR
 | `calcular_metricas(...)` | Todas as métricas do guia §8: processados, justificativa, completude, justiça, estabilidade, sensibilidade, tempo |
 | `qualidade_do_motivo(fichas)` | Motivos genéricos, fato do cliente, valor em risco, alternativas, jargão, tamanho e personalização das coberturas |
 | `dados_faltantes(fichas, cal)` | Como cada lacuna foi tratada (cadastro, IPTU e energia, região, pergunta) |
-| `metricas_de_mercado(fichas)` | STP, esforço economizado, ITV (subseguro), faixas limitadas pelo produto e aderência aos sinistros reais da BB |
+| `metricas_de_mercado(fichas)` | STP, esforço economizado, ITV (subseguro), faixas limitadas pelo produto |
 | `renda_por_quinto(m, por_id)` | Tabela de justiça por quinto de renda e regra dos 80% na elegibilidade |
 | `casos_contrastantes(fichas)` | Escolhe os casos da demo: os 3 perfis do slide 14, o não elegível, o 1 toque, o inquilino e o "a confirmar" |
 | `_incendio_meio(f)` | Meio da faixa de incêndio, usado na sensibilidade |

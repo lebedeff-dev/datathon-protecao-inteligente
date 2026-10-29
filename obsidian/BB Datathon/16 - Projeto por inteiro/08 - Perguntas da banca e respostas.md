@@ -39,7 +39,7 @@ Três mecanismos:
 - **O plano sai das necessidades** (desde 29/10): aluguel em jogo → Total; roubo e vidros → Prático; danos a terceiros → RC familiar. Cada necessidade tem uma prova do cliente. Explicação em [[02 - O motor passo a passo]].
 - **Adicional:** a RC familiar entra em prédio ou condomínio com dependentes ou pet, quando o plano não é o Total.
 - **O motivo do plano** é a prova da necessidade que decidiu, com os números do cliente. Ex.: "você gastou R$ 11 mil com vidraçaria" acendeu a necessidade de roubo e vidros, que o Prático resolve.
-- **O motivo de cada cobertura** é o valor calculado + a frequência real de sinistros da BB + o dado oficial da cidade.
+- **O motivo de cada cobertura** é o valor calculado + o dado oficial da cidade.
 
 ### "A tabela da jornada: do que se trata?"
 Ela diz **por qual caminho cada cliente contrata**. As telas do app vão seguir isso:
@@ -64,7 +64,7 @@ O guia aceita "fontes externas **públicas ou devidamente autorizadas**", desde 
 | CUB (Sinduscons) | PDF ou site oficial | Oficial, sem API | Manter, ou trocar por "SINAPI × razão" sempre |
 | Atlas / S2iD | Arquivo oficial (sem API) | Oficial | Manter (só texto) |
 | FipeZAP | PDF | Privada (Fipe), reconhecida | Manter, ou trocar pelo aluguel do IPCA via SIDRA (é índice, não R$/m²) |
-| Sinistros BB | **Matéria de jornal** com dado da BB | A mais fraca | **Tirar**, ou citar como "segundo a BB Seguros" e deixar como contexto do pitch |
+| Sinistros BB | **Matéria de jornal** com dado da BB | A mais fraca | ✅ **Retirado em 29/10** do motor, do texto e das métricas |
 
 ---
 

@@ -86,6 +86,7 @@ dados/teste_comum ──► processar_caso() para cada cliente-imóvel
 - Custos e aluguel são médias do estado ou da capital, não do bairro.
 - O catálogo do datathon não tem "instalações e pequenos reparos", que o guia lista no Essencial. Seguimos o catálogo, que é a nomenclatura de conferência.
 - Os valores de vendaval, danos por água, RC e despesas emergenciais são proporções premissa do time (em `parametros.py` e `motor.dimensionar()`), sem dado de sinistro para calibrar.
+- O dado de acionamentos do Seguro Residencial BB (matéria de imprensa) foi retirado em 29/10: era fonte secundária, sem como auditar, e só aparecia no texto.
 - A base não traz risco de território. Usamos registros oficiais da Defesa Civil (Atlas/S2iD) e o ranking de energia da ANEEL por município, só no texto do motivo; o risco de furto segue sem fonte.
 
 ## Métricas (base comum, 138 casos)
@@ -118,7 +119,6 @@ dados/teste_comum ──► processar_caso() para cada cliente-imóvel
 |---|---|---|
 | 1 toque puro · sem pessoa no meio | 45,7% · 81,2% dos elegíveis | Sem pergunta obrigatória · 1 toque + app com perguntas de sim/não |
 | Esforço | 2,7 perguntas × 19,9 campos de uma cotação tradicional (86,4% menos) | 5 dados do imóvel + 6 declarações de elegibilidade + 1 valor por cobertura |
-| Aderência aos sinistros reais | 100% das recomendações têm danos elétricos, água e vendaval, que somam 79,4% dos acionamentos do residencial BB | `motor/externos/sinistros_residencial_bb.csv` |
 | ITV do incêndio (segurado ÷ valor em risco) | máximo 1,48 · mínimo 0,62 · sugerido ÷ cenário pessimista 0,67 | O valor sugerido evita o mínimo; contra o pior cenário ele cobre 67% (medida sem circularidade) |
 | Fora da amostra: área | erro mediano 14,1% (chute 44,4%); 65% a menos de 20% da real; a faixa contém a área real em 81% (meta 80%) | Validação cruzada em 5 dobras: aprende em 4/5 da base de desenvolvimento, mede no 1/5 que não viu |
 | Fora da amostra: padrão pelo IPTU/m² | intervalo certo em 97,8% dos 182 estreitados (padrão exato: 51%, contra 63% do chute) | Mesmo método |
@@ -138,7 +138,7 @@ Tudo em `entrega/metricas.json`.
 | Já segurado? | `IMO_CASO_00014_01` | Prático + RC | Provável seguro BB no endereço: vira pergunta obrigatória ("O seu seguro atual é da BB?"); se sim, não há nova proposta |
 
 ## Fontes externas
-SINAPI (IBGE, pela API SIDRA, set/2026), CUB oficial (Sinduscons de SP, DF, GO, BA, MG, RS e PR), IPCA (Banco Central, API SGS 433; `coletar.py --ao-vivo` renova os dois), FipeZAP Locação (Fipe), acionamentos do Seguro Residencial BB jan/2023–mai/2026, Atlas Digital de Desastres / S2iD (Sedec/MIDR, 1991–2025) e Ranking de Continuidade 2025 da ANEEL (os três só no texto do motivo) e Condições Gerais BB Seguro Residencial v1.4. Detalhes, licença e limitações em `motor/externos/FONTES.md`.
+SINAPI (IBGE, pela API SIDRA, set/2026), CUB oficial (Sinduscons de SP, DF, GO, BA, MG, RS e PR), IPCA (Banco Central, API SGS 433; `coletar.py --ao-vivo` renova os dois), FipeZAP Locação (Fipe), Atlas Digital de Desastres / S2iD (Sedec/MIDR, 1991–2025) e Ranking de Continuidade 2025 da ANEEL (os dois só no texto do motivo) e Condições Gerais BB Seguro Residencial v1.4. Detalhes, licença e limitações em `motor/externos/FONTES.md`.
 
 ## Privacidade e responsabilidade
 - Só dados do pacote e fontes públicas. Os dados do pacote são fictícios.

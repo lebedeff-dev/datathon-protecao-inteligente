@@ -1,6 +1,6 @@
 ---
 tags: [codigo, log, git]
-atualizado: 2026-10-28
+atualizado: 2026-10-29
 ---
 # 📝 Log de alterações do código
 
@@ -8,6 +8,15 @@ Toda mudança no motor, do mais novo para o mais antigo. Repositório: [pedroiaa
 
 > [!info] Como registrar
 > A cada commit que mexe em `motor/`, `tests/` ou `entrega/`, acrescente uma linha aqui: **o que mudou, por quê e qual regra atende**. Os detalhes ficam no commit e na nota da etapa em `documentos/contexto/`.
+
+## 29/10 · madrugada: sinistros BB fora · assertividade e motivo feito para você
+| Onde | O que mudou | Por quê |
+|---|---|---|
+| `parametros.py` · `motor.py` · `motivo.py` · `metricas.py` | **Sinistros da BB retirados** (arquivo, função, frase das coberturas, frase do Essencial e a métrica de aderência) | Fonte secundária (imprensa), sem como auditar (RN-11); não mudava plano nem faixa |
+| `assertividade.py` (novo) | Acerto de cada cálculo de dado faltante em 5 dobras, contra o chute | Saber e mostrar quanto cada conta acerta (RN-35, RN-47) |
+| `motor.py` · `_area_estimada` · `valor_imovel` | Área pela média geométrica; faixa calibrada de área × padrão nos 64 casos sem os dois | Erro 15,0% → 14,1%; faixa 2,7× → 1,76× contendo o real em 88% |
+| `motivo.py` · `justificativa` | Motivo feito para você: casa e cidade, fato dos vizinhos, risco da cidade, lacuna em reais, confiança com o acerto | O motivo é o diferencial (RN-49) |
+| `motor.py` · `montar_perguntas` | Perguntas dizem o porquê em reais | O cliente entende por que responder |
 
 ## 28/10 · noite: pós-mentoria ([[Plano - motivo, dados faltantes e gerente]])
 | Arquivo | O que mudou | Por quê |
