@@ -29,10 +29,13 @@ atualizado: 2026-10-28
 | 28/10 | Perguntas obrigatórias × opcionais: 1 toque sem pergunta que trave |
 | 28/10 | Média da região em degraus; CEP desligado (ruído) |
 | 28/10 | SINAPI e IPCA ao vivo pelas APIs do IBGE e do BC, com reserva |
+| 29/10 | Seguro existente com produto BB vira pergunta obrigatória, não NÃO (RN-19) |
+| 29/10 | **Família nunca muda o plano**: só RC familiar como adicional ou pergunta (RN-07) |
+| 29/10 | Inquilino de casa: só os bens no incêndio; a estrutura entra se o contrato pedir (D-07) |
+| 29/10 | Fontes por nível de confiança; sinistros da matéria só como contexto |
 
 ## Ainda em aberto
-- **Família no plano** (18 casos): manter pelo slide 14 ou deixar só a RC como adicional.
-- **Quem não usa o app** (13 casos): gerente direto ou convite ao app antes (D-01).
+- **Quem não usa o app** (16 casos): gerente direto ou convite ao app antes (D-01).
 - **Limites de danos por água e danos elétricos:** são premissa e prendem a maioria das faixas.
 - **Pergunta das compras fora do BB** (proposta do relatório: em 29 casos a renda sugere compras bem maiores que as vistas no BB).
 - **P0 da entrega:** nome da equipe no README e vídeo de 5 min.

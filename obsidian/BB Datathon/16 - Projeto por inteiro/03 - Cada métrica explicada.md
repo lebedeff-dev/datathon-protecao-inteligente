@@ -13,8 +13,8 @@ Todas saem de `motor/metricas.py` para `entrega/metricas.json` a cada `python mo
 | `com_justificativa_pct` | 100% | Linhas com motivo preenchido | O motivo é o principal (mentoria) |
 | `completude_coberturas_fixas_pct` | 100% | Casos com todas as coberturas fixas do plano | RN-21, RN-22 |
 | `linhas_de_cobertura` · `faixas_vazias` · `faixas_invertidas` | 1.232 · 0 · 0 | Linhas da planilha 2; faixas sem valor; mínimo maior que o máximo | RN-30, RN-32 |
-| `planos` | Prático 59 · Total 49 · Essencial 30 | Contagem | Distribuição coerente (nem todo mundo no Total) |
-| `elegibilidade` · `elegibilidade_por_regra` | SIM 122 · NÃO 16 · seguro existente 30 · reforma 9 | Cada regra do guia 9.1 e quantos casos pegou | Elegibilidade antes de recomendar |
+| `planos` | Prático 68 · Total 38 · Essencial 32 | Contagem | Distribuição coerente (nem todo mundo no Total) |
+| `elegibilidade` · `elegibilidade_por_regra` | SIM 138 · seguro existente 30 (16 "provável BB", com pergunta) · reforma 10 | Cada regra do guia 9.1 e quantos casos pegou | Elegibilidade antes de recomendar |
 | `casos_com_confirmacao_de_elegibilidade` | 37 | Casos com pendência que vira pergunta | Sinal fraco vira pergunta, não recusa |
 | `coberturas_adicionais` | RC familiar 41 | Adicionais fora do plano | Slide 23: plano + **adicionais** |
 | `perguntas_media` · `perguntas_candidatas_media` | 2,77 · 3,55 | Perguntas feitas e possíveis | Poucas e priorizadas (RN-36) |
@@ -49,16 +49,16 @@ Todas saem de `motor/metricas.py` para `entrega/metricas.json` a cada `python mo
 ## 4. Jornada
 | Métrica | Valor | O que é |
 |---|---|---|
-| `jornada` | 1 toque 63 · app com perguntas 37 · gerente 22 · sem proposta 16 | Para onde cada caso vai |
+| `jornada` | 1 toque 63 · app com perguntas 49 · gerente 26 | Para onde cada caso vai |
 | `gerente_pct_dos_elegiveis` · `gerente_motivos` | 18% · obra 9 · sem app 13 | Gerente só em último caso |
 | `canal` | 1 toque 100 · gerente 38 | O campo que o protótipo lê |
 
 ## 5. Mercado (`mercado`) — ver [[Métricas do mercado x as nossas]]
 | Métrica | Valor | O que é |
 |---|---|---|
-| `stp_one_click_pct` | 72,5% | Contratação sem pessoa no meio (1 toque + app com perguntas) |
+| `um_toque_pct_dos_elegiveis` · `sem_pessoa_pct_dos_elegiveis` | 45,7% · 81,2% | 1 toque puro (sem pergunta obrigatória) e contratação sem pessoa no meio (inclui o app com perguntas). Antes, um único 72,5% sobre os 138 misturava os dois |
 | `esforco_*` | 2,77 perguntas × 19,9 campos (86% menos) | Esforço contra uma cotação comum (5 dados + 6 declarações + 1 valor por cobertura) |
-| `itv_incendio_no_maximo` · `no_minimo` · `no_sugerido` | 1,47 · 0,60 · **1,00** | Segurado ÷ valor em risco. Abaixo de 0,8 = subseguro. O **valor sugerido** cobre 100% |
+| `itv_incendio_no_maximo` · `no_minimo` · `itv_sugerido_sobre_pessimista` | 1,48 · 0,62 · **0,67** | Segurado ÷ valor em risco (abaixo de 0,8 = subseguro). O sugerido é comparado ao **cenário pessimista** (sem circularidade): cobre 67% do pior caso; 15 casos chegam a 80% |
 | `faixas_limitadas_pelo_produto` | água 134 · danos elétricos 122 | Estimativa acima do limite (limites de água e elétricos são premissa) |
 | `recomendacoes_com_coberturas_mais_acionadas_pct` | 100% (79,4% dos acionamentos da BB) | Todas têm as coberturas que mais dão sinistro na BB |
 

@@ -25,6 +25,7 @@ O índice e a linha do tempo. Comece por aqui. Cada etapa tem um documento curto
 | 21 | Pós-mentoria: motivo 2.0, média regional, gerente como último recurso e APIs ao vivo | [21-motivo-e-jornada.md](21-motivo-e-jornada.md) | ✅ |
 | 22 | Renda liberada depois da mentoria do BB (RN-07 revisada, D-08) | [22-renda-liberada.md](22-renda-liberada.md) | ✅ |
 | 23 | Perguntas obrigatórias × opcionais, sugestões P1 e o projeto inteiro no vault | [23-perguntas-e-documentacao.md](23-perguntas-e-documentacao.md) | ✅ |
+| 24 | Críticas em papel de banca: o que corrigimos | [24-criticas-da-banca.md](24-criticas-da-banca.md) | ✅ |
 | 90 | Revisão do time (comece por aqui amanhã) | [90-revisao.md](90-revisao.md) | 📋 para revisar |
 
 ## Onde está cada coisa

@@ -9,7 +9,7 @@ tags: [painel, datathon-bb]
 
 > [!codigo] Código do motor (atualizado 28/10 à noite)
 > **Comece por [[Visão geral do motor (comece aqui)]]. Tudo em detalhe: [[00 - Índice (leia nesta ordem)]] (pasta 16).** Depois: [[Mapa do código]] (cada arquivo e função) · [[Auditoria do código - 28-10]] (erros e correções) · [[Métricas do mercado x as nossas]] · [[Log de alterações do código]]
-> **91 testes** · 0 erros nas planilhas · Prático 59 · Total 49 · Essencial 30 · elegível 122 · 2,7 perguntas por caso (86% menos esforço que uma cotação tradicional)
+> **104 testes** · 0 erros nas planilhas · Prático 68 · Total 38 · Essencial 32 · elegível 138 (16 com pergunta obrigatória do seguro BB) · gerente em 26 casos (19%) · respostas para a banca em [[08 - Perguntas da banca e respostas]]
 
 > [!fonte] Dados externos em uso
 > SINAPI · CUB oficial (7 UFs) · IPCA · FipeZAP · sinistros BB · [[Atlas Digital de Desastres]] (S2iD) · [[ANEEL continuidade]]. Tudo salvo no projeto: o motor roda sem internet.

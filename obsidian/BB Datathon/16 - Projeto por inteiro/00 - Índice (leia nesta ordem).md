@@ -4,7 +4,7 @@ atualizado: 2026-10-28
 ---
 # 📚 O projeto por inteiro (leia nesta ordem)
 
-Tudo o que o projeto faz, explicado do zero: os dados, o tratamento, cada passo do motor, cada métrica, as fontes, as saídas, os testes e as regras. Números da versão de 28/10 à noite (base Teste Comum, 138 casos; **99 testes passando**).
+Tudo o que o projeto faz, explicado do zero: os dados, o tratamento, cada passo do motor, cada métrica, as fontes, as saídas, os testes e as regras. Números da versão de 28/10 à noite (base Teste Comum, 138 casos; **105 testes passando**).
 
 > [!tip] Se só der tempo de ler uma coisa
 > [[Visão geral do motor (comece aqui)]] resume tudo numa página. Esta pasta é a versão completa, para entender e defender cada detalhe na banca.
@@ -16,10 +16,11 @@ Tudo o que o projeto faz, explicado do zero: os dados, o tratamento, cada passo 
 | 3 | [[03 - Cada métrica explicada]] | O que cada número do `metricas.json` mede, como é calculado e por que importa |
 | 4 | [[04 - Fontes externas e APIs]] | De onde vem cada dado de fora, como atualiza e o que acontece sem internet |
 | 5 | [[05 - Saídas - planilhas, ficha, API e demo]] | O que vai em cada coluna das planilhas, o que tem na ficha e como a API e a demo usam |
-| 6 | [[06 - Testes e qualidade]] | Os 99 testes, o que cada grupo prova e como rodar |
+| 6 | [[06 - Testes e qualidade]] | Os 105 testes, o que cada grupo prova e como rodar |
 | 7 | [[07 - Regras, decisões e pendências]] | Que regra cada parte atende, as decisões do time e o que ainda falta decidir |
 | 8 | [[08 - Perguntas da banca e respostas]] | As perguntas difíceis, com a resposta e o número de cada uma |
-| 9 | [[Mapa do código]] | Cada arquivo e cada função |
+| 9 | [[09 - Cada escolha conta por conta]] | **Dois clientes reais seguidos passo a passo**, com cada conta e de onde vem cada número fixo |
+| 10 | [[Mapa do código]] | Cada arquivo e cada função |
 
 ## O projeto em 5 frases
 1. **Problema:** o cliente não sabe responder "quanto valem seus eletrônicos?" e desiste, ou contrata um seguro que não serve para a casa dele.
@@ -31,7 +32,7 @@ Tudo o que o projeto faz, explicado do zero: os dados, o tratamento, cada passo 
 ## Como rodar tudo
 ```bash
 pip install -r requirements.txt
-python -m pytest -q                        # 99 testes
+python -m pytest -q                        # 105 testes
 python motor/gerar.py --entrega            # 2 planilhas + métricas + fichas da demo
 python motor/externos/coletar.py --ao-vivo # opcional: SINAPI e IPCA pelas APIs oficiais
 ```

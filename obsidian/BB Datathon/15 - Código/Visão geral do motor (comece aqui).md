@@ -74,19 +74,19 @@ Todas saem em `entrega/metricas.json` a cada execução.
 | Grupo | Métricas | Valores |
 |---|---|---|
 | **Pedidas pelo guia (§8)** | processados, com justificativa, coberturas completas, faixas vazias | 100% · 100% · 100% · 0 |
-| | planos | Prático 59 · Total 49 · Essencial 30 |
-| | elegibilidade | SIM 122 · NÃO 16 |
+| | planos | Prático 68 · Total 38 · Essencial 32 |
+| | elegibilidade | SIM 138 (16 com pergunta obrigatória: "seu seguro é da BB?") |
 | | confiança | alta 17 · média 101 · baixa 20 |
-| | perguntas por caso | 2,7 |
+| | perguntas por caso | 2,78 (0,46 obrigatória) |
 | | estabilidade, sensibilidade, reprodutibilidade | 1 caso muda com ±5% · área +10% → incêndio +4,7% · arquivos idênticos |
 | **Responsabilidade** | teste de justiça (troca renda e idade) | **0** casos mudam |
-| | regra dos 80% por faixa de renda | 0,85 |
-| **Jornada** | 1 toque · app com perguntas · gerente · sem proposta | 67 · 20 · **35** · 16 (gerente: 29% dos elegíveis) |
-| **Mercado** ([[Métricas do mercado x as nossas]]) | STP (sem pessoa no meio) | 63% |
+| | regra dos 80% por faixa de renda | 1,00 |
+| **Jornada** | 1 toque · app com perguntas · gerente | 63 · 49 · **26** (gerente: 19%, só obra ou sem app) |
+| **Mercado** ([[Métricas do mercado x as nossas]]) | 1 toque puro · sem pessoa no meio | 45,7% · 81,2% dos elegíveis |
 | | esforço: perguntas × campos de cotação comum | 2,7 × 19,9 (86% menos) |
 | | aderência aos sinistros reais da BB | 100% com as coberturas de 79% dos acionamentos |
-| | ITV do incêndio (segurado ÷ valor em risco) | no máximo 1,46 · no mínimo 0,60 |
-| **Validação fora da amostra** | erro da área · faixa contém a real · padrão pelo IPTU | 15% · 78% · 98% |
+| | ITV do incêndio (segurado ÷ valor em risco) | máximo 1,48 · mínimo 0,62 · sugerido ÷ pessimista 0,67 |
+| **Validação fora da amostra** | erro da área · faixa contém a real · padrão pelo IPTU | 15% · 80,9% (73,9% na base de teste) · 98% |
 
 ## 3. As fontes externas e as APIs
 > [!fonte] Regra

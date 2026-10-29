@@ -71,35 +71,35 @@ O guia aceita "fontes externas **públicas ou devidamente autorizadas**", desde 
 ## Parte 2 · A crítica em papel de banca (23 pontos)
 
 ### A. O que pode derrubar
-1. 🔴 **16 NÃO por indício.** Procede: "produto de seguridade" pode ser vida ou previdência (8 dos 16 têm só 1 produto). Isso fere a RN-19. **Correção proposta:** SIM + pergunta obrigatória "O seu seguro residencial atual é da BB?"; a demo mostra o NÃO como resposta do cliente. O plano não muda (ele já é calculado para os 16: Essencial 6, Prático 6, Total 4).
-2. 🔴 **ITV de 1,00 é circular.** Procede: no incêndio, o sugerido **é** o valor em risco. **Correção:** trocar pela métrica independente "sugerido ÷ estimativa pessimista" ou tirar a afirmação.
+1. ✅ **Corrigido em 29/10.** 16 NÃO por indício. Procede: "produto de seguridade" pode ser vida ou previdência (8 dos 16 têm só 1 produto). Isso fere a RN-19. **Correção proposta:** SIM + pergunta obrigatória "O seu seguro residencial atual é da BB?"; a demo mostra o NÃO como resposta do cliente. O plano não muda (ele já é calculado para os 16: Essencial 6, Prático 6, Total 4).
+2. ✅ **Corrigido em 29/10:** agora é sugerido ÷ cenário pessimista = **0,67** (15 casos ≥ 0,8). ITV de 1,00 era circular. Procede: no incêndio, o sugerido **é** o valor em risco. **Correção:** trocar pela métrica independente "sugerido ÷ estimativa pessimista" ou tirar a afirmação.
 3. 🟡 **Calibrou e avaliou no mesmo backtest.** Procede em parte. Na base de teste (nunca usada), a faixa contém a área real em **73,9%** (46 imóveis). Dizer os dois números.
 4. 🟡 **Água e danos elétricos são o teto.** Os limites são premissa (sem print do app). A personalização aparece na **confiança**, no **valor sugerido** e no **texto**. **Ação:** dizer que é premissa e pedir o limite real; se houver tempo, buscar o máximo no simulador público da BB.
 5. 🔴 **Material vazio tratado como alvenaria (109 casos).** Procede pela RN-09. **Correção:** uma **declaração única de elegibilidade** na contratação, para todos: "não é favela ou comunidade, não é rural, não está em obra, não é de madeira ou material combustível, não é tombado". Um toque de confirmação, sem travar o 1 toque.
 
 ### B. Coerência
-6. 🔴 **STP de 72,5% está inflado.** Procede. O 1 toque puro é **63 de 122 elegíveis (52%)**. **Correção:** mostrar os dois: "52% contratam sem nenhuma pergunta obrigatória; até 82% sem falar com uma pessoa".
+6. ✅ **Corrigido em 29/10:** 1 toque puro **45,7%** dos elegíveis, sem pessoa **81,2%**. STP de 72,5% estava inflado. Procede. O 1 toque puro é **63 de 122 elegíveis (52%)**. **Correção:** mostrar os dois: "52% contratam sem nenhuma pergunta obrigatória; até 82% sem falar com uma pessoa".
 7. ✅ **94 × 63.** Os 31 de diferença são: **14 não elegíveis**, **9 com pouca familiaridade com o app** (maturidade < 40: modo simples) e **8 que não usam o app**. Falta escrever isso no relatório.
 8. 🟡 **Limiar do plano na mediana.** A mediana é escolha de produto (os bens acima de metade da carteira merecem roubo), não risco atuarial; não temos sinistralidade por faixa. Assumir como premissa e citar o caso instável (`IMO_CASO_00013_01`).
 9. 🟡 **Proporções sem dado** (vendaval 10–20%, água 3–8%, RC 70 m² × 30–60%, despesas 2–5%). São premissas do time e estão em `parametros.py`. Defesa: telhado e esquadrias são uma fração da obra; RC usa o tamanho médio de um apartamento vizinho. **Ação:** citar a composição de custo por etapa do CUB, se der tempo, ou assumir como premissa.
-10. 🔴 **Inquilino de casa com a estrutura no incêndio** (15 casos). Procede pela D-07 e pela Lei do Inquilinato. **Correção:** por padrão, só bens; a estrutura entra se o contrato pedir (a pergunta já existe).
+10. ✅ **Corrigido em 29/10:** por padrão só os bens; a estrutura entra se o contrato pedir. Inquilino de casa com a estrutura no incêndio (15 casos). Procede pela D-07 e pela Lei do Inquilinato. **Correção:** por padrão, só bens; a estrutura entra se o contrato pedir (a pergunta já existe).
 
 ### C. Renda, justiça e privacidade
 11. 🟡 **A renda foi liberada de forma verbal.** Precisamos do **nome do mentor e de um registro** (mensagem ou e-mail). Peçam ao Eduardo.
 12. ✅ **O teste de justiça dá 0 porque ninguém usa a renda?** Na base, sim. Mas há **testes com casos sintéticos** sem compras (`test_sem_compras_renda_nao_muda_plano_nem_jornada`, `test_renda_nao_passa_de_2x_a_regiao`) que rodam o caminho da renda e provam a regra. O 22,7% é otimista para quem realmente não tem compras (está escrito no relatório).
-13. 🔴 **Família muda o plano (18 casos) e segue em aberto.** Decidir hoje. Recomendação: **só RC como adicional** (a família nunca muda o plano), o que fecha a RN-07 sem perder o slide 14.
+13. ✅ **Decidido em 29/10: só RC familiar como adicional ou pergunta; a família nunca muda o plano** (planos: Prático 68 · Total 38 · Essencial 32). Família mudava o plano (18 casos). Decidir hoje. Recomendação: **só RC como adicional** (a família nunca muda o plano), o que fecha a RN-07 sem perder o slide 14.
 14. 🟡 **Base legal (LGPD).** Resposta: **legítimo interesse** (art. 7º, IX e art. 10) para oferecer produto a quem já é cliente, com transparência (o app mostra de onde veio cada dado), minimização (só dados do imóvel e das contas) e direito de contestar (o cliente corrige qualquer dado e a proposta recalcula). Em produção: aviso de privacidade e opção de não receber oferta.
 15. 🟡 **Renda por tabela no plano.** Testamos com a mesma faixa de bens e renda diferente: nos **bens baixos** e **altos**, o plano quase não muda com a renda. Na **faixa média**, a renda alta tem menos Essencial (4% contra 22%), porque é nessa faixa que fica o limiar de R$ 36 mil em bens: quem tem mais renda tende a ter um pouco mais de bens **dentro** da faixa. O plano segue os bens, não a renda.
 
 ### D. Jornada e conscientização
 16. 🟡 **Gerente virou exceção, mas a banca disse que ele importa (RN-50).** O gerente **não sai da jornada**: recebe a ficha de **qualquer** cliente que pedir ajuda, faz o pós-venda (sinistro, assistência, renovação) e é o canal dos 22 casos. Mostrar a tela do gerente na demo.
 17. 🟡 **Conscientizar sem preço.** Não temos tarifa e não vamos inventar (RN-53). No app, o preço vem do **cotador da BB** (ponto de integração). A ficha entrega o "o que muda" e o cotador entrega o "quanto custa".
-18. 🔴 **Motivo genérico em vidros e RC.** Procede em parte: vidros (12% de textos distintos) e RC (37%) são as coberturas que fazem subir de plano. **Correção:** usar o tipo e a área ("num apartamento de 110 m², repor box e janelas custa de R$ 2 mil a R$ 5 mil") e, na RC, o tamanho do vizinho pela área do próprio imóvel.
+18. ✅ **Corrigido em 29/10:** vidros 88% e RC 96% de textos distintos, com a área e o tipo do imóvel. Motivo genérico em vidros e RC. Procede em parte: vidros (12% de textos distintos) e RC (37%) são as coberturas que fazem subir de plano. **Correção:** usar o tipo e a área ("num apartamento de 110 m², repor box e janelas custa de R$ 2 mil a R$ 5 mil") e, na RC, o tamanho do vizinho pela área do próprio imóvel.
 19. ✅ **Frase local.** **138 de 138** recebem a frase da Defesa Civil (todas as 10 capitais têm registros de chuva) e a da ANEEL.
 20. 🟡 **Entendimento não é medido.** É a "checagem de entendimento" das ideias v2: no fim, uma pergunta de sim ou não sobre o que está coberto. Proposta para o app; não há métrica no motor.
 
 ### E. Entrega e operação
-21. 🟡 **Reprodutibilidade × `--ao-vivo`.** As planilhas usam os CSVs **commitados** (SINAPI set/2026, IPCA até set/2026). Rodar o coletor muda as planilhas de propósito. **Ação:** escrever isso no README.
+21. ✅ **README atualizado em 29/10.** Reprodutibilidade × `--ao-vivo`. As planilhas usam os CSVs **commitados** (SINAPI set/2026, IPCA até set/2026). Rodar o coletor muda as planilhas de propósito. **Ação:** escrever isso no README.
 22. 🟡 **Viabilidade.** O motor lê tabelas que o banco já tem (cadastro, transações categorizadas, débitos de IPTU e luz). Em produção: rodada diária em lote, gravação das fichas e API para o app e o gerente. **Piloto:** 2 agências ou um % do app, comparando a conversão do 1 toque, o abandono, o esforço (CES) e, em 12 meses, a sinistralidade e a renovação.
 23. 🔴 **P0:** nome da equipe no README e vídeo de 5 min. Definir quem faz e até que horas.
 

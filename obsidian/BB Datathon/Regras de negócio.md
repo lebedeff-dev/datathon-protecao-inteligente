@@ -22,6 +22,8 @@ Tudo o que o [[Guia oficial do datathon]] e o LEIA-ME dos dados pedem, em forma 
 > **Como o motor usa a renda hoje:** só nos bens de quem não tem compras nem bens ligados ao imóvel, combinada com a média da região (média geométrica). Fora da amostra, o erro mediano cai de 40,5% para 22,7%. Quem tem compras segue pelas compras (a prova vence a estimativa). A renda não entra em elegibilidade, canal nem confiança. Detalhes: `documentos/contexto/22-renda-liberada.md` e `documentos/RELATORIO_VALIDACAO.md`.
 > **Para a banca:** dizer que a liberação veio da mentoria do BB e mostrar que a renda nunca decide sozinha.
 
+> [!success] Decidido em 29/10: dependentes e pet **nunca** mudam o plano; só pedem a RC familiar (adicional em prédio ou condomínio, pergunta numa casa). O conflito abaixo foi resolvido.
+
 > [!decisao] RN-07 × código (28/10)
 > Desde o PR #13, dependentes **e** pet somam 1 ponto ao Total (slide 14 da Brasilseg, "casa familiar"), e isso muda o plano em **18 casos**. Valor, elegibilidade, canal e confiança não mudam. Isso conflita com a RN-07 do [[Regras de negócio - arquivo para as IAs do grupo|arquivo das IAs]]. Decidir na mentoria: ver [[Auditoria do código - 28-10]].
 - **RN-08** Combinar vários sinais. Nenhuma decisão depende de uma variável só.

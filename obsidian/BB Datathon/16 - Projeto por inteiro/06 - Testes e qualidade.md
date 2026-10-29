@@ -4,7 +4,7 @@ atualizado: 2026-10-28
 ---
 # ✅ 06 · Testes e qualidade
 
-**99 testes** (`python -m pytest -q`), que rodam sozinhos no GitHub a cada envio (`.github/workflows/testes.yml`: testes + geração das 138 planilhas). Nenhum teste usa a internet.
+**105 testes** (`python -m pytest -q`), que rodam sozinhos no GitHub a cada envio (`.github/workflows/testes.yml`: testes + geração das 138 planilhas). Nenhum teste usa a internet.
 
 | Grupo | Arquivo | Testes | O que prova |
 |---|---|---|---|
@@ -18,6 +18,7 @@ atualizado: 2026-10-28
 | F2 · Média da região | `test_motor.py` | 4 | Degraus (município e tipo → estado); CEP é ruído |
 | F3 · Jornada | `test_motor.py` | 7 | Gerente só com obra ou sem app; confiança baixa pergunta no app; 1 toque sem pergunta obrigatória; "(opcional)" na planilha |
 | P1 · Relatório de validação | `test_motor.py` | 5 | Faixa da área em ~80%; confiança por cobertura varia; valor sugerido dentro da faixa; pergunta do contrato ao inquilino |
+| Críticas da banca (29/10) | `test_motor.py` | 6 | Ninguém é NÃO por indício; família não muda o plano; inquilino de casa só com bens; vidros e RC com a área; STP e ITV sem circularidade; a oferta da RC não some |
 | API | `test_api.py` | 6 | Ficha, 404, confirmar bens sobe a confiança, área inválida recusada, `/fontes` |
 | Atualizador | `test_coletar.py` | 4 | API ao vivo grava; API fora do ar ou resposta incompleta mantém o salvo |
 

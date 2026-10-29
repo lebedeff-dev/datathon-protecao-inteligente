@@ -30,7 +30,7 @@ flowchart LR
 | R$ 15 mil ou mais em material de construção em 24 meses | SIM + pergunta "Está em obra ou reforma?" (obra impede) |
 | Parede de outro material que não alvenaria | SIM + pergunta "É madeira pré-fabricada certificada?" |
 
-**Regra de ouro (RN-19):** sinal fraco nunca vira NÃO; vira pergunta. Resultado: SIM 122 · NÃO 16.
+**Regra de ouro (RN-19):** sinal fraco nunca vira NÃO; vira pergunta. Por isso, desde 29/10, "seguro residencial + produto de seguridade BB" (produto que pode ser vida ou previdência) também vira **pergunta obrigatória** ("O seu seguro atual é da BB?"). Resultado: SIM 138 · NÃO só com situação cadastral irregular (nenhum na base).
 
 ## 3 · Plano (pontos por sinais)
 | Sinal | Pontos | Para |
@@ -38,19 +38,18 @@ flowchart LR
 | Paga aluguel (inquilino) | 2 | Total |
 | Recebe aluguel do imóvel | 2 | Total |
 | Prédio ou condomínio (vizinhos) | 1 | Total |
-| Dependentes **e** pet | 1 | Total |
 | Bens comprovados ≥ R$ 36 mil | 2 | Prático |
 | Eletrônicos comprovados ≥ R$ 10 mil | 1 | Prático |
 | Casa fora de condomínio | 1 | Prático |
 | Gasto com vidraçaria em 24 meses | 1 | Prático |
 
-**Decisão:** Total com 2 pontos ou mais de Total; Prático com 2 de Prático (ou 1 de Prático + 1 de Total do imóvel); senão, Essencial. Veraneio não soma para o Prático (o roubo não cobre casa desocupada). Bens presumidos não somam pontos. **Adicional:** RC familiar para prédio ou condomínio com dependentes ou pet, quando o plano não é o Total.
-Resultado: Prático 59 · Total 49 · Essencial 30 · RC adicional 41.
+**Decisão:** Total com 2 pontos ou mais de Total; Prático com 2 de Prático (ou 1 de Prático + 1 de Total); senão, Essencial. Veraneio não soma para o Prático (o roubo não cobre casa desocupada). Bens presumidos não somam pontos. **Dependentes e pet nunca somam pontos** (decisão de 29/10, RN-07): só pedem a **RC familiar**, como adicional em prédio ou condomínio ou como pergunta numa casa.
+Resultado: Prático 68 · Total 38 · Essencial 32 · RC adicional 52.
 
 ## 4 · Faixas de cada cobertura
 | Cobertura | Mínimo → máximo | Limite do produto |
 |---|---|---|
-| Incêndio | reconstrução + bens (segundo risco: 25%–40% da reconstrução + bens) | R$ 100 mil a R$ 600 mil |
+| Incêndio | reconstrução + bens (segundo risco: 25%–40% da reconstrução + bens; **inquilino de casa: só os bens**, porque a estrutura é do locador, Lei do Inquilinato art. 22, VIII) | R$ 100 mil a R$ 600 mil |
 | Danos por água | 50%–100% dos bens molháveis + 3%–8% da reconstrução | R$ 3 mil a R$ 50 mil |
 | Vendaval e granizo | casa 10%–20% da reconstrução · apartamento 2%–5% | R$ 1 mil a R$ 60 mil |
 | Impacto de veículos | casa R$ 10–20 mil · apartamento R$ 10 mil | até R$ 20 mil |
@@ -58,7 +57,7 @@ Resultado: Prático 59 · Total 49 · Essencial 30 · RC adicional 41.
 | Danos elétricos | eletrônicos + eletrodomésticos: comprovado → estoque | R$ 5 mil a R$ 30 mil |
 | Roubo | eletrônicos: comprovado → estoque | R$ 1 mil a R$ 45 mil |
 | Quebra de vidros | casa R$ 3–8 mil · apartamento R$ 2–5 mil; ampliada para 1,2 × o gasto com vidraçaria | R$ 1 mil a R$ 25 mil |
-| RC familiar | prédio: 70 m² × custo do m² × 30%–60% · casa: R$ 30–60 mil | R$ 10 mil a R$ 200 mil |
+| RC familiar | prédio: área do imóvel (vizinho do mesmo tamanho) × custo do m² × 30%–60% · casa: R$ 30–60 mil | R$ 10 mil a R$ 200 mil |
 | Perda de aluguel | aluguel pago ou recebido × 6 a 12 meses; senão FipeZAP × área × 6 a 12 | R$ 5 mil a R$ 30 mil |
 | Despesas emergenciais | 2%–5% da faixa de incêndio | R$ 2 mil a R$ 15 mil |
 
@@ -72,11 +71,11 @@ Depois, cada faixa vai para dentro do limite do produto e é arredondada (de 500
 | 60 | "Você recebe aluguel deste imóvel?" | opcional |
 | 59 | Inquilino de casa: "O contrato pede que você segure o imóvel?" | opcional |
 | 58 · 56 · 54 | Bens, área, acabamento, **na ordem de quanto cada resposta aperta a faixa** | opcional |
-| 45 | "Quer proteção para danos que dependentes ou pet causem?" | opcional |
+| 59 | "Quer proteção para danos que dependentes ou pet causem?" (casa com família; muda o que está coberto, por isso vem antes das de valor) | opcional |
 | 40 | "É apartamento ou casa?" (complemento diverge) | **obrigatória** |
 | 30 | "O imóvel é seu e já está quitado?" | opcional |
 
-Pergunta de valor que aperta a faixa em menos de R$ 5 mil não é feita, e nenhuma promete apertar mais do que a largura da faixa entregue. **Obrigatória trava a contratação; opcional só ajusta o valor.** Média: 2,77 perguntas por caso, sendo 0,34 obrigatória; 94 casos não têm nenhuma obrigatória.
+Pergunta de valor que aperta a faixa em menos de R$ 5 mil não é feita, e nenhuma promete apertar mais do que a largura da faixa entregue. **Obrigatória trava a contratação; opcional só ajusta o valor.** Média: 2,78 perguntas por caso, sendo 0,46 obrigatória; 80 casos não têm nenhuma obrigatória.
 
 ## 6 · Confiança
 **Geral (do caso):** cada dado crítico (tipo, vínculo, uso, área, bens) é **observado** (documento, transação ou confirmado), **estimado** (derivado ou inferido) ou **presumido**. Observado mais velho que a meia-vida do campo conta como estimado.
@@ -90,9 +89,9 @@ Pergunta de valor que aperta a faixa em menos de R$ 5 mil não é feita, e nenhu
 | Jornada               | Quando                                                                                                                                                                        | Casos                  |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
 | **1 toque**           | Nenhuma pergunta obrigatória: contrata com a faixa sugerida                                                                                                                   | 63                     |
-| **App com perguntas** | Pergunta obrigatória (elegibilidade, uso duvidoso) ou pouca familiaridade com o app. Na confiança baixa, o app pergunta primeiro e o gerente entra se a resposta mudar o caso | 37                     |
-| **Gerente**           | Sinal de obra ou cliente sem o app                                                                                                                                            | 22 (18% dos elegíveis) |
-| **Sem nova proposta** | Não elegível: o app informa e a ficha serve para revisar a apólice                                                                                                            | 16                     |
+| **App com perguntas** | Pergunta obrigatória (elegibilidade, "seu seguro é da BB?", uso duvidoso) ou pouca familiaridade com o app. Na confiança baixa, o app pergunta primeiro e o gerente entra se a resposta mudar o caso | 49 |
+| **Gerente** | Sinal de obra (10) ou cliente sem o app (16) | 26 (19%) |
+| **Sem nova proposta** | Não elegível com prova, ou o cliente respondeu que o seguro atual é da BB | 0 na base |
 
 O campo `canal` (1 toque × gerente) continua existindo para o protótipo.
 
