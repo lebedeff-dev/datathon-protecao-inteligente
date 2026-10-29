@@ -60,6 +60,9 @@ Linha do tempo das decisões, para quem chega agora. Detalhes em cada nota ligad
 ## 29/10: prompt 2, ícones e visuais (rodada 7)
 - As ilustrações do ChatGPT ficaram boas; o resto do app precisava acompanhar. Prompt 2 enviado ao time (28 ícones em folhas + 6 visuais), e o app pronto para trocar cada peça sozinho. Ver [[Prompt das ilustrações (ChatGPT)]].
 
+## 29/10: imagens do ChatGPT no app e PR para o Pedro (rodada 8)
+- 16 ilustrações e 28 ícones no app; reduzidas para carregar rápido. Branch `app-celular` atualizada com o `main` do Pedro e enviada por PR, com o vault atualizado (inclusive o HANDOFF_CONTEXTO, para continuar em outro chat).
+
 ## Números atuais do motor (base comum, 138 casos)
 | Métrica | Valor |
 |---|---|

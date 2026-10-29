@@ -15,6 +15,13 @@ pasta: app-expo/
 
 Substitui o [[Protótipo v4 - app do cliente]] (HTML) para a gravação. O HTML continua no repositório como referência e para mostrar o raio-X do motor no computador.
 
+## Rodada 8 (29/10): ilustrações e ícones do ChatGPT no app
+- **Entraram:** 16 ilustrações (pacote `Seguro_Residencial_Ilustracoes/PNG`, sem a folha de personagens) em `assets/ilustracoes/`, e as 5 folhas de ícones fatiadas em 28 `ic_*.png` em `assets/icones/`. Usamos os PNGs; os SVGs do pacote foram vetorizados automaticamente e são pesados.
+- **Onde aparecem:** herói da entrada, as 12 situações do Passo 2, a casa do cartão Meu seguro, todos os ícones de conteúdo (fatos, coberturas, assistências, atalhos, pagamento, canais) e o Ricardo: rosto ilustrado nos avatares (Falar com o gerente, Ajuda, Portal) e cena no cabeçalho do Portal (`RostoGerente` em `base.tsx`).
+- **Peso:** as ilustrações foram reduzidas para 768 px de largura (`npm run reduzir`), de ~24 MB para ~4,5 MB, para carregar rápido no Expo Go.
+- **Scripts novos:** `npm run icones` (fatia as folhas; a I5 veio com ligação e vídeo na linha de baixo, já tratado), `npm run imagens` (liga em `imagens.ts` toda imagem que existe), `npm run reduzir`.
+- **Falta:** os 6 visuais do prompt 2 (V1 a V6). Até chegarem, o app usa os desenhos atuais nesses lugares.
+
 ## Rodada 7 (29/10): prompt 2 (ícones e visuais) e app pronto para recebê-los
 - Segundo prompt para o ChatGPT: 28 ícones ilustrados em 5 folhas e 6 visuais (papel de parede, casa do Meu seguro, casa da moeda da animação, emblemas dos 3 planos). Avaliação e decisões em [[Prompt das ilustrações (ChatGPT)]].
 - `npm run icones` fatia as folhas; `src/ui/imagens.ts` liga cada PNG; sem o PNG fica o desenho atual.

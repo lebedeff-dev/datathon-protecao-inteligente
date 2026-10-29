@@ -13,7 +13,8 @@ const FOLHAS = {
   folha_I2: ["vidros", "terceiros", "casa", "emergencia", "chuva", "temporada"],
   folha_I3: ["reparos", "eletrodomesticos", "limpeza", "moveis", "pragas", "seguranca"],
   folha_I4: ["assistencia", "cobertura", "duvida", "chaveiro", "debito", "cartao"],
-  folha_I5: ["pix", "chat", "ligacao", "video"],
+  // a I5 veio com pix e chat em cima e ligação e vídeo embaixo (células 3 e 6 vazias); null = célula vazia
+  folha_I5: ["pix", "chat", null, "ligacao", "video", null],
 };
 const ALFA_MIN = 16;   // abaixo disso o pixel conta como fundo
 const MARGEM = 0.06;   // respiro em volta do ícone recortado
@@ -44,6 +45,7 @@ for (const [folha, nomes] of Object.entries(FOLHAS)) {
   const img = PNG.sync.read(fs.readFileSync(arq));
   const cw = Math.floor(img.width / 3), ch = Math.floor(img.height / 2);
   nomes.forEach((nome, n) => {
+    if (!nome) return;
     const ic = recorta(img, (n % 3) * cw, Math.floor(n / 3) * ch, cw, ch);
     if (!ic) { console.warn(`${folha}: célula ${n + 1} (${nome}) vazia`); return; }
     fs.writeFileSync(path.join(PASTA, `ic_${nome}.png`), PNG.sync.write(ic));

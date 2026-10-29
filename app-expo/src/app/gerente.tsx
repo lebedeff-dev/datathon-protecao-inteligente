@@ -3,7 +3,7 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
 import { GERENTE } from "@/logica/produto";
-import { Botao, Card, Entra, haptic, Icone, Rotulo, T, Titulo, Toque } from "@/ui/base";
+import { Botao, Card, Entra, haptic, Icone, Rotulo, T, Titulo, Toque, RostoGerente } from "@/ui/base";
 import { useAjuda } from "@/ui/ajuda";
 import { Tela } from "@/ui/tela";
 import { C, F } from "@/ui/tema";
@@ -17,7 +17,7 @@ export default function Gerente() {
       <Entra i={1}><T s={{ color: C.suave, fontSize: 15.5, marginBottom: 16 }}>Ele recebe a proposta que você está vendo. Você não precisa repetir nada.</T></Entra>
       <Card i={2} style={{ flexDirection: "row", alignItems: "center", gap: 14 }}>
         <View style={{ width: 58, height: 58, borderRadius: 29, backgroundColor: C.azul, alignItems: "center", justifyContent: "center" }}>
-          <T s={{ fontFamily: F.k, fontSize: 20, color: C.branco }}>{GERENTE.inicial}</T>
+          <RostoGerente tam={58} inicial={GERENTE.inicial} />
           <View style={{ position: "absolute", right: 1, bottom: 1, width: 14, height: 14, borderRadius: 7, backgroundColor: "#FCFC30", borderWidth: 2.5, borderColor: C.branco }} />
         </View>
         <View><T s={{ fontFamily: F.x, fontSize: 17 }}>{GERENTE.nome}</T><T s={{ fontSize: 13.5, color: C.suave }}>Seu gerente · responde em cerca de 15 min</T></View>

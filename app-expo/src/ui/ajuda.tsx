@@ -7,7 +7,7 @@ import Animated, { FadeIn, LinearTransition } from "react-native-reanimated";
 import { useEstado } from "../logica/estado";
 import { GERENTE } from "../logica/produto";
 import { faqDaTela } from "../logica/textos";
-import { Botao, haptic, T } from "./base";
+import { Botao, haptic, RostoGerente, T } from "./base";
 import { useFolha } from "./folha";
 import { C, F } from "./tema";
 
@@ -38,7 +38,7 @@ export function useAjuda(tela: string, { semGerente = false } = {}) {
       {semGerente ? null : <>
       <Animated.View layout={REFLUXO} style={{ marginTop: 18, backgroundColor: C.azulClaro, borderRadius: 16, padding: 14, flexDirection: "row", alignItems: "center", gap: 12 }}>
         <View style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: C.azul, alignItems: "center", justifyContent: "center" }}>
-          <T s={{ fontFamily: F.k, color: C.branco }}>{GERENTE.inicial}</T>
+          <RostoGerente tam={44} inicial={GERENTE.inicial} />
         </View>
         <View style={{ flex: 1 }}>
           <T s={{ fontFamily: F.b }}>Ainda com dúvida?</T>

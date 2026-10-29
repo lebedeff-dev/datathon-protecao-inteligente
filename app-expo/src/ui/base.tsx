@@ -7,7 +7,7 @@ import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Platform, Pressable, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
 import Animated, { FadeInDown, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { useAcessibilidade } from "./acessibilidade";
-import { ICONE_DE, ICONES } from "./imagens";
+import { ICONE_DE, ICONES, IMAGENS } from "./imagens";
 import { C, EASE_OUT, F, SOMBRA, TIPO } from "./tema";
 
 export const haptic = {
@@ -41,6 +41,17 @@ export function Icone({ n, tam = 20, cor = C.azul }: { n: string; tam?: number; 
   if (arte && tam >= 18 && cor !== C.branco) return <Image source={arte} contentFit="contain" style={{ width: tam * 1.5, height: tam * 1.5 }} />;
   if (MCI[n]) return <MaterialCommunityIcons name={MCI[n] as any} size={tam} color={cor} />;
   return <Feather name={(FEA[n] || n) as any} size={tam} color={cor} />;
+}
+
+/** Rosto do gerente dentro do círculo do avatar (o pai define tamanho e cor do círculo).
+ *  Com a ilustração do Ricardo (gerente_ricardo), mostra o rosto ampliado e recortado; senão, as iniciais. */
+export function RostoGerente({ tam, cor = C.branco, inicial }: { tam: number; cor?: string; inicial: string }) {
+  if (!IMAGENS.gerente_ricardo) return <T s={{ fontFamily: F.k, fontSize: Math.round(tam * 0.34), color: cor }}>{inicial}</T>;
+  return (
+    <View style={{ position: "absolute", top: 0, left: 0, width: tam, height: tam, borderRadius: tam / 2, overflow: "hidden", alignItems: "center" }}>
+      <Image source={IMAGENS.gerente_ricardo} contentFit="contain" style={{ width: tam * 1.7, height: tam * 1.7, marginTop: tam * 0.02 }} accessibilityLabel="Foto ilustrada do gerente" />
+    </View>
+  );
 }
 
 /** Pressável com escala de 3% em 120ms (feedback no toque). */

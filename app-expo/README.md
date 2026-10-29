@@ -22,7 +22,13 @@ Para ver no navegador: `npx expo start --web`. Em janela larga o app aparece den
 Depois de "Chamar o Ricardo", toque em **Abrir o portal do gerente** (ou segure o relógio na tela de bloqueio). A fila mostra cada cliente com o seu código (`SR-XXXX-XX`); o pedido abre preenchido e o gerente liga ou desliga as sugestões antes de enviar. Regras em `src/logica/gerente.ts`.
 
 ## Ilustrações finais
-O prompt para gerar as imagens no ChatGPT está em `assets/ilustracoes/PROMPT_ChatGPT.md`. Salve cada PNG em `assets/ilustracoes/` com o nome indicado e descomente a linha dele em `src/ui/imagens.ts`; sem o PNG, o app usa o desenho em SVG.
+Ilustrações e ícones foram gerados no ChatGPT com os prompts `assets/ilustracoes/PROMPT_ChatGPT.md` (ilustrações) e `assets/icones/PROMPT_ChatGPT_icones.md` (ícones e visuais). Para trocar ou acrescentar imagens:
+```bash
+npm run icones    # fatia assets/icones/folha_I1..I5.png em ic_<nome>.png
+npm run reduzir   # reduz para 768 px as ilustrações grandes de assets/ilustracoes/
+npm run imagens   # liga em src/ui/imagens.ts toda imagem que existe
+```
+Sem o PNG, o app usa o desenho em SVG ou o ícone vetorial.
 
 ## De onde vêm os números
 `src/dados/fichas.json` é uma cópia de `prototipos/fichas_demo.js`, que o motor gera. Depois de rodar `python motor/gerar.py --entrega`, atualize com:

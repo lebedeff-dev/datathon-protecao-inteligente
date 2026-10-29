@@ -48,7 +48,9 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "dados": "node scripts/dados.js",
-    "icones": "node scripts/icones.js"
+    "icones": "node scripts/icones.js",
+    "imagens": "node scripts/ligar-imagens.js",
+    "reduzir": "node scripts/reduzir.js"
   },
   "private": true
 }

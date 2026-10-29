@@ -2,6 +2,7 @@
 // O código só aparece aqui (o cliente não precisa ditar nada): o gerente abre o pedido e já
 // encontra a ficha do motor e o que o cliente montou no app, tudo preenchido.
 import { Feather } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import { router } from "expo-router";
 import { useState } from "react";
 import { TextInput, View } from "react-native";
@@ -10,8 +11,9 @@ import { useEstado } from "@/logica/estado";
 import { filaDoGerente, normalizaCodigo } from "@/logica/gerente";
 import { GERENTE, PLANOS } from "@/logica/produto";
 import { cidade, NOME_TIPO } from "@/logica/textos";
-import { Card, Entra, haptic, Rotulo, T, Titulo, Toque } from "@/ui/base";
+import { Card, Entra, haptic, Rotulo, T, Titulo, Toque, RostoGerente } from "@/ui/base";
 import { useAjuda } from "@/ui/ajuda";
+import { IMAGENS } from "@/ui/imagens";
 import { Tela } from "@/ui/tela";
 import { C, F, TIPO } from "@/ui/tema";
 
@@ -31,12 +33,13 @@ export default function Painel() {
         <View style={{ paddingHorizontal: 20, paddingBottom: 18, gap: 12 }}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
             <View style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: C.amarelo, alignItems: "center", justifyContent: "center" }}>
-              <T s={{ fontFamily: F.k, color: C.azulEscuro }}>{GERENTE.inicial}</T>
+              <RostoGerente tam={44} cor={C.azulEscuro} inicial={GERENTE.inicial} />
             </View>
             <View style={{ flex: 1 }}>
               <T s={{ fontFamily: F.x, fontSize: 20, lineHeight: 25, color: C.branco }}>Olá, {GERENTE.nome}</T>
               <T s={{ fontSize: 13.5, color: C.branco, opacity: 0.85 }}>Seguro Residencial · sua carteira</T>
             </View>
+            {IMAGENS.gerente_painel ? <Image source={IMAGENS.gerente_painel} contentFit="contain" style={{ width: 108, height: 72 }} /> : null}
           </View>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: C.branco, borderRadius: 14, paddingHorizontal: 14, height: 48 }}>
             <Feather name="search" size={18} color={C.suave} />
