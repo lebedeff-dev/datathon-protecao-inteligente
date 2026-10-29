@@ -644,6 +644,17 @@ def contexto_territorio(cob, r):
     return ""
 
 
+def territorio(r):
+    """Os números oficiais do município que o motivo pode citar (Atlas/S2iD e ANEEL), ou {}."""
+    d, e = P.desastres(r.codigo_ibge_municipio), P.continuidade_energia(r.codigo_ibge_municipio)
+    t = {}
+    if d:
+        t.update(agua_10_anos=int(d["agua_registros_2016_2025"] or 0), vento_10_anos=int(d["vento_registros_2016_2025"] or 0))
+    if e:
+        t.update(energia_posicao=int(e["posicao_2025"]), energia_total=int(e["total_grandes_2025"]))
+    return t
+
+
 def faixa_bruta_incendio(ctx):
     rec, bens, im = ctx["imovel"]["reconstrucao"], ctx["bens"], ctx["imovel"]
     if im.get("estrutura_do_locador"):
@@ -1057,6 +1068,9 @@ def processar_caso(r, bens_imovel, cal, catalogo, outro_principal=False, confirm
                          "segundo_risco": imovel["segundo_risco"], "estrutura_do_locador": imovel["estrutura_do_locador"]},
         "elegibilidade": eleg, "pendencias": pendencias, "avisos": avisos,
         "vizinhos": comparar_com_vizinhos(r, cal),
+        "territorio": territorio(r),
+        # a confiança em números (assertividade.py), só para o que foi estimado pelos sinais
+        "acerto": {"area": A.frase_de_acerto("area", cal)} if area["natureza"] == "ESTIMADO" and not area.get("regional") else {},
         **rec,
         "coberturas": coberturas, "perguntas": perguntas, "perguntas_candidatas": n_cand,
         "confianca": nivel, "confianca_score": score, "confianca_motivo": motivo_conf,

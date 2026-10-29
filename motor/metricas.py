@@ -209,6 +209,39 @@ def qualidade_do_motivo(fichas):
         "palavras_max": max(palavras),
         "palavras_entre_60_e_120_pct": pct(sum(60 <= w <= 120 for w in palavras), n),
         "coberturas_texto_distinto_pct": {k: pct(len(set(v)), len(v)) for k, v in sorted(por_cob.items())},
+        **personalizacao_do_motivo(fichas, textos),
+    }
+
+
+def _esqueleto(texto):
+    """O texto sem os números: dois motivos com o mesmo esqueleto são o mesmo modelo com valores trocados."""
+    import re
+    return re.sub(r"R\$ ?[\d.,]+( mil| milhão| milhões)?|\d+[.,]?\d*%?º?", "#", texto)
+
+
+def personalizacao_do_motivo(fichas, textos):
+    """O motivo é feito para a pessoa ou é um modelo com números trocados? (plano de 28/10)
+    - esqueletos_unicos: motivos cujo texto sem números é diferente de todos os outros;
+    - semelhanca_media: quanto dois motivos têm em comum (sequências de 3 palavras, 0 = nada, 1 = iguais);
+    - frase_mais_repetida_n: em quantos motivos aparece a frase (sem números) mais repetida;
+    - cita_cidade_pct, com_fato_dos_vizinhos_pct, com_risco_da_cidade_pct."""
+    import itertools
+    import re
+    esq = [_esqueleto(textos[f["imovel_id"]]) for f in fichas]
+    tri = [set(zip(*(e.split()[i:] for i in range(3)))) for e in esq]
+    pares = [len(a & b) / len(a | b) for a, b in itertools.combinations(tri, 2) if a | b]
+    frases = Counter(fr.strip() for e in esq for fr in set(re.split(r"(?<=\.)\s", e)))
+    contagem = Counter(esq)
+    n = len(fichas)
+    tem = lambda cond: round(100 * sum(cond(f, textos[f["imovel_id"]]) for f in fichas) / n, 1) if n else 0.0
+    return {
+        "esqueletos_unicos": sum(contagem[e] == 1 for e in esq),
+        "semelhanca_media": round(statistics.mean(pares), 3) if pares else 0.0,
+        "frase_mais_repetida_n": frases.most_common(1)[0][1] if frases else 0,
+        "frase_mais_repetida": frases.most_common(1)[0][0] if frases else "",
+        "cita_cidade_pct": tem(lambda f, t: motivo.na_cidade(f) in t),
+        "com_fato_dos_vizinhos_pct": tem(lambda f, t: bool(motivo.fato_distintivo(f)) and motivo.fato_distintivo(f) in t),
+        "com_risco_da_cidade_pct": tem(lambda f, t: bool(motivo.risco_do_lugar(f)) and motivo.risco_do_lugar(f) in t),
     }
 
 

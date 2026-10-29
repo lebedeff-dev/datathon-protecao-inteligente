@@ -272,14 +272,11 @@ def com_casos_no_teste(bols, fichas):
 
 def frase_de_acerto(campo, cal):
     """A confiança em números, em português simples, ou '' sem a medição (RN-12).
-    Ex.: 'em imóveis com área conhecida, essa conta ficou a menos de 20% da área real em 2 de cada 3 casos'."""
+    Ex.: 'erro abaixo de 20% em 2 de cada 3 testes' (nos imóveis de área conhecida da base de desenvolvimento)."""
     b = (cal or {}).get("assertividade", {}).get(campo)
-    if not b or b.get("ate_20pct_pct") is None:
+    if campo != "area" or not b or b.get("ate_20pct_pct") is None:
         return ""
     pct = b["ate_20pct_pct"]
     fracao = next((f for limite, f in ((75, "3 de cada 4"), (65, "2 de cada 3"), (58, "6 de cada 10"),
                                         (48, "metade dos")) if pct >= limite), None)
-    if not fracao:
-        return ""
-    casos = "casos" if fracao != "metade dos" else "casos"
-    return {"area": f"em imóveis com área conhecida, essa conta ficou a menos de 20% da área real em {fracao} {casos}"}.get(campo, "")
+    return f"erro abaixo de 20% em {fracao} testes" if fracao else ""

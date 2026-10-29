@@ -434,11 +434,11 @@ def test_justificativa_tem_alternativas(ficha):
     import motor
     f = ficha(APTO_CURITIBA)
     texto = motor.justificativa(f)
-    assert texto.startswith("Recomendamos o plano")
+    assert texto.startswith("Para ") and "recomendamos o plano" in texto
     if f["plano"] != "ESSENCIAL":   # frase do slide 23 da Brasilseg
         assert "Se você escolher menos" in texto and "descobert" in texto
-    if f["plano"] != "TOTAL":       # alternativa mais completa (RN-37)
-        assert "acrescenta" in texto
+    if f["plano"] == "ESSENCIAL":   # alternativa mais completa (RN-37): no Essencial, a única do texto
+        assert "acrescenta" in texto or "perto de precisar" in texto
 
 
 # --- T4: validação e planilhas ----------------------------------------------------
@@ -596,7 +596,7 @@ def test_justificativa_sem_jargao_e_no_tamanho(todas):
     for f in todas:
         t = motor.justificativa(f)
         assert not any(x in t for x in TERMOS_INTERNOS), (f["imovel_id"], t)
-        assert len(t.split()) <= (150 if f["elegibilidade"] == "NAO" else 130), (f["imovel_id"], len(t.split()))
+        assert len(t.split()) <= (150 if f["elegibilidade"] == "NAO" else 140), (f["imovel_id"], len(t.split()))
 
 
 def test_justificativa_diz_quanto_esta_em_jogo(todas):

@@ -102,16 +102,21 @@ def fato_distintivo(f):
     tentativas = {"TOTAL": [("aluguel", "mais"), ("eletronicos", "mais"), ("compras", "mais")],
                   "PRATICO": [("eletronicos", "mais"), ("compras", "mais")],
                   "ESSENCIAL": [("eletronicos", "menos"), ("compras", "mais"), ("compras", "menos")]}[plano]
+    ja_ditos = {"eletronicos": "ELETRONICOS", "compras": "BENS_ALTOS", "aluguel": "INQUILINO"}
+    provas = {p["codigo"] for n in f.get("necessidades", []) for p in n["provas"]}
     for campo, lado in tentativas:
         v = viz.get(campo)
         pos = _posicao(v) if v else None
         if not pos or pos[0] != lado:
             continue
-        quem = f"{pos[0]} do que {pos[1]} {_grupo(f, v['nivel'])}"
+        grupo = _grupo(f, v["nivel"])
+        if ja_ditos[campo] in provas:   # o porquê já deu o valor (corrigido pelo IPCA): aqui, só a comparação
+            rotulo = {"eletronicos": "Em eletrônicos", "compras": "Em compras para a casa", "aluguel": "No aluguel"}[campo]
+            return f"{rotulo}, você está {'acima' if lado == 'mais' else 'abaixo'} de {pos[1]} {grupo}."
         if campo == "aluguel":
-            return f"O seu aluguel, de {reais(v['valor'])} por mês, é maior que o de {pos[1]} {_grupo(f, v['nivel'])} que pagam aluguel."
+            return f"O seu aluguel, de {reais(v['valor'])} por mês, é maior que o de {pos[1]} {grupo} que pagam aluguel."
         oque = "em eletrônicos" if campo == "eletronicos" else "para a casa"
-        texto = f"Você comprou {reais(v['valor'])} {oque} em 3 anos, {quem}"
+        texto = f"Você comprou {reais(v['valor'])} {oque} em 3 anos, {pos[0]} do que {pos[1]} {grupo}"
         if lado == "menos":   # nunca como crítica: explica por que o Essencial basta
             return f"{texto}: o roubo pesa menos para você."
         if plano == "ESSENCIAL":
@@ -163,14 +168,26 @@ def _em_jogo(f):
     return f"Reconstruir o imóvel{dono} custaria cerca de {reais(rec)} pelo custo oficial do IBGE, fora {seus}."
 
 
+def _provas(f, codigo):
+    return {p["codigo"] for n in f.get("necessidades", []) if n["codigo"] == codigo for p in n["provas"]}
+
+
 def _se_escolher_menos(f):
-    """A frase do slide 23 da Brasilseg, com a consequência concreta para este cliente."""
+    """A frase do slide 23 da Brasilseg, com quanto fica descoberto em reais para este cliente."""
     plano, cods = f["plano"], {m["codigo"] for m in f["motivos"]}
     if plano == "PRATICO":
-        return "Se você escolher menos, roubo e vidros ficarão descobertos."
+        bens, provas = f["campos"]["bens"], _provas(f, "ROUBO")
+        if "ELETRONICOS" in provas:
+            oque = f"{reais(bens['portateis']['min'])} em eletrônicos"
+        else:
+            oque = f"{reais(bens['min'])} em bens"
+        onde = "no seu apartamento" if f["campos"]["tipo"]["valor"] == "APARTAMENTO" else "na sua casa"
+        return f"Se você escolher menos, {oque} {onde} ficam descobertos contra roubo e quebra de vidros."
     if plano == "TOTAL":
         if "INQUILINO" in cods:
-            return "Se você escolher menos, a perda de aluguel ficará descoberta."
+            aluguel = (f.get("vizinhos") or {}).get("aluguel")
+            quanto = f"os {reais(aluguel['valor'])} de aluguel por mês" if aluguel else "o aluguel"
+            return f"Se você escolher menos e o imóvel ficar inabitável, {quanto} ficarão descobertos."
         if "RECEBE_ALUGUEL" in cods:
             return "Se você escolher menos, a renda do aluguel ficará descoberta enquanto o imóvel é reparado."
         return "Se você escolher menos, danos a terceiros ficarão descobertos e sairiam do seu bolso."
@@ -200,7 +217,7 @@ EXPLICA_CAMPO = {
     ("uso", "PRESUMIDO"): "falta confirmar se você mora no imóvel",
     ("area", "PRESUMIDO"): "a área veio da média de imóveis parecidos na sua região",
     ("bens", "PRESUMIDO"): "sem compras ligadas ao imóvel, usamos a média de casas parecidas na sua região",
-    ("area", "ESTIMADO"): "a área foi estimada pelo IPTU e pela conta de luz",
+    ("area", "ESTIMADO"): "a área veio do seu IPTU e da sua conta de luz, comparados aos de {cidade}",
     ("tipo", "ESTIMADO"): "o endereço não deixa claro se é casa ou apartamento",
     ("vinculo", "ESTIMADO"): "a sua relação com o imóvel foi deduzida das suas contas",
     ("uso", "ESTIMADO"): "o uso do imóvel foi deduzido das suas contas",
@@ -209,15 +226,18 @@ EXPLICA_CAMPO = {
 NIVEL = {"ALTA": "alta", "MEDIA": "média", "BAIXA": "baixa"}
 
 
-def _confianca(f):
+def _confianca(f, com_acerto=True):
     """Uma frase: o nível e a principal razão, na ordem do que mais pesa (presumido antes de estimado)."""
     if f["confianca"] == "ALTA":
         return "Confiança alta: os dados vêm do seu cadastro e das suas contas."
     for chave in [(k, c) for c in ("PRESUMIDO", "ESTIMADO") for k in ("uso", "area", "bens", "tipo", "vinculo")]:
         if f["campos"][chave[0]].get("classe") == chave[1] and chave in EXPLICA_CAMPO:
-            texto = EXPLICA_CAMPO[chave]
+            texto = EXPLICA_CAMPO[chave].format(cidade=nome_cidade(f))
             if chave == ("bens", "PRESUMIDO") and f["campos"]["bens"].get("usou_renda"):
                 texto += " e a sua renda"
+            acerto = (f.get("acerto") or {}).get(chave[0]) if chave[1] == "ESTIMADO" and com_acerto else ""
+            if acerto:   # o acerto medido (assertividade.py), nunca escrito à mão
+                texto += f" ({acerto})"
             return f"Confiança {NIVEL[f['confianca']]}: {texto}."
     return f"Confiança {NIVEL[f['confianca']]} até a sua resposta."
 
@@ -229,24 +249,109 @@ def _nao_elegivel(f):
             "um por endereço. Use a recomendação abaixo para revisar a apólice atual.")
 
 
+TIPO_NO_TEXTO = {"APARTAMENTO": "o seu apartamento", "CASA": "a sua casa", "CASA_EM_CONDOMINIO": "a sua casa em condomínio"}
+# 140 palavras (~1 minuto de leitura): com 130, o fato dos vizinhos e o risco da cidade cabiam em menos de 30% dos motivos
+MAX_PALAVRAS = 140
+
+
+def _tem_rc_adicional(f):
+    return any(a["cobertura"] == "RESPONSABILIDADE_CIVIL_FAMILIAR" for a in f.get("adicionais", []))
+
+
+def _abertura(f):
+    """'Para o seu apartamento de cerca de 80 m² em São Paulo, recomendamos o plano Prático.'
+    Área cadastrada: '80 m²'; estimada pelos sinais: 'cerca de 80 m²'; da região: sem área (RN-09)."""
+    a = f["campos"]["area"]
+    tam = "" if a.get("regional") else f" de cerca de {a['valor']} m²" if a["natureza"] == "ESTIMADO" else f" de {a['valor']} m²"
+    rc = " com a responsabilidade civil familiar" if _tem_rc_adicional(f) else ""
+    return f"Para {TIPO_NO_TEXTO[f['campos']['tipo']['valor']]}{tam} {na_cidade(f)}, recomendamos o plano {NOME_PLANO[f['plano']]}{rc}."
+
+
+def _motivo_rc(f):
+    """Por que a RC entra, pelo tipo do imóvel e pela família (necessidade C)."""
+    if not _tem_rc_adicional(f):
+        return ""
+    provas, tipo = _provas(f, "TERCEIROS"), f["campos"]["tipo"]["valor"]
+    lugar = "no prédio" if tipo == "APARTAMENTO" else "no condomínio" if tipo == "CASA_EM_CONDOMINIO" else ""
+    if lugar and "FAMILIA" in provas:
+        return f"{lugar} e com dependentes ou pet, um acidente seu pode atingir outras pessoas"
+    if lugar:
+        return f"{lugar}, um vazamento ou incêndio {'no seu apartamento' if tipo == 'APARTAMENTO' else 'na sua casa'} pode atingir o vizinho"
+    return "com dependentes ou pet em casa, um acidente pode atingir outras pessoas"
+
+
+def _porque(f):
+    rc = _motivo_rc(f)
+    itens = [m["texto"] for m in f["motivos_plano"]] + ([rc] if rc else [])
+    if len(itens) > 1:   # "e, no prédio, ..." com vírgula quando o último item abre com o lugar
+        itens[-1] = ("e, " if rc else "e ") + itens[-1]
+    return f"Isso porque {'; '.join(itens)}." if itens else ""
+
+
+def risco_do_lugar(f):
+    """Uma frase com o dado oficial da cidade, escolhida pelo que mais pesa ali:
+    1. distribuidora entre as 25% piores do ranking de quedas da ANEEL → danos elétricos;
+    2. senão, chuva forte, alagamento ou enxurrada registrados pela Defesa Civil de 2016 a 2025 → alagamento;
+    3. senão, vendaval ou granizo de 2016 a 2025 → vendaval. Sem registro, sem frase:
+    ausência de registro não prova ausência de risco, e não inventamos (RN-53)."""
+    t = f.get("territorio") or {}
+    lugar = na_cidade(f)
+    lugar = lugar[0].upper() + lugar[1:]
+    pos, tot = t.get("energia_posicao"), t.get("energia_total")
+    if pos and tot and pos >= 0.75 * tot:
+        onde = "em último lugar" if pos == tot else "entre as piores"
+        return (f"{lugar}, a distribuidora de luz ficou {onde} no ranking de quedas de energia da ANEEL "
+                f"({pos}º de {tot}, 2025); o plano cobre danos elétricos.")
+    for chave, nome, cobre in (("agua_10_anos", "chuva forte, alagamento ou enxurrada", "alagamento"),
+                               ("vento_10_anos", "vendaval ou granizo", "vendaval e granizo")):
+        n = t.get(chave)
+        if n:
+            vezes = "1 ocorrência" if n == 1 else f"{n} ocorrências"
+            return f"{lugar}, a Defesa Civil registrou {vezes} de {nome} de 2016 a 2025; o plano cobre {cobre}."
+    return ""
+
+
+def _cabe(partes, limite=None):
+    """Tira as frases menos importantes até o texto caber em `limite` palavras.
+    `partes`: (prioridade, texto) na ordem de leitura; quanto menor a prioridade, antes sai.
+    As de prioridade 90 ou mais (abertura, porquê, o que fica descoberto, confirmação, confiança) nunca saem."""
+    limite = limite or MAX_PALAVRAS
+    partes = [(p, t) for p, t in partes if t]
+    while sum(len(t.split()) for _, t in partes) > limite:
+        tiravel = [p for p, _ in partes if p < 90]
+        if not tiravel:
+            break
+        menor = min(tiravel)
+        partes.pop(next(i for i, (p, _) in enumerate(partes) if p == menor))
+    return " ".join(t for _, t in partes)
+
+
 def justificativa(f):
-    """O texto da coluna justificativa_recomendacao e do app: fato, valor em risco,
-    o que fica descoberto (ou a opção acima), o que confirmar e a confiança."""
-    partes = [_nao_elegivel(f)] if f["elegibilidade"] == "NAO" else []
-    motivos = [m["texto"] for m in f["motivos_plano"]]
-    partes.append(f"Recomendamos o plano {NOME_PLANO[f['plano']]} porque {'; '.join(motivos)}.")
-    partes.append(_em_jogo(f))
-    if f.get("adicionais"):
-        partes.append("Incluímos a responsabilidade civil familiar, que paga danos que a sua casa cause ao vizinho ou a terceiros.")
+    """O texto da coluna justificativa_recomendacao e do app, feito para este cliente:
+    a casa e a cidade dele; o porquê (provas das necessidades); o fato que o diferencia dos
+    vizinhos; quanto está em jogo; o risco da cidade; o que fica descoberto em reais; o que
+    confirmar; e a confiança em números. Até 140 palavras: as frases menos importantes saem
+    primeiro (opção acima, valor em jogo, risco da cidade, fato dos vizinhos): o porquê e a lacuna já
+    trazem os valores em reais, e o que é só deste cliente vale mais que o que se repete."""
+    partes = [(100, _nao_elegivel(f))] if f["elegibilidade"] == "NAO" else []
+    porque = _porque(f)
+    # o valor em jogo sai cedo, a não ser que seja o único jeito de o texto ter dois valores em reais
+    em_jogo = 93 if porque.count("R$") < 2 and f["plano"] != "PRATICO" and "aluguel por mês" not in _se_escolher_menos(f) else 60
+    partes += [(100, _abertura(f)), (95, porque), (72, fato_distintivo(f)), (em_jogo, _em_jogo(f)),
+               (70, risco_do_lugar(f))]
     if f["elegibilidade"] == "SIM":   # alternativas só fazem sentido para uma proposta nova (RN-37)
-        partes.append(_se_escolher_menos(f))
+        partes.append((90, _se_escolher_menos(f)))
         if not f["pendencias"]:   # com elegibilidade a confirmar, o texto prioriza a confirmação (RN-51: equilíbrio)
-            partes.append(_no_limite(f) or _opcao_acima(f))
+            limite = _no_limite(f)
+            # no Essencial, o plano acima é a única alternativa do texto (RN-37): não sai
+            partes.append((92, limite) if limite else (91 if f["plano"] == "ESSENCIAL" else 50, _opcao_acima(f)))
     if f["pendencias"] and f["elegibilidade"] == "SIM":
         perguntas = [p["pergunta"] for p in f["pendencias"] if p.get("pergunta")]
         if perguntas:
-            partes.append("Antes de contratar: " + " ".join(perguntas))
+            partes.append((98, "Antes de contratar: " + " ".join(perguntas)))
     if f["avisos"]:   # a cláusula fica nas colunas técnicas; o cliente lê só o efeito
-        partes.append("Atenção: " + "; ".join(re.sub(r" \(CG[^)]*\)", "", a) for a in f["avisos"]) + ".")
-    partes.append(_confianca(f))
-    return " ".join(p for p in partes if p)
+        partes.append((97, "Atenção: " + "; ".join(re.sub(r" \(CG[^)]*\)", "", a) for a in f["avisos"]) + "."))
+    texto = _cabe(partes + [(96, _confianca(f))])
+    if len(texto.split()) > MAX_PALAVRAS:   # com perguntas de elegibilidade, o acerto em números dá lugar a elas
+        texto = _cabe(partes + [(96, _confianca(f, com_acerto=False))])
+    return texto
