@@ -50,6 +50,10 @@ Linha do tempo das decisões, para quem chega agora. Detalhes em cada nota ligad
 - O Pedro atualizou o motor e o vault (necessidades com provas, território, RN-07 revisada: renda só como sinal complementar de bens; idade nunca). O app foi refeito em cima desse commit, na branch `app-celular`; a minha versão anterior do F1/motor ficou em `backup/rodada-guilherme-29-10`.
 - App: moldura de iPhone para gravar no computador, só azuis do BB, escala tipográfica, selo "ajustado pelo gerente", pagamento trocável, Ajuda em todas as telas, herói e animação final refeitos, contrato de dados e importação com conferência. Detalhes em [[App Expo - app de verdade no celular]].
 
+## 29/10: portal do gerente e ilustrações finais (rodada 5)
+- Portal do gerente dentro do app: código fixo por cliente (só o gerente vê), pedido pré-preenchido, sugestões dentro da faixa do motor, envio para o cliente decidir. Regras em [[Portal do gerente]].
+- Prompt para o ChatGPT gerar as 17 ilustrações finais, com as regras das skills dentro do próprio prompt. Enviado ao time; o app troca o SVG pela imagem quando o PNG chega. Ver [[Prompt das ilustrações (ChatGPT)]].
+
 ## Números atuais do motor (base comum, 138 casos)
 | Métrica | Valor |
 |---|---|

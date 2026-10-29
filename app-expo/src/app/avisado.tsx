@@ -9,9 +9,13 @@ import { C, F } from "@/ui/tema";
 
 export default function Avisado() {
   const ajuda = useAjuda("gerente");
-  const passos = [["Proposta enviada", "Agora · protocolo BB-8K2", "feito"], [`${GERENTE.nome} está revendo os dados`, "Ele confirma o que é estimativa, sem mudar as regras", "agora"], ["Proposta ajustada volta para você", "Você decide se contrata", ""]];
+  const passos = [["Proposta enviada", "Agora, com tudo o que você montou no app", "feito"], [`${GERENTE.nome} está revendo os dados`, "Ele confirma o que é estimativa, sem mudar as regras", "agora"], ["Proposta ajustada volta para você", "Você decide se contrata", ""]];
   return (
-    <Tela titulo="Falar com o gerente" onAjuda={ajuda} onVoltar={() => router.back()} rodape={<Botao titulo="Simular resposta do gerente" onPress={() => router.replace("/retorno")} />}>
+    <Tela titulo="Falar com o gerente" onAjuda={ajuda} onVoltar={() => router.back()} rodape={<>
+        {/* Demonstração: o mesmo pedido, visto do lado do gerente (já preenchido pelo código do cliente) */}
+        <Botao titulo="Abrir o portal do gerente" onPress={() => router.push("/painel")} />
+        <Botao tipo="claro" titulo="Pular: simular resposta" onPress={() => router.replace("/retorno")} />
+      </>}>
       <Titulo antes={`${GERENTE.nome} `} destaque="já recebeu" />
       <Entra i={1}><T s={{ color: C.suave, fontSize: 15.5, marginBottom: 16 }}>Você pode fechar o app. Avisamos aqui quando ele responder.</T></Entra>
       <Card i={2}>

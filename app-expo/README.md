@@ -18,6 +18,12 @@ Para ver no navegador: `npx expo start --web`. Em janela larga o app aparece den
 - Toque no aviso do App BB para entrar. "Recomeçar a demonstração", no fim, volta para o aviso.
 - Animações e vibração (haptics) aparecem no celular de verdade. Para a gravação as animações aparecem mesmo com "reduzir movimento" ligado (`DEMO.animarSempre` em `src/config.ts`); num app publicado, deixe `false`.
 
+## Portal do gerente
+Depois de "Chamar o Ricardo", toque em **Abrir o portal do gerente** (ou segure o relógio na tela de bloqueio). A fila mostra cada cliente com o seu código (`SR-XXXX-XX`); o pedido abre preenchido e o gerente liga ou desliga as sugestões antes de enviar. Regras em `src/logica/gerente.ts`.
+
+## Ilustrações finais
+O prompt para gerar as imagens no ChatGPT está em `assets/ilustracoes/PROMPT_ChatGPT.md`. Salve cada PNG em `assets/ilustracoes/` com o nome indicado e descomente a linha dele em `src/ui/imagens.ts`; sem o PNG, o app usa o desenho em SVG.
+
 ## De onde vêm os números
 `src/dados/fichas.json` é uma cópia de `prototipos/fichas_demo.js`, que o motor gera. Depois de rodar `python motor/gerar.py --entrega`, atualize com:
 ```bash
@@ -29,7 +35,7 @@ Preço é ilustrativo (o motor não calcula prêmio): taxa por mil dos prints do
 ## Onde está cada coisa
 | Pasta | O quê |
 |---|---|
-| `src/app/` | As telas (cada arquivo é uma rota do Expo Router): `index` aviso, `seguro` entrada, `casa` 1/5, `cobre` 2/5, `plano` 3/5, `ajuste` 4/5, `conferir` 5/5, `sucesso`, `meu`, `gerente`, `avisado`, `retorno`, `ajustada` |
+| `src/app/` | As telas (cada arquivo é uma rota do Expo Router): `index` aviso, `seguro` entrada, `casa` 1/5, `cobre` 2/5, `plano` 3/5, `ajuste` 4/5, `conferir` 5/5, `sucesso`, `meu`, `gerente`, `avisado`, `retorno`, `ajustada`; `painel/` é o portal do gerente (fila e pedido) |
 | `src/dados/` | Fichas do motor (`fichas.json`) e o contrato de tipos que as telas usam (`contrato.ts`) |
 | `src/logica/` | Produto e preço (`produto.ts`), textos do cliente e dúvidas frequentes (`textos.ts`), estado da demo (`estado.tsx`) |
 | `src/ui/` | Visual do BB: cabeçalho azul, folha branca, botões em pílula (`base.tsx`), folha de baixo e aviso rápido (`folha.tsx`), ajuda (`ajuda.tsx`), tela de bloqueio (`bloqueio.tsx`), ilustrações (`ilustracoes.tsx`), moldura de iPhone na web (`moldura.tsx`), tokens de cor e escala tipográfica `TIPO` (`tema.ts`) |

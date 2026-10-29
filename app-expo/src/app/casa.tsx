@@ -5,7 +5,7 @@ import { router } from "expo-router";
 import { useEffect } from "react";
 import { Pressable, View } from "react-native";
 import Animated, { FadeIn, LinearTransition, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-import { CampoEditavel, DO_BANCO, Estado, mudancas, perguntasDaTela, useEstado, tipoAtual } from "@/logica/estado";
+import { CampoEditavel, DO_BANCO, Estado, mudancas, perguntasDaTela, useEstado, tipoAtual, nivelDaAnalise } from "@/logica/estado";
 import { PLANOS, Plano } from "@/logica/produto";
 import { aprox, cidade, entre, NOME_TIPO, NOME_USO, NOME_VINCULO, perguntaCliente, titulo, uf } from "@/logica/textos";
 import { useAjuda } from "@/ui/ajuda";
@@ -14,17 +14,10 @@ import { useFolha } from "@/ui/folha";
 import { Tela } from "@/ui/tela";
 import { C, EASE_OUT, F, SOMBRA } from "@/ui/tema";
 
-const ORDEM = ["BAIXA", "MEDIA", "ALTA"];
 const COR: Record<string, string> = { BAIXA: "#9AA8FF", MEDIA: C.azul, ALTA: C.azulEscuro };
 const NOME: Record<string, string> = { BAIXA: "Baixa", MEDIA: "Média", ALTA: "Alta" };
 const REFLUXO = LinearTransition.duration(220);
 
-/** Nível da análise: parte do motor, cai um nível por dado do banco trocado, sobe com as respostas. */
-function nivelDaAnalise(s: Estado) {
-  const ps = perguntasDaTela(s.f), n = ps.length, feitas = ps.filter((p: any) => s.resp[p.codigo]).length;
-  const i = ORDEM.indexOf(s.f.confianca) - mudancas(s) + (n && feitas === n ? 1 : 0);
-  return { nivel: ORDEM[Math.max(0, Math.min(2, i))], feitas, n };
-}
 
 function Confianca({ s }: { s: Estado }) {
   const { nivel } = nivelDaAnalise(s);

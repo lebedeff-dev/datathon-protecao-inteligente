@@ -11,7 +11,7 @@ import { COB, Cob, ORDEM_PLANO, PACOTES, PLANOS } from "@/logica/produto";
 import { aprox, brl, franquiaTexto, planoDono } from "@/logica/textos";
 import { useAjuda } from "@/ui/ajuda";
 import { Botao, Card, Contador, Entra, haptic, Icone, Rotulo, T, Titulo, Toque } from "@/ui/base";
-import { ILU } from "@/ui/ilustracoes";
+import { Ilustracao } from "@/ui/ilustracoes";
 import { SeletorPlanos } from "@/ui/seletor";
 import { Tela } from "@/ui/tela";
 import { C, F } from "@/ui/tema";
@@ -77,7 +77,6 @@ export default function Cobre() {
     ["Obra ou reforma", "Imóvel em obra não pode ser segurado até a obra acabar."],
     ...(s.f.campos.uso.valor === "LAZER_VERANEIO" ? [["Roubo com a casa vazia", "O roubo não cobre residência desocupada."] as [string, string]] : []),
   ];
-  const Ilu = ILU[c.id];
   const lista = todas ? inc : inc.slice(0, LIMITE);
   const fala = `E se acontecer ${apto ? "no seu apê" : "na sua casa"}? ${c.t}. Sem seguro, sai do seu bolso ${brl(c.prej)}. ${temCob ? `Com o ${p.nome}, você paga ${brl(paga)}.` : `O ${p.nome} não tem essa cobertura.`} O ${p.nome} cobre ${inc.map((k) => COB[k].curto).join(", ")}.`;
 
@@ -105,7 +104,7 @@ export default function Cobre() {
       </Entra>
       <Card i={2} style={{ padding: 0, overflow: "hidden" }}>
         <View style={{ height: 136, backgroundColor: C.azulFundo, alignItems: "center", justifyContent: "center" }}>
-          <Animated.View key={c.id} entering={TROCA_IN} exiting={TROCA_OUT} style={{ width: "86%" }}><Ilu h={128} /></Animated.View>
+          <Animated.View key={c.id} entering={TROCA_IN} exiting={TROCA_OUT} style={{ width: "86%" }}><Ilustracao id={c.id} predio={tipoAtual(s) !== "CASA"} h={128} /></Animated.View>
         </View>
         <View style={{ padding: 16, paddingBottom: 0 }}>
           <T s={{ fontFamily: F.x, fontSize: 17 }}>{c.t}</T>

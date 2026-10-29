@@ -2,7 +2,9 @@
 // alongados, cores chapadas da marca (azul, amarelo, turquesa, coral), contorno fino azul-escuro
 // e fundos em blocos diagonais. Tudo em SVG nativo, nítido em qualquer tela.
 import type { ReactElement, ReactNode } from "react";
+import { Image } from "expo-image";
 import { View } from "react-native";
+import { IMAGENS, imagemDaCena } from "./imagens";
 import Svg, { Circle, Defs, Ellipse, G, Line, Path, Polygon, RadialGradient, Rect, Stop } from "react-native-svg";
 
 const AZ = "#465EFF", AZE = "#2D37F5", AZC = "#E4ECFF", AM = "#FCFC30", AMC = "#FFF6A8", TQ = "#3BE0C9", CO = "#FF6F68", RS = "#FF8FB8";
@@ -223,11 +225,24 @@ export const ILU: Record<string, (p: P) => ReactElement> = {
   agua: Agua, raio: Raio, vizinho: Vizinho, roubo: Roubo, vento: Vento, fogo: Fogo, impacto: Impacto, vidros: Vidros, aluguel: Aluguel, despesas: Despesas,
 };
 
-/** Entrada do produto: alguém em casa, tranquilo, com o celular (estilo BB Digital Week). */
+/** Situação do Passo 2: a imagem final, se já chegou (sobre o mesmo fundo em blocos), ou o desenho em SVG. */
+export function Ilustracao({ id, predio, h = 128 }: { id: string; predio: boolean; h?: number }) {
+  const img = IMAGENS[imagemDaCena(id, predio)];
+  if (!img) { const Desenho = ILU[id]; return <Desenho h={h} />; }
+  return (
+    <View style={{ height: h }}>
+      <View style={{ position: "absolute", left: 0, right: 0, top: 0 }}><Cena h={h}>{null}</Cena></View>
+      <Image source={img} contentFit="contain" style={{ width: "100%", height: h }} />
+    </View>
+  );
+}
+
 /** Herói da entrada: casa inteira (telhado, porta, janelas acesas), escudo com check e a pessoa
  *  apontando para ela. Duas camadas: o fundo em blocos preenche a largura (slice) e a cena fica
- *  inteira e centrada (meet), então nada é cortado em telas largas ou estreitas. */
+ *  inteira e centrada (meet), então nada é cortado em telas largas ou estreitas.
+ *  Com a imagem final (IMAGENS.heroi_entrada), ela substitui só a cena; o fundo continua em SVG. */
 export function HeroiCasa({ h = 190 }: P) {
+  const img = IMAGENS.heroi_entrada;
   return (
     <View style={{ height: h }}>
       <Svg style={{ position: "absolute" }} width="100%" height={h} viewBox="0 0 360 200" preserveAspectRatio="xMidYMax slice">
@@ -235,7 +250,7 @@ export function HeroiCasa({ h = 190 }: P) {
         <Polygon points="400,200 210,200 400,40" fill={AM} />
         <Polygon points="-40,200 -40,166 40,200" fill={CO} />
       </Svg>
-      <Svg width="100%" height={h} viewBox="0 0 360 200">
+      {img ? <Image source={img} contentFit="contain" style={{ width: "100%", height: h }} accessibilityIgnoresInvertColors /> : <Svg width="100%" height={h} viewBox="0 0 360 200">
         {/* chão e vegetação */}
         <Ellipse cx="182" cy="170" rx="118" ry="7" fill={AZE} opacity={0.35} />
         <Rect x="276" y="128" width="5" height="40" rx="2" fill={LN} />
@@ -260,12 +275,13 @@ export function HeroiCasa({ h = 190 }: P) {
         {/* pessoa apontando para a casa */}
         <Boneco x={88} y={139} s={0.76} pose="aponta" camisa={CO} calca={AZE} pele={PELE[1]} cabelo="#1E1A33" tipo="cacheado" />
         <Brilho x={110} y={56} cor={AM} /><Brilho x={300} y={92} cor={BR} /><Brilho x={58} y={86} cor={BR} />
-      </Svg>
+      </Svg>}
     </View>
   );
 }
 
 export function CasaProtegida({ tam = 120 }: { tam?: number }) {
+  if (IMAGENS.casa_protegida) return <Image source={IMAGENS.casa_protegida} contentFit="contain" style={{ width: tam, height: tam }} />;
   return (
     <Svg width={tam} height={tam * 0.85} viewBox="0 0 130 110">
       <Path d="M12 56 L65 14 L118 56" fill="none" stroke={AM} strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />

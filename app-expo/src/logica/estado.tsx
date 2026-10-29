@@ -2,7 +2,7 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { FICHAS } from "../dados/contrato";
 import { ACIMA_DO_PADRAO, BASE, COB, Cob, DESCONTO, FIXAS, PACOTE, PLANOS, Plano } from "./produto";
-import { cobFicha, OPCOES, temAdicional } from "./textos";
+import { cobFicha, temAdicional } from "./textos";
 
 const FD: any = FICHAS;
 export type Pagamento = "DEBITO" | "CARTAO" | "PIX";
@@ -16,6 +16,8 @@ export type Estado = {
   caso: string; f: any; plano: Plano; rec: Plano;
   valores: Valores; ligadas: Ligadas; faixa: Record<Cob, [number, number] | null>;
   resp: Record<string, string>; edicoes: Partial<Record<CampoEditavel, string>>; vig: number; entend: [boolean, boolean]; ajustada: boolean; pagamento: Pagamento;
+  /** O que o gerente mudou, em frases para o cliente (vazio enquanto ele não responde). */
+  notasGerente: string[];
 };
 
 function sugerido(k: Cob, fx: [number, number] | null) {
@@ -34,7 +36,7 @@ export function estadoDoCaso(caso: string): Estado {
     ligadas[k] = true;
   });
   ligadas.rc = f.plano === "TOTAL" || temAdicional(f, "rc");
-  return { caso, f, plano: f.plano, rec: f.plano, valores, ligadas, faixa, resp: {}, edicoes: {}, vig: 1, entend: [false, false], ajustada: false, pagamento: "DEBITO" };
+  return { caso, f, plano: f.plano, rec: f.plano, valores, ligadas, faixa, resp: {}, edicoes: {}, vig: 1, entend: [false, false], ajustada: false, pagamento: "DEBITO", notasGerente: [] };
 }
 
 /** Tipo e uso valem o que o cliente escolheu; o resto vem do banco. */
@@ -44,6 +46,15 @@ export const usoAtual = (s: Estado) => s.edicoes.uso || s.f.campos.uso.valor;
 export const mudancas = (s: Estado) => (Object.keys(s.edicoes) as CampoEditavel[]).filter((k) => s.edicoes[k] && s.edicoes[k] !== DO_BANCO[k](s.f)).length;
 /** Perguntas que continuam na tela: as que repetem um campo editável ou pedem a área (que o cliente não sabe de cabeça) saem. */
 export const perguntasDaTela = (f: any) => f.perguntas.filter((p: any) => !["BENS", "AREA", "USO", "VINCULO", "TIPO"].includes(p.codigo));
+
+const ORDEM_CONFIANCA = ["BAIXA", "MEDIA", "ALTA"];
+
+/** Nível da análise: parte do motor, cai um nível por dado do banco trocado, sobe com as respostas. */
+export function nivelDaAnalise(s: Estado) {
+  const ps = perguntasDaTela(s.f), n = ps.length, feitas = ps.filter((p: any) => s.resp[p.codigo]).length;
+  const i = ORDEM_CONFIANCA.indexOf(s.f.confianca) - mudancas(s) + (n && feitas === n ? 1 : 0);
+  return { nivel: ORDEM_CONFIANCA[Math.max(0, Math.min(2, i))], feitas, n };
+}
 
 export const sugeridoDe = (s: Estado, k: Cob) => sugerido(k, s.faixa[k]);
 
@@ -79,17 +90,6 @@ export function ajustado(s: Estado): boolean {
 }
 export const precoFinal = (s: Estado) => preco(s) * (1 - DESCONTO[s.vig]);
 
-/** O que o gerente ajusta: confirma as estimativas e sobe vidros e roubo para o máximo da faixa do motor. */
-export function comAjusteDoGerente(s: Estado): Estado {
-  if (s.ajustada) return s;
-  const resp = { ...s.resp }, valores = { ...s.valores };
-  s.f.perguntas.forEach((p: any) => { if (!resp[p.codigo]) resp[p.codigo] = (OPCOES[p.codigo] || ["Sim"])[0]; });
-  (["vidros", "roubo"] as Cob[]).forEach((k) => {
-    const fx = s.faixa[k];
-    if (fx && incluidas(s).includes(k)) valores[k] = Math.min(COB[k].max, Math.round(fx[1] / COB[k].passo) * COB[k].passo);
-  });
-  return { ...s, resp, valores, ajustada: true };
-}
 
 const Ctx = createContext<{ s: Estado; set: (fn: (s: Estado) => Estado) => void; casos: Record<string, string> } | null>(null);
 

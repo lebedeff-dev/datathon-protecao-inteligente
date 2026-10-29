@@ -15,6 +15,12 @@ pasta: app-expo/
 
 Substitui o [[Protótipo v4 - app do cliente]] (HTML) para a gravação. O HTML continua no repositório como referência e para mostrar o raio-X do motor no computador.
 
+## Rodada 5 (29/10): portal do gerente e prompt das ilustrações
+- **Portal do gerente** no mesmo app: fila de pedidos com o **código de cada cliente** (`SR-XXXX-XX`, só o gerente vê), pedido já preenchido com a ficha do motor e o que o cliente montou, sugestões de ajuste com chave e efeito no preço, e "Enviar". O cliente recebe só o que o gerente deixou ligado. Detalhes e regras em [[Portal do gerente]].
+- No fluxo: "Chamar o Ricardo" → **"Abrir o portal do gerente"** (ou "Pular: simular resposta"). Atalho: segurar o relógio → "Abrir o portal do gerente". O cliente não vê mais protocolo nenhum.
+- **Ilustrações finais:** prompt completo para o ChatGPT gerar 17 imagens no estilo do app ([[Prompt das ilustrações (ChatGPT)]]). O app já está pronto para recebê-las: `src/ui/imagens.ts` liga cada PNG, e sem o PNG fica o SVG.
+- Código: `nivelDaAnalise` foi para `estado.tsx` (casa e portal usam); `comAjusteDoGerente` agora fica em `logica/gerente.ts`.
+
 ## Rodada 4 (29/10): sincronizado com o motor novo do Pedro e polido para o vídeo
 **Base:** branch `app-celular`, criada a partir do último commit do Pedro em `origin/main` (motor novo, `necessidades`, `territorio`, perguntas SEGURO_EXISTENTE e POSSIVEL_REFORMA, RN-07 revisada). O meu trabalho anterior de F1/motor ficou guardado na branch `backup/rodada-guilherme-29-10` e foi **substituído** pelo do Pedro.
 

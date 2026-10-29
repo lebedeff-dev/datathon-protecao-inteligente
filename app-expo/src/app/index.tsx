@@ -30,6 +30,11 @@ export default function Aviso() {
             <T s={{ fontFamily: F.b, color: k === s.caso ? C.azul : C.texto }}>{rotuloCaso(k, FICHAS.fichas[casos[k]])}</T>
           </Toque>
         ))}
+        <Toque onPress={() => { haptic.toque(); folha.fechar(); setTimeout(() => router.push("/painel"), 220); }} rotulo="Abrir o portal do gerente"
+          style={{ borderRadius: 14, backgroundColor: C.azul, padding: 14, flexDirection: "row", alignItems: "center", gap: 10, marginTop: 4 }}>
+          <T s={{ flex: 1, fontFamily: F.b, color: C.branco }}>Abrir o portal do gerente</T>
+          <T s={{ color: C.branco }}>›</T>
+        </Toque>
       </View>,
       "Trocar o caso",
     );

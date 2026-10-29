@@ -3,9 +3,10 @@ import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { View } from "react-native";
-import { comAjusteDoGerente, incluidas, preco, useEstado } from "@/logica/estado";
+import { preco, useEstado } from "@/logica/estado";
+import { comAjusteDoGerente } from "@/logica/gerente";
 import { GERENTE, PLANOS } from "@/logica/produto";
-import { aprox, brl, brl2 } from "@/logica/textos";
+import { brl2 } from "@/logica/textos";
 import { useAjuda } from "@/ui/ajuda";
 import { Botao, Card, Contador, Entra, SeloAjustado, T, Titulo } from "@/ui/base";
 import { Tela } from "@/ui/tela";
@@ -15,10 +16,8 @@ export default function Ajustada() {
   const { s, set } = useEstado();
   const ajuda = useAjuda("gerente");
   useEffect(() => { set(comAjusteDoGerente); }, [set]);
-  const f = s.f, ms = ["Confirmou com você os dados que eram estimativa. A confiança da análise ficou alta."];
-  if (f.sinais.vidracaria > 0 && incluidas(s).includes("vidros")) ms.push(`Quebra de vidros subiu para ${brl(s.valores.vidros)}, perto do que você gastou com vidraçaria (${aprox(f.sinais.vidracaria)}).`);
-  if (s.faixa.roubo && incluidas(s).includes("roubo")) ms.push(`Roubo foi para ${brl(s.valores.roubo)}, o valor dos seus eletrônicos e portáteis.`);
-  if (f.campos.uso.valor === "LAZER_VERANEIO") ms.push("Explicou que, com o imóvel vazio, o roubo não é coberto: o Essencial continua o mais indicado.");
+  // O que o gerente mudou vem do portal (sugestões escolhidas por ele); no atalho "Simular resposta", todas.
+  const ms = s.notasGerente;
   return (
     <Tela titulo="Proposta ajustada" onAjuda={ajuda} onVoltar={() => router.dismissAll()} rodape={<Botao titulo="Conferir e contratar" onPress={() => router.push("/conferir")} />}>
       <Titulo antes={`${GERENTE.nome} `} destaque="ajustou" depois=" sua proposta" />

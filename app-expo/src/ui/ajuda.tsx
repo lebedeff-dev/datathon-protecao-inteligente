@@ -27,13 +27,15 @@ function Duvida({ q, r }: { q: string; r: string }) {
   );
 }
 
-export function useAjuda(tela: string) {
+/** Dúvidas da tela. No portal do gerente (semGerente) não há o bloco "Falar com meu gerente". */
+export function useAjuda(tela: string, { semGerente = false } = {}) {
   const { s } = useEstado();
   const folha = useFolha();
   return () => folha.abrir(
     <View>
       <T s={{ color: C.suave, fontSize: 13.5, marginBottom: 2 }}>Sobre esta tela. A maioria das dúvidas se resolve aqui.</T>
       {faqDaTela(tela, s.f).map(([q, r]) => <Duvida key={q} q={q} r={r} />)}
+      {semGerente ? null : <>
       <Animated.View layout={REFLUXO} style={{ marginTop: 18, backgroundColor: C.azulClaro, borderRadius: 16, padding: 14, flexDirection: "row", alignItems: "center", gap: 12 }}>
         <View style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: C.azul, alignItems: "center", justifyContent: "center" }}>
           <T s={{ fontFamily: F.k, color: C.branco }}>{GERENTE.inicial}</T>
@@ -46,6 +48,7 @@ export function useAjuda(tela: string) {
       <Animated.View layout={REFLUXO} style={{ marginTop: 12 }}>
         <Botao tipo="azul" titulo="Falar com meu gerente" onPress={() => { folha.fechar(); setTimeout(() => router.push("/gerente"), 220); }} />
       </Animated.View>
+      </>}
     </View>,
     "Dúvidas frequentes",
   );
