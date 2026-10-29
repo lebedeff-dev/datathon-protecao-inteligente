@@ -132,6 +132,9 @@ def calcular_metricas(dados, cal, fichas, resultado, coberturas, segundos):
         "confianca_baixa_pct": round(100 * conf.get("BAIXA", 0) / n, 1),
         "confianca_estabilidade_casos_que_mudam_com_pesos_20pct": int(mudou_nivel),
         "confianca_largura_incendio_mediana": largura,
+        "confianca_por_cobertura": {cob: dict(Counter(c["confianca"] for f in fichas for c in f["coberturas"]
+                                                      if c["cobertura"] == cob))
+                                    for cob in sorted({c["cobertura"] for f in fichas for c in f["coberturas"]})},
         "canal": dict(Counter(f["canal"] for f in fichas)),
         "jornada": dict(Counter(f["jornada"] for f in fichas)),
         "gerente_pct_dos_elegiveis": round(100 * sum(f["jornada"] == "GERENTE" for f in fichas)
@@ -240,6 +243,9 @@ def metricas_de_mercado(fichas):
         "itv_incendio_no_maximo_abaixo_de_80pct_casos": sum(v < 0.8 for v in itv_max),
         "itv_incendio_no_minimo_mediana": round(statistics.median(itv_min), 2) if itv_min else None,
         "itv_incendio_no_minimo_abaixo_de_80pct_casos": sum(v < 0.8 for v in itv_min),
+        "itv_incendio_no_sugerido_mediana": round(statistics.median(
+            c["sugerido"] / c["valor_em_risco"] for f in fichas for c in f["coberturas"]
+            if c["cobertura"] == "INCENDIO_RAIO_EXPLOSAO_FUMACA" and c.get("valor_em_risco")), 2),
         "faixas_limitadas_pelo_produto": dict(limitadas),
         "recomendacoes_com_coberturas_mais_acionadas_pct": round(100 * sum(
             set(mais_acionadas) <= {c["cobertura"] for c in f["coberturas"]} for f in fichas) / n, 1),

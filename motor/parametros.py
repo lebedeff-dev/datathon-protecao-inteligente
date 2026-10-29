@@ -228,6 +228,10 @@ PENALIDADE_COMPLETUDE = {"area_cadastrada_m2": 0.15, "padrao_construtivo_cadastr
                          "material_parede_externa_cadastrado": 0.01}
 CAMPOS_COMPLETUDE = tuple(PENALIDADE_COMPLETUDE)
 MAX_PERGUNTAS = 3
+# Faixa da área estimada: percentis da razão área real ÷ estimada na base de desenvolvimento.
+# Com 10% e 90%, a faixa continha a área real em 78,3% fora da amostra; com 9% e 91%, em 80,9%
+# (meta: 80%). Sugestão P1 do relatório de validação (PR #14).
+AREA_QUANTIS = (0.09, 0.91)
 # Média da região em degraus (mentoria de 28/10): município + tipo → município → estado → geral.
 # Um degrau só vale com pelo menos este número de imóveis na base de desenvolvimento.
 REGIONAL_MIN_IMOVEIS = 20

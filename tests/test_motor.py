@@ -651,7 +651,7 @@ def test_um_toque_nao_tem_pergunta_obrigatoria(todas):
     assert len(um) >= 60
     for f in um:
         assert not any(p["obrigatoria"] for p in f["perguntas"]), f["imovel_id"]
-        assert all(p["codigo"] in ("BENS", "AREA", "PADRAO", "VINCULO", "RC_FAMILIA", "RECEBE_ALUGUEL") for p in f["perguntas"])
+        assert all(p["codigo"] in ("BENS", "AREA", "PADRAO", "VINCULO", "RC_FAMILIA", "RECEBE_ALUGUEL", "SEGURO_DO_IMOVEL") for p in f["perguntas"])
 
 
 def test_planilha_marca_perguntas_opcionais(planilhas):
@@ -675,3 +675,35 @@ def test_nao_elegivel_nao_conta_como_venda(todas):
     for f in todas:
         if f["elegibilidade"] == "NAO":
             assert f["jornada"] == "SEM_NOVA_PROPOSTA"
+
+
+# --- Sugestões P1 do relatório de validação (PR #14) ----------------------------
+def test_faixa_da_area_contem_a_real_em_80pct(cal):
+    assert 79 <= cal["backtest"]["area_dentro_da_faixa_pct"] <= 85
+
+
+def test_confianca_por_cobertura_varia(todas):
+    from collections import Counter
+    for cob in ("INCENDIO_RAIO_EXPLOSAO_FUMACA", "VENDAVAL_GRANIZO", "DANOS_ELETRICOS"):
+        niveis = Counter(c["confianca"] for f in todas for c in f["coberturas"] if c["cobertura"] == cob)
+        assert len(niveis) >= 2, (cob, niveis)
+
+
+def test_confianca_da_cobertura_nunca_passa_a_da_area(todas):
+    ordem = ["BAIXA", "MEDIA", "ALTA"]
+    for f in todas:
+        inc = next(c for c in f["coberturas"] if c["cobertura"] == "INCENDIO_RAIO_EXPLOSAO_FUMACA")
+        assert ordem.index(inc["confianca"]) <= ordem.index(f["campos"]["area"]["confianca"])
+
+
+def test_valor_sugerido_dentro_da_faixa(todas):
+    for f in todas:
+        for c in f["coberturas"]:
+            assert c["min"] <= c["sugerido"] <= c["max"], (f["imovel_id"], c["cobertura"])
+
+
+def test_inquilino_de_casa_pergunta_o_contrato(ficha):
+    f = ficha("IMO_CASO_00011_01")   # inquilino de casa: a reconstrução é do dono (Lei do Inquilinato, art. 22, VIII)
+    assert f["campos"]["vinculo"]["valor"] == "INQUILINO" and not f["valor_imovel"]["segundo_risco"]
+    p = next(p for p in f["perguntas"] if p["codigo"] == "SEGURO_DO_IMOVEL")
+    assert not p["obrigatoria"] and "contrato" in p["texto"]

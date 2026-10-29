@@ -197,7 +197,8 @@ def _calibrar_area(a):
     }
     est = a.apply(lambda r: _area_estimada(r, cal), axis=1)
     razao = a.area_cadastrada_m2 / est
-    cal["razao_q10"], cal["razao_q90"] = float(razao.quantile(0.10)), float(razao.quantile(0.90))
+    # nomes históricos: hoje são os percentis de P.AREA_QUANTIS (9% e 91%)
+    cal["razao_q10"], cal["razao_q90"] = (float(razao.quantile(q)) for q in P.AREA_QUANTIS)
     cal["erro_mediano_m2"] = float((a.area_cadastrada_m2 - est).abs().median())
     cal["n_calibracao"] = int(len(a))
     # reserva para imóvel sem área, IPTU e energia: mediana por município e tipo
@@ -418,7 +419,9 @@ def estimar_bens(r, bens, cal=None):
     lo, hi = max(lo, P.BENS_PISO), max(hi, P.BENS_PISO)
     total_cad = float(bens.valor_cadastrado.sum())
     alta = float(bens.loc[bens.nivel_confianca_vinculo == "ALTA", "valor_cadastrado"].sum())
-    conf = "MEDIA" if compras > 0 or (total_cad and alta / total_cad >= 0.6) else "BAIXA"
+    # Duas provas que concordam (compras + bens ligados ao imóvel com vínculo forte) = ALTA
+    vinculo_forte = bool(total_cad) and alta / total_cad >= 0.6
+    conf = "ALTA" if compras > 0 and vinculo_forte else "MEDIA" if compras > 0 or vinculo_forte else "BAIXA"
     d = dado(int(round((lo + hi) / 2)), "ESTIMADO", conf,
              f"compras de {brl(compras)} nos últimos 36 meses (corrigidas pelo IPCA) e {len(bens)} bens vinculados "
              f"({brl(pond)} ponderado pela chance de estarem no imóvel)", "TRANSACAO", 18)
@@ -632,7 +635,13 @@ def dimensionar(cob, ctx):
     r, tipo, vinculo, uso, area, bens, im = (ctx[k] for k in ("r", "tipo", "vinculo", "uso", "area", "bens", "imovel"))
     casa = tipo["valor"] in ("CASA", "CASA_EM_CONDOMINIO")
     rec = im["reconstrucao"]
-    conf_base = pior(area["confianca"], bens["confianca"], "ALTA" if im["fonte_disponivel"] else "BAIXA")
+    # Confiança de cada cobertura: o pior dos dados que ela usa (sugestão P1 do relatório de validação).
+    # Área: cadastrada ALTA, estimada MÉDIA, da região BAIXA. Padrão: cadastrado ALTA, senão MÉDIA.
+    # Bens: compras + vínculo forte ALTA, um dos dois MÉDIA, nenhum BAIXA. Sem SINAPI da UF: BAIXA.
+    conf_fonte = "ALTA" if im["fonte_disponivel"] else "BAIXA"
+    conf_padrao = "ALTA" if im["origem_padrao"] == "cadastrado" else "MEDIA"
+    conf_estrutura = pior(area["confianca"], conf_padrao, conf_fonte)
+    conf_base = pior(conf_estrutura, bens["confianca"])
     # RN-27: em imóvel alugado, o imóvel é do locador e o conteúdo é do locatário
     obs_aluguel = {"INQUILINO": "Imóvel alugado: beneficiários distintos (locador para o imóvel, locatário para o conteúdo).",
                    "PROPRIETARIO_LOCADOR": "Imóvel alugado a terceiros: os bens do inquilino são dele (locatário); "
@@ -658,7 +667,9 @@ def dimensionar(cob, ctx):
             ctx["fontes"].add(P.FONTE_ANEEL if cob == "DANOS_ELETRICOS" else P.FONTE_DESASTRES)
         return {"min": lo, "max": hi, "confianca": conf, "dados_utilizados": dados_u, "regra": regra,
                 "justificativa": just, "confirmar": confirmar, "observacao": obs,
-                "limitada_pelo_produto": bool(acima)}
+                "limitada_pelo_produto": bool(acima),
+                # valor sugerido para o app: o meio da faixa (escolher o mínimo deixa subseguro: ITV 0,60)
+                "sugerido": min(max(arred((lo + hi) / 2), lo), hi)}
 
     seus_bens = M.faixa_reais(bens["min"], bens["max"])
     # Bens presumidos (sem compras) são estimativa, não compra: o texto não pode dizer "você comprou" (RN-09)
@@ -686,6 +697,7 @@ def dimensionar(cob, ctx):
         c = saida(lo, hi, conf_base, "área, tipo, vínculo, UF, padrão, compras 36m, bens; SINAPI, CUB, IPCA", regra, just,
                   "Área do imóvel e valor dos bens", obs.strip())
         c["valor_em_risco"] = arred((lo + hi) / 2)   # meio da estimativa, antes dos limites (para o ITV)
+        c["sugerido"] = min(max(c["valor_em_risco"], c["min"]), c["max"])   # o valor em risco, dentro da faixa
         return c
     if cob == "DANOS_POR_AGUA":
         m = bens["molhaveis"]
@@ -697,7 +709,7 @@ def dimensionar(cob, ctx):
         a, b = (0.10, 0.20) if casa else (0.02, 0.05)
         onde = ("Vento e granizo atingem primeiro o telhado: refazer de 10% a 20% de uma casa como a sua custa" if casa else
                 "Em apartamento, vento e granizo atingem sobretudo janelas e esquadrias: repor de 2% a 5% do imóvel custa")
-        return saida(rec[0] * a, rec[1] * b, conf_base, "tipo, reconstrução",
+        return saida(rec[0] * a, rec[1] * b, conf_estrutura, "tipo, reconstrução",
                      f"{a:.0%}–{b:.0%} da reconstrução", f"{onde} {M.faixa_reais(rec[0] * a, rec[1] * b)}.")
     if cob == "IMPACTO_VEICULOS_TERRESTRES":
         return saida(10000, 20000 if casa else 10000, "MEDIA", "tipo do imóvel",
@@ -833,6 +845,11 @@ def montar_perguntas(r, pendencias, tipo, uso, vinculo, area, bens, plano=None, 
         cand.append((58 - 2 * i, textos[cod], cod))
     if tipo.get("diverge"):
         cand.append((40, "O imóvel é um apartamento ou uma casa?", "TIPO"))
+    if vinculo["valor"] == "INQUILINO" and imovel and not imovel["segundo_risco"]:
+        # Lei do Inquilinato, art. 22, VIII: o seguro contra fogo é do locador, salvo contrato em contrário.
+        # A resposta decide se o incêndio inclui a reconstrução ou só os bens (opcional; não trava).
+        cand.append((59, "O seu contrato de aluguel pede que você faça o seguro do imóvel, e não só dos seus bens?",
+                     "SEGURO_DO_IMOVEL"))
     if vinculo["valor"] == "PROPRIETARIO":
         cand.append((30, "O imóvel é seu e já está quitado?", "VINCULO"))
     if plano and plano != "TOTAL" and any(familia_declarada(r)) and not coberturas_adicionais(r, tipo, plano):

@@ -171,6 +171,7 @@ window.FICHAS_DEMO = {
      "confirmar": "Área do imóvel e valor dos bens",
      "observacao": "Segundo risco (CG cl. 15.2): a estrutura é paga primeiro pelo seguro do condomínio ou do financiamento.",
      "limitada_pelo_produto": false,
+     "sugerido": 151000,
      "valor_em_risco": 151000
     },
     {
@@ -184,7 +185,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Um cano rompido ou uma chuva forte estraga móveis e eletrodomésticos, e os seus valem hoje de R$ 22 mil a R$ 60 mil. A faixa cobre esses bens e parte de pisos e paredes. Na BB Seguros, 14,6% dos acionamentos do residencial são de danos por água (jan/2023 a mai/2026). Em Curitiba, a Defesa Civil registrou 17 ocorrências de chuvas intensas, alagamentos ou enxurradas desde 1991 (10 nos últimos 10 anos; a última em 2025).",
      "confirmar": "",
      "observacao": "O máximo estimado (R$ 91.000) passa do limite do produto (R$ 50.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "limitada_pelo_produto": true,
+     "sugerido": 34000
     },
     {
      "cobertura": "VENDAVAL_GRANIZO",
@@ -197,7 +199,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Em apartamento, vento e granizo atingem sobretudo janelas e esquadrias: repor de 2% a 5% do imóvel custa de R$ 5 mil a R$ 20 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026). Em Curitiba, a Defesa Civil registrou 10 ocorrências de vendaval, ciclone ou granizo desde 1991 (7 nos últimos 10 anos; a última em 2025).",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 12000
     },
     {
      "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
@@ -210,7 +213,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Em apartamento, um carro raramente atinge a sua unidade; fica no valor padrão de R$ 10 mil.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 10000
     },
     {
      "cobertura": "QUEDA_AERONAVE",
@@ -223,7 +227,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Evento raro: fica no valor padrão do produto, R$ 10 mil, sem precisar de pergunta.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 10000
     },
     {
      "cobertura": "DANOS_ELETRICOS",
@@ -236,7 +241,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Seus eletrônicos e eletrodomésticos valem hoje de R$ 12 mil a R$ 34 mil, e um pico de energia pode queimar vários de uma vez. Desgaste e mau uso não são cobertos. Na BB Seguros, 53,3% dos acionamentos do residencial são de danos elétricos (jan/2023 a mai/2026). A distribuidora de Curitiba (COPEL) ficou em 27º de 33 no ranking de continuidade da ANEEL de 2025 (1º = menos quedas de energia).",
      "confirmar": "Principais aparelhos da casa",
      "observacao": "O máximo estimado (R$ 34.000) passa do limite do produto (R$ 30.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "limitada_pelo_produto": true,
+     "sugerido": 21000
     },
     {
      "cobertura": "ROUBO_FURTO_ARROMBAMENTO",
@@ -249,7 +255,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Seus eletrônicos, os itens mais levados num arrombamento, valem hoje de R$ 9,4 mil a R$ 25 mil; a faixa repõe esses bens a preço de hoje. Na BB Seguros, 2,1% dos acionamentos do residencial são de roubo ou furto com arrombamento (jan/2023 a mai/2026).",
      "confirmar": "Bens portáteis de maior valor",
      "observacao": "Não cobre joias, relógios, dinheiro, drones nem bicicleta fora de casa (CG cl. 6; Roubo 2.1).",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 17000
     },
     {
      "cobertura": "QUEBRA_DE_VIDROS",
@@ -262,7 +269,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Você gastou R$ 11 mil com vidraçaria nos últimos 2 anos; a faixa cobre janelas, box e tampos de vidro.",
      "confirmar": "Há vidros grandes (sacada, box, fachada)?",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 7500
     },
     {
      "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
@@ -275,7 +283,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Um vazamento ou incêndio no seu imóvel pode estragar a unidade do vizinho: reparar 70 m² custa de R$ 48 mil a R$ 150 mil, e a cobertura paga isso no seu lugar.",
      "confirmar": "",
      "observacao": "Cobertura adicional ao plano Prático (guia 9.2): há dependentes ou pet na casa e vizinhos por perto; a RC familiar paga danos que eles causem a terceiros.",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 99000
     }
    ],
    "perguntas": [
@@ -372,8 +381,8 @@ window.FICHAS_DEMO = {
      "fonte": "estimada pelo IPTU (R$ 2.150/ano) e energia (R$ 650/mês) comparados a imóveis de Brasilia",
      "fonte_tipo": "DERIVADO",
      "idade_meses": 3,
-     "min": 121.75333343629381,
-     "max": 212.12315485923543,
+     "min": 120.29548033063473,
+     "max": 214.77224268348573,
      "peso": 0.688,
      "classe": "ESTIMADO"
     },
@@ -426,8 +435,8 @@ window.FICHAS_DEMO = {
      1.3
     ],
     "origem_padrao": "não cadastrado",
-    "reconstrucao_min": 223000,
-    "reconstrucao_max": 668000,
+    "reconstrucao_min": 221000,
+    "reconstrucao_max": 677000,
     "segundo_risco": true
    },
    "elegibilidade": "SIM",
@@ -495,16 +504,17 @@ window.FICHAS_DEMO = {
     {
      "cobertura": "INCENDIO_RAIO_EXPLOSAO_FUMACA",
      "tipo": "FIXA",
-     "min": 133000,
-     "max": 476000,
+     "min": 132000,
+     "max": 479000,
      "confianca": "MEDIA",
      "dados_utilizados": "área, tipo, vínculo, UF, padrão, compras 36m, bens; SINAPI, CUB, IPCA",
-     "regra": "área 122–212 m² × R$ 1.833–R$ 3.151/m² (SINAPI DF até CUB DF oficial, padrão não cadastrado: fator 0,85 a 1,30) × 25%–40% (acabamentos) + bens",
-     "justificativa": "A estrutura tem seguro próprio (condomínio ou financiamento); o seu paga os acabamentos, estimados em de R$ 56 mil a R$ 267 mil, e repõe o que você comprou para a casa, de R$ 77 mil a R$ 209 mil.",
+     "regra": "área 120–215 m² × R$ 1.833–R$ 3.151/m² (SINAPI DF até CUB DF oficial, padrão não cadastrado: fator 0,85 a 1,30) × 25%–40% (acabamentos) + bens",
+     "justificativa": "A estrutura tem seguro próprio (condomínio ou financiamento); o seu paga os acabamentos, estimados em de R$ 55 mil a R$ 271 mil, e repõe o que você comprou para a casa, de R$ 77 mil a R$ 209 mil.",
      "confirmar": "Área do imóvel e valor dos bens",
      "observacao": "Segundo risco (CG cl. 15.2): a estrutura é paga primeiro pelo seguro do condomínio ou do financiamento.",
      "limitada_pelo_produto": false,
-     "valor_em_risco": 305000
+     "sugerido": 306000,
+     "valor_em_risco": 306000
     },
     {
      "cobertura": "DANOS_POR_AGUA",
@@ -516,8 +526,9 @@ window.FICHAS_DEMO = {
      "regra": "50%–100% dos bens molháveis + 3%–8% da reconstrução (pisos e acabamentos)",
      "justificativa": "Um cano rompido ou uma chuva forte estraga móveis e eletrodomésticos, e os seus valem hoje de R$ 77 mil a R$ 209 mil. A faixa cobre esses bens e parte de pisos e paredes. Na BB Seguros, 14,6% dos acionamentos do residencial são de danos por água (jan/2023 a mai/2026). Em Brasilia, a Defesa Civil registrou 2 ocorrências de chuvas intensas, alagamentos ou enxurradas desde 1991 (2 nos últimos 10 anos; a última em 2024).",
      "confirmar": "",
-     "observacao": "O máximo estimado (R$ 262.000) passa do limite do produto (R$ 50.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "observacao": "O máximo estimado (R$ 263.000) passa do limite do produto (R$ 50.000): o valor acima do limite fica descoberto.",
+     "limitada_pelo_produto": true,
+     "sugerido": 48000
     },
     {
      "cobertura": "VENDAVAL_GRANIZO",
@@ -527,10 +538,11 @@ window.FICHAS_DEMO = {
      "confianca": "MEDIA",
      "dados_utilizados": "tipo, reconstrução",
      "regra": "10%–20% da reconstrução",
-     "justificativa": "Vento e granizo atingem primeiro o telhado: refazer de 10% a 20% de uma casa como a sua custa de R$ 22 mil a R$ 134 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026). Em Brasilia, a Defesa Civil registrou 3 ocorrências de vendaval, ciclone ou granizo desde 1991 (1 nos últimos 10 anos; a última em 2016).",
+     "justificativa": "Vento e granizo atingem primeiro o telhado: refazer de 10% a 20% de uma casa como a sua custa de R$ 22 mil a R$ 135 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026). Em Brasilia, a Defesa Civil registrou 3 ocorrências de vendaval, ciclone ou granizo desde 1991 (1 nos últimos 10 anos; a última em 2016).",
      "confirmar": "",
-     "observacao": "O máximo estimado (R$ 134.000) passa do limite do produto (R$ 60.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "observacao": "O máximo estimado (R$ 135.000) passa do limite do produto (R$ 60.000): o valor acima do limite fica descoberto.",
+     "limitada_pelo_produto": true,
+     "sugerido": 41000
     },
     {
      "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
@@ -543,7 +555,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Um carro desgovernado atinge primeiro muro, portão e fachada; por isso a casa vai até R$ 20 mil.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 15000
     },
     {
      "cobertura": "QUEDA_AERONAVE",
@@ -556,7 +569,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Evento raro: fica no valor padrão do produto, R$ 10 mil, sem precisar de pergunta.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 10000
     },
     {
      "cobertura": "DANOS_ELETRICOS",
@@ -569,7 +583,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Seus eletrônicos e eletrodomésticos valem hoje de R$ 56 mil a R$ 150 mil, e um pico de energia pode queimar vários de uma vez. Desgaste e mau uso não são cobertos. Na BB Seguros, 53,3% dos acionamentos do residencial são de danos elétricos (jan/2023 a mai/2026). A distribuidora de Brasilia (NEOENERGIA BRASILIA) ficou em 25º de 33 no ranking de continuidade da ANEEL de 2025 (1º = menos quedas de energia).",
      "confirmar": "Principais aparelhos da casa",
      "observacao": "Toda a estimativa (R$ 150.000) passa do limite do produto (R$ 30.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "limitada_pelo_produto": true,
+     "sugerido": 30000
     },
     {
      "cobertura": "ROUBO_FURTO_ARROMBAMENTO",
@@ -582,7 +597,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Seus eletrônicos, os itens mais levados num arrombamento, valem hoje de R$ 13 mil a R$ 35 mil; a faixa repõe esses bens a preço de hoje. Na BB Seguros, 2,1% dos acionamentos do residencial são de roubo ou furto com arrombamento (jan/2023 a mai/2026).",
      "confirmar": "Bens portáteis de maior valor",
      "observacao": "Não cobre joias, relógios, dinheiro, drones nem bicicleta fora de casa (CG cl. 6; Roubo 2.1).",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 24000
     },
     {
      "cobertura": "QUEBRA_DE_VIDROS",
@@ -595,7 +611,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Janelas, box e tampos de vidro de uma casa costumam custar de R$ 3 mil a R$ 8 mil para repor.",
      "confirmar": "Há vidros grandes (sacada, box, fachada)?",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 5500
     },
     {
      "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
@@ -608,7 +625,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Um vazamento ou incêndio no seu imóvel pode estragar a unidade do vizinho: reparar 70 m² custa de R$ 38 mil a R$ 132 mil, e a cobertura paga isso no seu lugar.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 85000
     },
     {
      "cobertura": "PERDA_PAGAMENTO_ALUGUEL",
@@ -618,10 +636,11 @@ window.FICHAS_DEMO = {
      "confianca": "MEDIA",
      "dados_utilizados": "FipeZAP set/2026: R$ 54/m² × área",
      "regra": "aluguel mensal × 6 a 12 meses",
-     "justificativa": "Enquanto o imóvel é reparado, você precisaria morar em outro lugar: um imóvel parecido custa de R$ 6,6 mil a R$ 11 mil por mês, e a faixa cobre de 6 a 12 meses.",
+     "justificativa": "Enquanto o imóvel é reparado, você precisaria morar em outro lugar: um imóvel parecido custa de R$ 6,5 mil a R$ 12 mil por mês, e a faixa cobre de 6 a 12 meses.",
      "confirmar": "Valor de aluguel de um imóvel equivalente",
-     "observacao": "Toda a estimativa (R$ 137.000) passa do limite do produto (R$ 30.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "observacao": "Toda a estimativa (R$ 139.000) passa do limite do produto (R$ 30.000): o valor acima do limite fica descoberto.",
+     "limitada_pelo_produto": true,
+     "sugerido": 30000
     },
     {
      "cobertura": "DESPESAS_EMERGENCIAIS",
@@ -631,10 +650,11 @@ window.FICHAS_DEMO = {
      "confianca": "MEDIA",
      "dados_utilizados": "faixa de incêndio",
      "regra": "2%–5% da faixa de incêndio",
-     "justificativa": "Lona no telhado, retirada de entulho e outras medidas urgentes para o dano não aumentar: de 2% a 5% da faixa de incêndio, ou de R$ 2,7 mil a R$ 24 mil.",
+     "justificativa": "Lona no telhado, retirada de entulho e outras medidas urgentes para o dano não aumentar: de 2% a 5% da faixa de incêndio, ou de R$ 2,6 mil a R$ 24 mil.",
      "confirmar": "",
      "observacao": "O máximo estimado (R$ 24.000) passa do limite do produto (R$ 15.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "limitada_pelo_produto": true,
+     "sugerido": 9000
     }
    ],
    "perguntas": [
@@ -650,14 +670,14 @@ window.FICHAS_DEMO = {
      "texto": "Estimamos que o imóvel tem cerca de 165 m². Confere?",
      "codigo": "AREA",
      "obrigatoria": false,
-     "reduz_faixa_ate": 114000
+     "reduz_faixa_ate": 119000
     },
     {
      "prioridade": 54,
      "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
      "codigo": "PADRAO",
      "obrigatoria": false,
-     "reduz_faixa_ate": 93000
+     "reduz_faixa_ate": 94000
     }
    ],
    "perguntas_candidatas": 4,
@@ -740,8 +760,8 @@ window.FICHAS_DEMO = {
      "fonte": "estimada pelo IPTU (R$ 1.000/ano) e energia (R$ 400/mês) comparados a imóveis de Salvador",
      "fonte_tipo": "DERIVADO",
      "idade_meses": 3,
-     "min": 76.74483231869779,
-     "max": 133.70768168005185,
+     "min": 75.8259031281665,
+     "max": 135.37748237570156,
      "peso": 0.688,
      "classe": "ESTIMADO"
     },
@@ -794,8 +814,8 @@ window.FICHAS_DEMO = {
      1.3
     ],
     "origem_padrao": "não cadastrado",
-    "reconstrucao_min": 129000,
-    "reconstrucao_max": 390000,
+    "reconstrucao_min": 127000,
+    "reconstrucao_max": 395000,
     "segundo_risco": true
    },
    "elegibilidade": "SIM",
@@ -845,15 +865,16 @@ window.FICHAS_DEMO = {
      "cobertura": "INCENDIO_RAIO_EXPLOSAO_FUMACA",
      "tipo": "FIXA",
      "min": 100000,
-     "max": 208000,
+     "max": 210000,
      "confianca": "MEDIA",
      "dados_utilizados": "área, tipo, vínculo, UF, padrão, compras 36m, bens; SINAPI, CUB, IPCA",
-     "regra": "área 77–134 m² × R$ 1.678–R$ 2.916/m² (SINAPI BA até CUB BA oficial, padrão não cadastrado: fator 0,85 a 1,30) × 25%–40% (acabamentos) + bens",
-     "justificativa": "A estrutura tem seguro próprio (condomínio ou financiamento); o seu paga os acabamentos, estimados em de R$ 32 mil a R$ 156 mil, e repõe o que você comprou para a casa, de R$ 19 mil a R$ 52 mil.",
+     "regra": "área 76–135 m² × R$ 1.678–R$ 2.916/m² (SINAPI BA até CUB BA oficial, padrão não cadastrado: fator 0,85 a 1,30) × 25%–40% (acabamentos) + bens",
+     "justificativa": "A estrutura tem seguro próprio (condomínio ou financiamento); o seu paga os acabamentos, estimados em de R$ 32 mil a R$ 158 mil, e repõe o que você comprou para a casa, de R$ 19 mil a R$ 52 mil.",
      "confirmar": "Área do imóvel e valor dos bens",
      "observacao": "Segundo risco (CG cl. 15.2): a estrutura é paga primeiro pelo seguro do condomínio ou do financiamento.",
      "limitada_pelo_produto": false,
-     "valor_em_risco": 130000
+     "sugerido": 131000,
+     "valor_em_risco": 131000
     },
     {
      "cobertura": "DANOS_POR_AGUA",
@@ -866,7 +887,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Um cano rompido ou uma chuva forte estraga móveis e eletrodomésticos, e os seus valem hoje de R$ 19 mil a R$ 52 mil. A faixa cobre esses bens e parte de pisos e paredes. Na BB Seguros, 14,6% dos acionamentos do residencial são de danos por água (jan/2023 a mai/2026). Em Salvador, a Defesa Civil registrou 8 ocorrências de chuvas intensas, alagamentos ou enxurradas desde 1991 (2 nos últimos 10 anos; a última em 2022).",
      "confirmar": "",
      "observacao": "O máximo estimado (R$ 84.000) passa do limite do produto (R$ 50.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "limitada_pelo_produto": true,
+     "sugerido": 32000
     },
     {
      "cobertura": "VENDAVAL_GRANIZO",
@@ -876,10 +898,11 @@ window.FICHAS_DEMO = {
      "confianca": "MEDIA",
      "dados_utilizados": "tipo, reconstrução",
      "regra": "2%–5% da reconstrução",
-     "justificativa": "Em apartamento, vento e granizo atingem sobretudo janelas e esquadrias: repor de 2% a 5% do imóvel custa de R$ 2,6 mil a R$ 19 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026). Em Salvador, a Defesa Civil registrou 1 ocorrências de vendaval, ciclone ou granizo desde 1991 (0 nos últimos 10 anos; a última em 1995).",
+     "justificativa": "Em apartamento, vento e granizo atingem sobretudo janelas e esquadrias: repor de 2% a 5% do imóvel custa de R$ 2,5 mil a R$ 20 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026). Em Salvador, a Defesa Civil registrou 1 ocorrências de vendaval, ciclone ou granizo desde 1991 (0 nos últimos 10 anos; a última em 1995).",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 11000
     },
     {
      "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
@@ -892,7 +915,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Em apartamento, um carro raramente atinge a sua unidade; fica no valor padrão de R$ 10 mil.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 10000
     },
     {
      "cobertura": "QUEDA_AERONAVE",
@@ -905,7 +929,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Evento raro: fica no valor padrão do produto, R$ 10 mil, sem precisar de pergunta.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 10000
     },
     {
      "cobertura": "DANOS_ELETRICOS",
@@ -918,7 +943,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Seus eletrônicos e eletrodomésticos valem hoje de R$ 15 mil a R$ 40 mil, e um pico de energia pode queimar vários de uma vez. Desgaste e mau uso não são cobertos. Na BB Seguros, 53,3% dos acionamentos do residencial são de danos elétricos (jan/2023 a mai/2026). A distribuidora de Salvador (NEOENERGIA COELBA) ficou em 8º de 33 no ranking de continuidade da ANEEL de 2025 (1º = menos quedas de energia).",
      "confirmar": "Principais aparelhos da casa",
      "observacao": "O máximo estimado (R$ 40.000) passa do limite do produto (R$ 30.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "limitada_pelo_produto": true,
+     "sugerido": 22000
     },
     {
      "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
@@ -931,7 +957,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Um vazamento ou incêndio no seu imóvel pode estragar a unidade do vizinho: reparar 70 m² custa de R$ 35 mil a R$ 122 mil, e a cobertura paga isso no seu lugar.",
      "confirmar": "",
      "observacao": "Cobertura adicional ao plano Essencial (guia 9.2): há dependentes ou pet na casa e vizinhos por perto; a RC familiar paga danos que eles causem a terceiros.",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 78000
     }
    ],
    "perguntas": [
@@ -946,14 +973,14 @@ window.FICHAS_DEMO = {
      "texto": "Estimamos que o imóvel tem cerca de 104 m². Confere?",
      "codigo": "AREA",
      "obrigatoria": false,
-     "reduz_faixa_ate": 66000
+     "reduz_faixa_ate": 69000
     },
     {
      "prioridade": 56,
      "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
      "codigo": "PADRAO",
      "obrigatoria": false,
-     "reduz_faixa_ate": 54000
+     "reduz_faixa_ate": 55000
     }
    ],
    "perguntas_candidatas": 5,
@@ -1168,6 +1195,7 @@ window.FICHAS_DEMO = {
      "confirmar": "Área do imóvel e valor dos bens",
      "observacao": "Segundo risco (CG cl. 15.2): a estrutura é paga primeiro pelo seguro do condomínio ou do financiamento.",
      "limitada_pelo_produto": false,
+     "sugerido": 121000,
      "valor_em_risco": 121000
     },
     {
@@ -1181,7 +1209,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Um cano rompido ou uma chuva forte estraga móveis e eletrodomésticos, e os seus valem hoje de R$ 32 mil a R$ 86 mil. A faixa cobre esses bens e parte de pisos e paredes. Na BB Seguros, 14,6% dos acionamentos do residencial são de danos por água (jan/2023 a mai/2026). Em Sao Paulo, a Defesa Civil registrou 40 ocorrências de chuvas intensas, alagamentos ou enxurradas desde 1991 (4 nos últimos 10 anos; a última em 2020).",
      "confirmar": "",
      "observacao": "O máximo estimado (R$ 102.000) passa do limite do produto (R$ 50.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "limitada_pelo_produto": true,
+     "sugerido": 36000
     },
     {
      "cobertura": "VENDAVAL_GRANIZO",
@@ -1194,7 +1223,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Em apartamento, vento e granizo atingem sobretudo janelas e esquadrias: repor de 2% a 5% do imóvel custa de R$ 3,4 mil a R$ 10 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026). Em Sao Paulo, a Defesa Civil registrou 3 ocorrências de vendaval, ciclone ou granizo desde 1991 (0 nos últimos 10 anos; a última em 2012).",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 7000
     },
     {
      "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
@@ -1207,7 +1237,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Em apartamento, um carro raramente atinge a sua unidade; fica no valor padrão de R$ 10 mil.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 10000
     },
     {
      "cobertura": "QUEDA_AERONAVE",
@@ -1220,7 +1251,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Evento raro: fica no valor padrão do produto, R$ 10 mil, sem precisar de pergunta.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 10000
     },
     {
      "cobertura": "DANOS_ELETRICOS",
@@ -1233,7 +1265,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Seus eletrônicos e eletrodomésticos valem hoje de R$ 21 mil a R$ 56 mil, e um pico de energia pode queimar vários de uma vez. Desgaste e mau uso não são cobertos. Na BB Seguros, 53,3% dos acionamentos do residencial são de danos elétricos (jan/2023 a mai/2026). A distribuidora de Sao Paulo (ENEL SP) ficou em 30º de 33 no ranking de continuidade da ANEEL de 2025 (1º = menos quedas de energia).",
      "confirmar": "Principais aparelhos da casa",
      "observacao": "O máximo estimado (R$ 56.000) passa do limite do produto (R$ 30.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "limitada_pelo_produto": true,
+     "sugerido": 26000
     },
     {
      "cobertura": "ROUBO_FURTO_ARROMBAMENTO",
@@ -1246,7 +1279,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Seus eletrônicos, os itens mais levados num arrombamento, valem hoje de R$ 12 mil a R$ 33 mil; a faixa repõe esses bens a preço de hoje. Na BB Seguros, 2,1% dos acionamentos do residencial são de roubo ou furto com arrombamento (jan/2023 a mai/2026).",
      "confirmar": "Bens portáteis de maior valor",
      "observacao": "Não cobre joias, relógios, dinheiro, drones nem bicicleta fora de casa (CG cl. 6; Roubo 2.1).",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 22000
     },
     {
      "cobertura": "QUEBRA_DE_VIDROS",
@@ -1259,7 +1293,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Janelas, box e tampos de vidro de um apartamento costumam custar de R$ 2 mil a R$ 5 mil para repor.",
      "confirmar": "Há vidros grandes (sacada, box, fachada)?",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 3500
     },
     {
      "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
@@ -1272,7 +1307,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Um vazamento ou incêndio no seu imóvel pode estragar a unidade do vizinho: reparar 70 m² custa de R$ 40 mil a R$ 94 mil, e a cobertura paga isso no seu lugar.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 67000
     },
     {
      "cobertura": "PERDA_PAGAMENTO_ALUGUEL",
@@ -1285,7 +1321,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Enquanto o imóvel é reparado, você precisaria morar em outro lugar: um imóvel parecido custa cerca de R$ 5,9 mil por mês, e a faixa cobre de 6 a 12 meses.",
      "confirmar": "Valor de aluguel de um imóvel equivalente",
      "observacao": "Toda a estimativa (R$ 71.000) passa do limite do produto (R$ 30.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "limitada_pelo_produto": true,
+     "sugerido": 30000
     },
     {
      "cobertura": "DESPESAS_EMERGENCIAIS",
@@ -1298,7 +1335,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Lona no telhado, retirada de entulho e outras medidas urgentes para o dano não aumentar: de 2% a 5% da faixa de incêndio, ou de R$ 2 mil a R$ 8,3 mil.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 5000
     }
    ],
    "perguntas": [
@@ -1409,7 +1447,7 @@ window.FICHAS_DEMO = {
     "bens": {
      "valor": 36700,
      "natureza": "ESTIMADO",
-     "confianca": "MEDIA",
+     "confianca": "ALTA",
      "fonte": "compras de R$ 18.550 nos últimos 36 meses (corrigidas pelo IPCA) e 5 bens vinculados (R$ 7.750 ponderado pela chance de estarem no imóvel)",
      "fonte_tipo": "TRANSACAO",
      "idade_meses": 18,
@@ -1521,6 +1559,7 @@ window.FICHAS_DEMO = {
      "confirmar": "Área do imóvel e valor dos bens",
      "observacao": "Segundo risco (CG cl. 15.2): a estrutura é paga primeiro pelo seguro do condomínio ou do financiamento. Imóvel alugado: beneficiários distintos (locador para o imóvel, locatário para o conteúdo).",
      "limitada_pelo_produto": false,
+     "sugerido": 141000,
      "valor_em_risco": 141000
     },
     {
@@ -1534,7 +1573,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Um cano rompido ou uma chuva forte estraga móveis e eletrodomésticos, e os seus valem hoje de R$ 20 mil a R$ 54 mil. A faixa cobre esses bens e parte de pisos e paredes. Na BB Seguros, 14,6% dos acionamentos do residencial são de danos por água (jan/2023 a mai/2026). Em Fortaleza, a Defesa Civil registrou 3 ocorrências de chuvas intensas, alagamentos ou enxurradas desde 1991 (0 nos últimos 10 anos; a última em 2004).",
      "confirmar": "",
      "observacao": "O máximo estimado (R$ 83.000) passa do limite do produto (R$ 50.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "limitada_pelo_produto": true,
+     "sugerido": 34000
     },
     {
      "cobertura": "VENDAVAL_GRANIZO",
@@ -1547,7 +1587,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Em apartamento, vento e granizo atingem sobretudo janelas e esquadrias: repor de 2% a 5% do imóvel custa de R$ 4,9 mil a R$ 18 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026).",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 12000
     },
     {
      "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
@@ -1560,7 +1601,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Em apartamento, um carro raramente atinge a sua unidade; fica no valor padrão de R$ 10 mil.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 10000
     },
     {
      "cobertura": "QUEDA_AERONAVE",
@@ -1573,33 +1615,36 @@ window.FICHAS_DEMO = {
      "justificativa": "Evento raro: fica no valor padrão do produto, R$ 10 mil, sem precisar de pergunta.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 10000
     },
     {
      "cobertura": "DANOS_ELETRICOS",
      "tipo": "FIXA",
      "min": 13000,
      "max": 30000,
-     "confianca": "MEDIA",
+     "confianca": "ALTA",
      "dados_utilizados": "compras de eletrônicos e eletrodomésticos (36m), bens vinculados; IPCA",
      "regra": "eletrônicos + eletrodomésticos: comprovado → estoque, a preço de hoje",
      "justificativa": "Seus eletrônicos e eletrodomésticos valem hoje de R$ 13 mil a R$ 35 mil, e um pico de energia pode queimar vários de uma vez. Desgaste e mau uso não são cobertos. Na BB Seguros, 53,3% dos acionamentos do residencial são de danos elétricos (jan/2023 a mai/2026). A distribuidora de Fortaleza (ENEL CE) ficou em 23º de 33 no ranking de continuidade da ANEEL de 2025 (1º = menos quedas de energia).",
      "confirmar": "Principais aparelhos da casa",
      "observacao": "O máximo estimado (R$ 35.000) passa do limite do produto (R$ 30.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "limitada_pelo_produto": true,
+     "sugerido": 22000
     },
     {
      "cobertura": "ROUBO_FURTO_ARROMBAMENTO",
      "tipo": "FIXA",
      "min": 9000,
      "max": 24000,
-     "confianca": "MEDIA",
+     "confianca": "ALTA",
      "dados_utilizados": "compras de eletrônicos (36m), bens vinculados; IPCA",
      "regra": "eletrônicos e portáteis: comprovado → estoque, a preço de hoje",
      "justificativa": "Seus eletrônicos, os itens mais levados num arrombamento, valem hoje de R$ 9 mil a R$ 24 mil; a faixa repõe esses bens a preço de hoje. Na BB Seguros, 2,1% dos acionamentos do residencial são de roubo ou furto com arrombamento (jan/2023 a mai/2026).",
      "confirmar": "Bens portáteis de maior valor",
      "observacao": "Não cobre joias, relógios, dinheiro, drones nem bicicleta fora de casa (CG cl. 6; Roubo 2.1).",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 16500
     },
     {
      "cobertura": "QUEBRA_DE_VIDROS",
@@ -1612,7 +1657,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Janelas, box e tampos de vidro de um apartamento costumam custar de R$ 2 mil a R$ 5 mil para repor.",
      "confirmar": "Há vidros grandes (sacada, box, fachada)?",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 3500
     },
     {
      "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
@@ -1625,7 +1671,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Um vazamento ou incêndio no seu imóvel pode estragar a unidade do vizinho: reparar 70 m² custa de R$ 42 mil a R$ 123 mil, e a cobertura paga isso no seu lugar.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 82000
     },
     {
      "cobertura": "PERDA_PAGAMENTO_ALUGUEL",
@@ -1638,7 +1685,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Você paga R$ 1,5 mil de aluguel por mês; se o imóvel ficar inabitável, a faixa paga outra moradia por 6 a 12 meses.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 13500
     },
     {
      "cobertura": "DESPESAS_EMERGENCIAIS",
@@ -1651,7 +1699,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Lona no telhado, retirada de entulho e outras medidas urgentes para o dano não aumentar: de 2% a 5% da faixa de incêndio, ou de R$ 2 mil a R$ 10 mil.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 6000
     }
    ],
    "perguntas": [
@@ -1747,15 +1796,15 @@ window.FICHAS_DEMO = {
      "fonte": "estimada pelo IPTU (R$ 2.650/ano) e energia (R$ 450/mês) comparados a imóveis de Curitiba",
      "fonte_tipo": "DERIVADO",
      "idade_meses": 3,
-     "min": 121.99616517377838,
-     "max": 212.54622528204342,
+     "min": 120.53540444339436,
+     "max": 215.20059659694616,
      "peso": 0.688,
      "classe": "ESTIMADO"
     },
     "bens": {
      "valor": 77159,
      "natureza": "ESTIMADO",
-     "confianca": "MEDIA",
+     "confianca": "ALTA",
      "fonte": "compras de R$ 39.000 nos últimos 36 meses (corrigidas pelo IPCA) e 4 bens vinculados (R$ 9.100 ponderado pela chance de estarem no imóvel)",
      "fonte_tipo": "TRANSACAO",
      "idade_meses": 18,
@@ -1801,8 +1850,8 @@ window.FICHAS_DEMO = {
      1.3
     ],
     "origem_padrao": "não cadastrado",
-    "reconstrucao_min": 237000,
-    "reconstrucao_max": 757000,
+    "reconstrucao_min": 234000,
+    "reconstrucao_max": 766000,
     "segundo_risco": false
    },
    "elegibilidade": "SIM",
@@ -1865,16 +1914,17 @@ window.FICHAS_DEMO = {
     {
      "cobertura": "INCENDIO_RAIO_EXPLOSAO_FUMACA",
      "tipo": "FIXA",
-     "min": 279000,
+     "min": 276000,
      "max": 600000,
      "confianca": "MEDIA",
      "dados_utilizados": "área, tipo, vínculo, UF, padrão, compras 36m, bens; SINAPI, CUB, IPCA",
-     "regra": "área 122–213 m² × R$ 1.944–R$ 3.561/m² (SINAPI PR até CUB PR oficial, padrão não cadastrado: fator 0,85 a 1,30) + bens",
-     "justificativa": "Se um incêndio atingir o imóvel, reconstruir custaria de R$ 237 mil a R$ 757 mil pelo custo oficial de construção, e repor o que você comprou para a casa, de R$ 42 mil a R$ 113 mil. Com limite único, a reconstrução é paga primeiro.",
+     "regra": "área 121–215 m² × R$ 1.944–R$ 3.561/m² (SINAPI PR até CUB PR oficial, padrão não cadastrado: fator 0,85 a 1,30) + bens",
+     "justificativa": "Se um incêndio atingir o imóvel, reconstruir custaria de R$ 234 mil a R$ 766 mil pelo custo oficial de construção, e repor o que você comprou para a casa, de R$ 42 mil a R$ 113 mil. Com limite único, a reconstrução é paga primeiro.",
      "confirmar": "Área do imóvel e valor dos bens",
-     "observacao": "Limite único prédio + conteúdo, com prioridade do prédio (CG cl. 5.5–5.6). Imóvel alugado a terceiros: os bens do inquilino são dele (locatário); confirme se o imóvel é alugado mobiliado com bens seus. O máximo estimado (R$ 869.000) passa do limite do produto (R$ 600.000): o valor acima do limite fica descoberto.",
+     "observacao": "Limite único prédio + conteúdo, com prioridade do prédio (CG cl. 5.5–5.6). Imóvel alugado a terceiros: os bens do inquilino são dele (locatário); confirme se o imóvel é alugado mobiliado com bens seus. O máximo estimado (R$ 879.000) passa do limite do produto (R$ 600.000): o valor acima do limite fica descoberto.",
      "limitada_pelo_produto": true,
-     "valor_em_risco": 574000
+     "sugerido": 577000,
+     "valor_em_risco": 577000
     },
     {
      "cobertura": "DANOS_POR_AGUA",
@@ -1886,21 +1936,23 @@ window.FICHAS_DEMO = {
      "regra": "50%–100% dos bens molháveis + 3%–8% da reconstrução (pisos e acabamentos)",
      "justificativa": "Um cano rompido ou uma chuva forte estraga móveis e eletrodomésticos, e os seus valem hoje de R$ 42 mil a R$ 113 mil. A faixa cobre esses bens e parte de pisos e paredes. Na BB Seguros, 14,6% dos acionamentos do residencial são de danos por água (jan/2023 a mai/2026). Em Curitiba, a Defesa Civil registrou 17 ocorrências de chuvas intensas, alagamentos ou enxurradas desde 1991 (10 nos últimos 10 anos; a última em 2025).",
      "confirmar": "",
-     "observacao": "O máximo estimado (R$ 173.000) passa do limite do produto (R$ 50.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "observacao": "O máximo estimado (R$ 174.000) passa do limite do produto (R$ 50.000): o valor acima do limite fica descoberto.",
+     "limitada_pelo_produto": true,
+     "sugerido": 39000
     },
     {
      "cobertura": "VENDAVAL_GRANIZO",
      "tipo": "FIXA",
-     "min": 24000,
+     "min": 23000,
      "max": 60000,
      "confianca": "MEDIA",
      "dados_utilizados": "tipo, reconstrução",
      "regra": "10%–20% da reconstrução",
-     "justificativa": "Vento e granizo atingem primeiro o telhado: refazer de 10% a 20% de uma casa como a sua custa de R$ 24 mil a R$ 151 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026). Em Curitiba, a Defesa Civil registrou 10 ocorrências de vendaval, ciclone ou granizo desde 1991 (7 nos últimos 10 anos; a última em 2025).",
+     "justificativa": "Vento e granizo atingem primeiro o telhado: refazer de 10% a 20% de uma casa como a sua custa de R$ 23 mil a R$ 153 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026). Em Curitiba, a Defesa Civil registrou 10 ocorrências de vendaval, ciclone ou granizo desde 1991 (7 nos últimos 10 anos; a última em 2025).",
      "confirmar": "",
-     "observacao": "O máximo estimado (R$ 151.000) passa do limite do produto (R$ 60.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "observacao": "O máximo estimado (R$ 153.000) passa do limite do produto (R$ 60.000): o valor acima do limite fica descoberto.",
+     "limitada_pelo_produto": true,
+     "sugerido": 42000
     },
     {
      "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
@@ -1913,7 +1965,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Um carro desgovernado atinge primeiro muro, portão e fachada; por isso a casa vai até R$ 20 mil.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 15000
     },
     {
      "cobertura": "QUEDA_AERONAVE",
@@ -1926,33 +1979,36 @@ window.FICHAS_DEMO = {
      "justificativa": "Evento raro: fica no valor padrão do produto, R$ 10 mil, sem precisar de pergunta.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 10000
     },
     {
      "cobertura": "DANOS_ELETRICOS",
      "tipo": "FIXA",
      "min": 22000,
      "max": 30000,
-     "confianca": "MEDIA",
+     "confianca": "ALTA",
      "dados_utilizados": "compras de eletrônicos e eletrodomésticos (36m), bens vinculados; IPCA",
      "regra": "eletrônicos + eletrodomésticos: comprovado → estoque, a preço de hoje",
      "justificativa": "Seus eletrônicos e eletrodomésticos valem hoje de R$ 22 mil a R$ 60 mil, e um pico de energia pode queimar vários de uma vez. Desgaste e mau uso não são cobertos. Na BB Seguros, 53,3% dos acionamentos do residencial são de danos elétricos (jan/2023 a mai/2026). A distribuidora de Curitiba (COPEL) ficou em 27º de 33 no ranking de continuidade da ANEEL de 2025 (1º = menos quedas de energia).",
      "confirmar": "Principais aparelhos da casa",
      "observacao": "O máximo estimado (R$ 60.000) passa do limite do produto (R$ 30.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "limitada_pelo_produto": true,
+     "sugerido": 26000
     },
     {
      "cobertura": "ROUBO_FURTO_ARROMBAMENTO",
      "tipo": "FIXA",
      "min": 9500,
      "max": 26000,
-     "confianca": "MEDIA",
+     "confianca": "ALTA",
      "dados_utilizados": "compras de eletrônicos (36m), bens vinculados; IPCA",
      "regra": "eletrônicos e portáteis: comprovado → estoque, a preço de hoje",
      "justificativa": "Seus eletrônicos, os itens mais levados num arrombamento, valem hoje de R$ 9,7 mil a R$ 26 mil; a faixa repõe esses bens a preço de hoje. Na BB Seguros, 2,1% dos acionamentos do residencial são de roubo ou furto com arrombamento (jan/2023 a mai/2026).",
      "confirmar": "Bens portáteis de maior valor",
      "observacao": "Não cobre joias, relógios, dinheiro, drones nem bicicleta fora de casa (CG cl. 6; Roubo 2.1).",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 18000
     },
     {
      "cobertura": "QUEBRA_DE_VIDROS",
@@ -1965,7 +2021,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Janelas, box e tampos de vidro de uma casa costumam custar de R$ 3 mil a R$ 8 mil para repor.",
      "confirmar": "Há vidros grandes (sacada, box, fachada)?",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 5500
     },
     {
      "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
@@ -1978,7 +2035,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Paga danos que você, sua família ou um pet causem a terceiros, como um muro que cai sobre o carro do vizinho; a faixa de referência vai de R$ 30 mil a R$ 60 mil.",
      "confirmar": "",
      "observacao": "",
-     "limitada_pelo_produto": false
+     "limitada_pelo_produto": false,
+     "sugerido": 45000
     },
     {
      "cobertura": "PERDA_PAGAMENTO_ALUGUEL",
@@ -1991,7 +2049,8 @@ window.FICHAS_DEMO = {
      "justificativa": "Você recebe cerca de R$ 8,3 mil de aluguel por mês; se o imóvel precisar de reparo, a faixa repõe de 6 a 12 meses.",
      "confirmar": "Valor de aluguel de um imóvel equivalente",
      "observacao": "Toda a estimativa (R$ 100.000) passa do limite do produto (R$ 30.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "limitada_pelo_produto": true,
+     "sugerido": 30000
     },
     {
      "cobertura": "DESPESAS_EMERGENCIAIS",
@@ -2001,10 +2060,11 @@ window.FICHAS_DEMO = {
      "confianca": "MEDIA",
      "dados_utilizados": "faixa de incêndio",
      "regra": "2%–5% da faixa de incêndio",
-     "justificativa": "Lona no telhado, retirada de entulho e outras medidas urgentes para o dano não aumentar: de 2% a 5% da faixa de incêndio, ou de R$ 5,6 mil a R$ 30 mil.",
+     "justificativa": "Lona no telhado, retirada de entulho e outras medidas urgentes para o dano não aumentar: de 2% a 5% da faixa de incêndio, ou de R$ 5,5 mil a R$ 30 mil.",
      "confirmar": "",
      "observacao": "O máximo estimado (R$ 30.000) passa do limite do produto (R$ 15.000): o valor acima do limite fica descoberto.",
-     "limitada_pelo_produto": true
+     "limitada_pelo_produto": true,
+     "sugerido": 10000
     }
    ],
    "perguntas": [
@@ -2019,14 +2079,14 @@ window.FICHAS_DEMO = {
      "texto": "Estimamos que o imóvel tem cerca de 166 m². Confere?",
      "codigo": "AREA",
      "obrigatoria": false,
-     "reduz_faixa_ate": 321000
+     "reduz_faixa_ate": 324000
     },
     {
      "prioridade": 56,
      "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
      "codigo": "PADRAO",
      "obrigatoria": false,
-     "reduz_faixa_ate": 262000
+     "reduz_faixa_ate": 265000
     }
    ],
    "perguntas_candidatas": 4,
