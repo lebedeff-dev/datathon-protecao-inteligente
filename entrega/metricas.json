@@ -60,6 +60,7 @@
  "perguntas_media": 2.7,
  "perguntas_candidatas_media": 3.44,
  "teste_justica_casos_alterados": 0,
+ "teste_justica_casos_sem_compras_so_decisoes": 0,
  "justica_por_quinto_de_renda": {
   "quintos": {
    "Q1": {
@@ -177,6 +178,13 @@
   "padrao_estimado_pelo_iptu": 25,
   "padrao_faixa_aberta_com_pergunta": 73,
   "bens_pela_media_da_regiao": 0,
+  "bens_pela_regiao_e_renda": 0,
+  "backtest_bens_sem_compras": {
+   "metodo": "2 metades da base de desenvolvimento, imóveis com compras tratados como se não tivessem",
+   "casos": 2578,
+   "erro_mediano_so_regiao_pct": 40.5,
+   "erro_mediano_regiao_e_renda_pct": 22.7
+  },
   "teste_cep_da_base": {
    "r2_cep": 0.215,
    "r2_cep_embaralhado": 0.223

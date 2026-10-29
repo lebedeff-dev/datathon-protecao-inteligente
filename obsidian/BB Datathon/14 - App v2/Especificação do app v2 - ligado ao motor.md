@@ -96,7 +96,7 @@ window.FICHAS_DEMO = {
   - **Faixas:** para cada cobertura, `regra` e `dados_utilizados` (ex.: "área 110 m² × R$ 1.944–3.253/m² × 25%–40% + bens");
   - **Confiança:** nível, motivo, as 3 classes dos 5 dados e a regra (BAIXA / ALTA / MÉDIA);
   - **Perguntas:** por que cada uma foi escolhida (`reduz_faixa_ate`);
-  - **O que NÃO foi usado:** "renda e idade: não usados (teste de justiça = 0 casos)";
+  - **O que NÃO foi usado:** "idade: não usada (teste de justiça = 0 casos); renda: só reforça os bens de quem não tem compras (`campos.bens.usou_renda`)";
   - **Fontes:** `fontes[]`.
 - [ ] Frase no topo do raio-X: "Isso é o que o banco vê. O cliente vê só a versão simples."
 - [ ] Desligado por padrão.
@@ -148,7 +148,7 @@ Dizer no vídeo: "protótipo de como ficaria no app do BB; os números vêm do m
 
 ## 8. O que não fazer
 - Não escrever números à mão no app.
-- Não usar renda ou idade em nada (nem no texto).
+- Não usar idade em nada (nem no texto). Renda só como o motor usa (reforço dos bens sem compras, avisado ao cliente); nunca mostrar o valor da renda na tela do gerente.
 - Não chamar o protótipo de app oficial do BB.
 - Não colocar link em mensagem de WhatsApp (padrão de golpe; o protótipo já trata isso).
 - Não refazer o motor: mudanças nele exigem rodar testes, regerar planilhas e atualizar o PR.

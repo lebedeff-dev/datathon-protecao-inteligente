@@ -45,6 +45,7 @@ def calibrar(dados):
     cadastrada, e o erro típico da estimativa para montar a faixa. Também guarda o
     backtest fora da amostra da área e do padrão pelo IPTU (ver backtest())."""
     m = dados["enderecos_imoveis"].merge(dados["sinais_imobiliarios"], on=["imovel_id", "cliente_id"])
+    m = m.merge(dados["clientes"][["cliente_id", "renda_mensal"]], on="cliente_id", how="left", validate="many_to_one")
     a = m[m.area_cadastrada_m2 > 0].copy()
     cal = _calibrar_area(a)
     cal["backtest"] = backtest(a)
@@ -52,6 +53,8 @@ def calibrar(dados):
     compras = m.compras_moveis_36m + m.compras_eletrodomesticos_36m + m.compras_eletronicos_36m
     com_compras = m.assign(compras=compras)[compras > 0]
     cal["regional"] = {"area": _degraus(a, "area_cadastrada_m2"), "compras": _degraus(com_compras, "compras")}
+    cal["compras_por_renda"] = _compras_por_renda(com_compras)
+    cal["backtest_bens_sem_compras"] = backtest_bens_sem_compras(com_compras)
     tot = com_compras.compras.sum()
     cal["fracao_compras"] = {"eletronicos": float(com_compras.compras_eletronicos_36m.sum() / tot),
                              "eletricos": float((com_compras.compras_eletronicos_36m + com_compras.compras_eletrodomesticos_36m).sum() / tot)}
@@ -95,6 +98,72 @@ def regional(cal, campo, r):
     for nome, chave in chaves:
         if chave in t:
             return t[chave][0], nome, t[chave][1]
+
+
+def _compras_por_renda(com_compras):
+    """Compras de 36 meses ÷ renda mensal: mediana por município (só com P.REGIONAL_MIN_IMOVEIS
+    imóveis ou mais, como os degraus regionais) e geral. Só renda > 0."""
+    x = com_compras[com_compras.renda_mensal > 0]
+    razao = x.compras / x.renda_mensal
+    g = razao.groupby(x.codigo_ibge_municipio).agg(["median", "size"])
+    return {"municipio": {str(k): float(l["median"]) for k, l in g.iterrows() if l["size"] >= P.REGIONAL_MIN_IMOVEIS},
+            "geral": float(razao.median())}
+
+
+def _renda(r):
+    """Renda mensal como número, ou None se faltar, for zero, negativa ou não for número."""
+    try:
+        renda = float(getattr(r, "renda_mensal", 0))
+    except (TypeError, ValueError):
+        return None
+    return renda if _positivo(renda) else None
+
+
+def compras_pela_renda(r, cal):
+    """Compras de 36 meses esperadas pela renda (renda × razão do município), ou None se a
+    renda estiver desligada (P.RENDA_NOS_BENS_SEM_COMPRAS) ou vazia."""
+    renda = _renda(r)
+    if not (P.RENDA_NOS_BENS_SEM_COMPRAS and "compras_por_renda" in cal and renda):
+        return None
+    t = cal["compras_por_renda"]
+    return renda * t["municipio"].get(str(r.codigo_ibge_municipio), t["geral"])
+
+
+def _regiao_e_renda(med, pela_renda):
+    """Média geométrica da região e da renda, presa entre 0,5 × e 2 × a região:
+    a renda puxa a estimativa, mas nunca decide sozinha (RN-08)."""
+    return min(max(math.sqrt(med * pela_renda), 0.5 * med), 2 * med)
+
+
+def _compras_sem_prova(r, cal):
+    """(compras estimadas, texto da fonte, degrau regional, usou renda) para quem não tem compras nem bens:
+    média da região, combinada com a renda quando houver renda."""
+    med, nivel, n = regional(cal, "compras", r)
+    fonte = f"sem compras nem bens ligados ao imóvel: média de compras de {n} imóveis da região ({nivel})"
+    pela_renda = compras_pela_renda(r, cal)
+    if pela_renda is None:
+        return med, fonte, nivel, False
+    return _regiao_e_renda(med, pela_renda), f"{fonte} combinada com a renda mensal ({brl(_renda(r))})", nivel, True
+
+
+def backtest_bens_sem_compras(com_compras):
+    """Fora da amostra: finge que quem tem compras não tem e estima as compras (2 metades da base
+    de desenvolvimento). Compara só a média da região com a região combinada com a renda."""
+    c = com_compras.reset_index(drop=True)
+    erros = {"regiao": [], "regiao_e_renda": []}
+    for metade in (0, 1):
+        treino, prova = c[c.index % 2 != metade], c[c.index % 2 == metade]
+        mini = {"regional": {"compras": _degraus(treino, "compras")}, "compras_por_renda": _compras_por_renda(treino)}
+        for r in prova.itertuples(index=False):
+            med = regional(mini, "compras", r)[0]
+            pela_renda = compras_pela_renda(r, mini)
+            erros["regiao"].append(abs(med - r.compras) / r.compras)
+            erros["regiao_e_renda"].append(abs(_regiao_e_renda(med, pela_renda) - r.compras) / r.compras
+                                           if pela_renda else erros["regiao"][-1])
+    return {"metodo": "2 metades da base de desenvolvimento, imóveis com compras tratados como se não tivessem",
+            "casos": len(erros["regiao"]),
+            "erro_mediano_so_regiao_pct": round(100 * float(np.median(erros["regiao"])), 1),
+            "erro_mediano_regiao_e_renda_pct": round(100 * float(np.median(erros["regiao_e_renda"])), 1)}
 
 
 def teste_cep(a):
@@ -319,21 +388,21 @@ def _ancoras(compras, bens_ponderados):
 
 def estimar_bens(r, bens, cal=None):
     """Faixa de valor dos bens do imóvel, por categoria. Sem arredondar: quem
-    arredonda é faixa(). Nunca lê renda, idade, dependentes ou pet.
-    Sem compras nem bens vinculados: média de compras da região (com `cal`) ou o piso."""
+    arredonda é faixa(). Nunca lê idade, dependentes ou pet. A renda só entra quando
+    não há compras nem bens vinculados, junto com a média da região (com `cal`);
+    sem `cal`, o piso."""
     soma = lambda tipos: float(bens.loc[bens.tipo_bem.isin(tipos), "valor_bem_ponderado_referencia"].sum())
     ele, dom, mov = float(r.compras_eletronicos_36m), float(r.compras_eletrodomesticos_36m), float(r.compras_moveis_36m)
     compras = ele + dom + mov
     pond = float(bens.valor_bem_ponderado_referencia.sum())
 
-    if compras <= 0 and pond <= 0 and cal is not None:   # média da região, como se fossem as compras dele
-        med, nivel, n = regional(cal, "compras", r)
-        lo, hi = _ancoras(med, 0)
+    if compras <= 0 and pond <= 0 and cal is not None:   # região (e renda), como se fossem as compras dele
+        estimadas, fonte, nivel, usou_renda = _compras_sem_prova(r, cal)
+        lo, hi = _ancoras(estimadas, 0)
         lo, hi = max(lo, P.BENS_PISO), max(hi, P.BENS_PISO)
-        d = dado(int(round((lo + hi) / 2)), "ESTIMADO", "BAIXA",
-                 f"sem compras nem bens ligados ao imóvel: média de compras de {n} imóveis da região ({nivel})", "PRESUMIDO", 0)
+        d = dado(int(round((lo + hi) / 2)), "ESTIMADO", "BAIXA", fonte, "PRESUMIDO", 0)
         fr = cal["fracao_compras"]
-        d.update({"min": lo, "max": hi, "regional": nivel, "categorias": {},
+        d.update({"min": lo, "max": hi, "regional": nivel, "usou_renda": usou_renda, "categorias": {},
                   "portateis": {"min": lo * fr["eletronicos"], "max": hi * fr["eletronicos"]},
                   "eletricos": {"min": lo * fr["eletricos"], "max": hi * fr["eletricos"]},
                   "molhaveis": {"min": lo, "max": hi}})
@@ -448,11 +517,13 @@ O_QUE_ACRESCENTA = {"PRATICO": "roubo com arrombamento e quebra de vidros",
 
 def escolher_plano(r, tipo, vinculo, uso, bens):
     """Pontos por sinal observado no imóvel e nas transações (PLANO_UNIFICADO §5).
-    Renda e idade não entram. Dependentes e pet entram só como necessidade que o
-    próprio cliente informou (slide 14, casa familiar → RC familiar). Crianças E pet
-    somam 1 ponto ao Total; só um dos dois vira pergunta (montar_perguntas). Não
-    mudam faixa, elegibilidade, canal nem confiança."""
+    Renda e idade não entram, nem por tabela: bens presumidos (região, e renda quando
+    não há compras) não somam pontos, porque não são prova. Dependentes e pet entram só
+    como necessidade que o próprio cliente informou (slide 14, casa familiar → RC
+    familiar). Crianças E pet somam 1 ponto ao Total; só um dos dois vira pergunta
+    (montar_perguntas). Não mudam faixa, elegibilidade, canal nem confiança."""
     motivos = []
+    comprovados = not bens.get("regional")
 
     def soma(plano, peso, codigo, texto):
         motivos.append({"plano": plano, "peso": peso, "codigo": codigo, "texto": texto})
@@ -464,9 +535,9 @@ def escolher_plano(r, tipo, vinculo, uso, bens):
         soma("TOTAL", 2, "RECEBE_ALUGUEL", f"este imóvel rende cerca de {M.reais(r.valor_medio_credito_recorrente)} de aluguel por mês, que para de entrar se ele precisar de reparo")
     if tipo["valor"] in ("APARTAMENTO", "CASA_EM_CONDOMINIO"):
         soma("TOTAL", 1, "VIZINHOS", "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho")
-    if bens["min"] >= P.BENS_RELEVANTES:
+    if comprovados and bens["min"] >= P.BENS_RELEVANTES:
         soma("PRATICO", 2, "BENS_ALTOS", f"suas compras para a casa nos últimos 3 anos valem hoje pelo menos {M.reais(bens['min'])}")
-    if bens["portateis"]["min"] >= P.PORTATEIS_RELEVANTES:
+    if comprovados and bens["portateis"]["min"] >= P.PORTATEIS_RELEVANTES:
         soma("PRATICO", 1, "ELETRONICOS", f"você tem pelo menos {M.reais(bens['portateis']['min'])} em eletrônicos, os itens mais levados num arrombamento")
     if tipo["valor"] == "CASA":
         soma("PRATICO", 1, "CASA_SEM_CONDOMINIO", "a casa fica fora de condomínio, mais exposta a arrombamento")
@@ -590,6 +661,10 @@ def dimensionar(cob, ctx):
                 "limitada_pelo_produto": bool(acima)}
 
     seus_bens = M.faixa_reais(bens["min"], bens["max"])
+    # Bens presumidos (sem compras) são estimativa, não compra: o texto não pode dizer "você comprou" (RN-09)
+    estimados = bool(bens.get("regional"))
+    repor = "repor os seus bens, que estimamos" if estimados else "repor o que você comprou para a casa,"
+    repoe = "repõe os seus bens, que estimamos" if estimados else "repõe o que você comprou para a casa,"
     custo = f"{brl(im['custo_m2'][0])}–{brl(im['custo_m2'][1])}/m² (SINAPI {r.uf_real} até {P.fonte_custo(r.uf_real)}"
     f_lo, f_hi = im["fator_padrao"]
     if f_lo != f_hi:
@@ -602,12 +677,12 @@ def dimensionar(cob, ctx):
             obs = "Segundo risco (CG cl. 15.2): a estrutura é paga primeiro pelo seguro do condomínio ou do financiamento. " + obs_aluguel
             a, b = P.FRACAO_ACABAMENTOS
             just = (f"A estrutura tem seguro próprio (condomínio ou financiamento); o seu paga os acabamentos, estimados em "
-                    f"{M.faixa_reais(rec[0] * a, rec[1] * b)}, e repõe o que você comprou para a casa, {seus_bens}.")
+                    f"{M.faixa_reais(rec[0] * a, rec[1] * b)}, e {repoe} {seus_bens}.")
         else:
             regra = f"área {area['min']:.0f}–{area['max']:.0f} m² × {custo} + bens"
             obs = "Limite único prédio + conteúdo, com prioridade do prédio (CG cl. 5.5–5.6). " + obs_aluguel
             just = (f"Se um incêndio atingir o imóvel, reconstruir custaria {M.faixa_reais(rec[0], rec[1])} pelo custo oficial "
-                    f"de construção, e repor o que você comprou para a casa, {seus_bens}. Com limite único, a reconstrução é paga primeiro.")
+                    f"de construção, e {repor} {seus_bens}. Com limite único, a reconstrução é paga primeiro.")
         c = saida(lo, hi, conf_base, "área, tipo, vínculo, UF, padrão, compras 36m, bens; SINAPI, CUB, IPCA", regra, just,
                   "Área do imóvel e valor dos bens", obs.strip())
         c["valor_em_risco"] = arred((lo + hi) / 2)   # meio da estimativa, antes dos limites (para o ITV)

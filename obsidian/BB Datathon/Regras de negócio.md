@@ -16,10 +16,11 @@ Tudo o que o [[Guia oficial do datathon]] e o LEIA-ME dos dados pedem, em forma 
 
 ## B. Dados
 - **RN-06** Usar só os dados fornecidos e fontes externas **públicas ou autorizadas**.
-- **RN-07** **Proibido usar dado sensível ou atributo pessoal como atalho para risco ou patrimônio.** Idade e renda não definem valor de bens, risco, plano ou faixa.
-> [!regra] Pedido "usar o salário" (28/10, noite): não aplicado
-> O guia oficial diz: "Não utilize dados sensíveis ou atributos pessoais como atalho para risco ou patrimônio." A renda não é dado sensível pela LGPD, mas **é atributo pessoal**, e usá-la para estimar bens ou plano é o atalho que o guia proíbe (na base, a renda tem correlação de 0,87 com os bens). O motor segue lendo a renda só no teste de justiça, para provar que ela não muda nada.
-> **Alternativa permitida:** compras, aluguel, financiamento, IPTU e energia, que já usamos; para quem não tem compras, a média da região.
+- **RN-07** (revisada em 28/10, mentoria BB) **Proibido usar dado sensível ou idade como atalho para risco ou patrimônio.** Idade não define valor de bens, risco, plano, faixa ou canal. **A renda pode ser usada** como sinal complementar, sempre combinada com outros sinais (RN-08), nunca sozinha.
+> [!decisao] Renda liberada (mentoria com o Banco do Brasil, 28/10)
+> Na mentoria, o pessoal do BB confirmou que a **renda (salário) não é dado sensível**, o que bate com a LGPD (art. 5º, II: sensível é origem racial ou étnica, religião, opinião política, filiação sindical, saúde, vida sexual, genética e biometria). A limitação que o time tinha imposto foi retirada. A frase do guia ("não utilize dados sensíveis ou atributos pessoais como atalho") continua valendo para a **idade**.
+> **Como o motor usa a renda hoje:** só nos bens de quem não tem compras nem bens ligados ao imóvel, combinada com a média da região (média geométrica). Fora da amostra, o erro mediano cai de 40,5% para 22,7%. Quem tem compras segue pelas compras (a prova vence a estimativa). A renda não entra em elegibilidade, canal nem confiança. Detalhes: `documentos/contexto/22-renda-liberada.md` e `documentos/RELATORIO_VALIDACAO.md`.
+> **Para a banca:** dizer que a liberação veio da mentoria do BB e mostrar que a renda nunca decide sozinha.
 
 > [!decisao] RN-07 × código (28/10)
 > Desde o PR #13, dependentes **e** pet somam 1 ponto ao Total (slide 14 da Brasilseg, "casa familiar"), e isso muda o plano em **18 casos**. Valor, elegibilidade, canal e confiança não mudam. Isso conflita com a RN-07 do [[Regras de negócio - arquivo para as IAs do grupo|arquivo das IAs]]. Decidir na mentoria: ver [[Auditoria do código - 28-10]].
@@ -83,6 +84,6 @@ Tudo o que o [[Guia oficial do datathon]] e o LEIA-ME dos dados pedem, em forma 
 
 ## I. Complementos (28/10)
 - **RN-52 a RN-58** e decisões do time **D-01 a D-07**: ver o arquivo completo enviado ao grupo, [[Regras de negócio - arquivo para as IAs do grupo]].
-- Atenção à RN-07: na base, a renda tem correlação de **0,87** com o valor dos bens. É o atalho proibido. Alternativa: [[Bens sem nota - método em 3 camadas]].
+- RN-07 revisada (28/10, mentoria BB): a renda tem correlação de **0,88** com o valor dos bens e deixou de ser proibida. Ela entra como reforço quando faltam compras, nunca no lugar delas. Ver [[Bens sem nota - método em 3 camadas]] e a decisão **D-08** no [[Regras de negócio - arquivo para as IAs do grupo|arquivo das IAs]].
 
 Ligações: [[Regras e contexto]] · [[Critérios de avaliação]] · [[Elegibilidade residencial]] · [[Templates de entrega]]

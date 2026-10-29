@@ -18,7 +18,7 @@ Nota viva. Fonte principal: [[Guia oficial do datathon]]. Quando algo mudar, atu
 ## Guardrails do guia
 - Só dados fornecidos e fontes externas públicas ou autorizadas, documentadas.
 - [[Elegibilidade residencial]] antes de recomendar.
-- **Renda, idade e outros atributos pessoais não podem ser atalho para risco ou patrimônio.**
+- **Idade e dados sensíveis não podem ser atalho para risco ou patrimônio.** A renda foi liberada na mentoria do BB (28/10): pode entrar como reforço, combinada com outros sinais ([[Regras de negócio]], RN-07 revisada).
 - Estimativa nunca aparece como fato confirmado.
 - Recomendação explicável, revisável e com confirmação humana.
 
@@ -37,7 +37,7 @@ Nota viva. Fonte principal: [[Guia oficial do datathon]]. Quando algo mudar, atu
 
 ## Foco (28/10)
 - O foco é motor + planilhas dos 138 casos. O app é só a demonstração. Plano: [[Plano de preenchimento das planilhas]].
-- Crianças e pets (revisado em 28/10, slide 14): só como **necessidade informada pelo cliente** para RC familiar. Crianças e pet juntos somam 1 ponto ao Total; só um dos dois vira pergunta. Nunca mudam valor, elegibilidade, canal ou confiança. Renda e idade seguem fora de tudo (RN-07).
+- Crianças e pets (revisado em 28/10, slide 14): só como **necessidade informada pelo cliente** para RC familiar. Crianças e pet juntos somam 1 ponto ao Total; só um dos dois vira pergunta. Nunca mudam valor, elegibilidade, canal ou confiança. Idade segue fora de tudo (RN-07); a renda só reforça os bens de quem não tem compras (D-08).
 - Cliente com seguro BB e um imóvel só = NAO elegível. Com dois imóveis = SIM + pergunta "qual já tem seguro?".
 - Confiança: o nível sai de **regra** sobre a classe de cada dado crítico (observado, estimado, presumido), nunca de corte numa nota (com corte, 101 de 138 casos ficavam na borda). CUB só entra se for oficial.
 - Correções aplicadas no motor do Pedro: [[Correções P1-P5 no motor]].

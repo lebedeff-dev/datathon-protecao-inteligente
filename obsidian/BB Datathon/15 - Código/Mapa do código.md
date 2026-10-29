@@ -73,7 +73,8 @@ flowchart LR
 | `inferir_uso(r, outro_principal)` | Moradia habitual, alugado a terceiros ou veraneio |
 | `inferir_area(r, cal)` | Área cadastrada, ou estimada pelo IPTU e pela energia com faixa de erro, ou mediana de imóveis parecidos |
 | `_ancoras(compras, bens)` | As 3 âncoras dos bens: mínimo comprovado e máximo de estoque (2,7 × compras), a preço de hoje (IPCA) |
-| `estimar_bens(r, bens)` | Faixa dos bens por categoria (eletrônicos, eletrodomésticos, móveis) e as bases de roubo, danos elétricos e água. **Nunca lê renda, idade, dependentes ou pet** |
+| `estimar_bens(r, bens)` | Faixa dos bens por categoria (eletrônicos, eletrodomésticos, móveis) e as bases de roubo, danos elétricos e água. **Nunca lê idade, dependentes ou pet.** A renda só entra sem compras nem bens (`_compras_sem_prova`, D-08) |
+| `compras_pela_renda(r, cal)` · `backtest_bens_sem_compras` | Compras esperadas pela renda (razão compras/renda do município) e o teste fora da amostra que justifica usar região + renda (40,5% → 22,7% de erro) |
 | `valor_imovel(r, tipo, vinculo, area, cal)` | Custo de reconstruir: área × custo do m² (SINAPI a CUB) × padrão. Sem padrão cadastrado, o IPTU/m² estreita o fator. Marca o segundo risco |
 
 ### Decidir

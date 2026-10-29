@@ -103,7 +103,7 @@ Todas saem em `entrega/metricas.json` a cada execução.
 Detalhe de licença, transformação e limitações: `motor/externos/FONTES.md`.
 
 ## 4. Regras que mais pesam no motor
-- **RN-07:** renda, idade e outros atributos pessoais nunca decidem nada. Vale também para a **renda estimada pela movimentação** (metade da base): é renda, só que estimada. O que o motor usa no lugar são os **próprios gastos** (compras por imóvel), que já são a evidência direta. Ver [[Regras de negócio]].
+- **RN-07 (revisada em 28/10, mentoria BB):** idade e outros atributos pessoais nunca decidem nada. A **renda foi liberada** (não é dado sensível) e entra num ponto só: os bens de quem não tem compras nem bens ligados ao imóvel, combinada com a média da região (decisão D-08). Quem tem compras segue pelos **próprios gastos**, que são a evidência direta. A renda não decide plano, elegibilidade, jornada nem confiança. Ver [[Regras de negócio]].
 - **RN-09:** estimativa sempre dita como estimativa.
 - **RN-10:** CEP e coordenadas são fictícios (testamos: o CEP é ruído).
 - **RN-12:** funciona sem dado externo.

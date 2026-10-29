@@ -44,8 +44,8 @@ Você está ajudando um time no Datathon Proteção Inteligente do Banco do Bras
 
 ## 3. Dados
 - **RN-06** Usar **só os dados fornecidos** e fontes externas **públicas ou devidamente autorizadas**.
-- **RN-07** **Proibido usar dado sensível ou atributo pessoal como atalho para risco ou patrimônio.** Renda, idade, número de dependentes ou qualquer característica da pessoa **não** definem valor de bens, risco, plano, faixa ou canal.
-  - Atenção: na base, a renda tem correlação de 0,87 com o valor dos bens. É exatamente o atalho proibido.
+- **RN-07** (revisada em 28/10, mentoria BB) **Proibido usar dado sensível ou idade como atalho para risco ou patrimônio.** Idade, número de dependentes ou outra característica da pessoa **não** definem valor de bens, risco, faixa ou canal (dependentes e pet só como necessidade de RC familiar).
+  - **Renda liberada:** o BB confirmou na mentoria que renda não é dado sensível (LGPD art. 5º, II). Pode ser usada como sinal **complementar**, combinada com outros sinais (RN-08), nunca sozinha. Ver D-08.
 - **RN-08** Combinar vários sinais. Nenhuma decisão depende de uma variável só.
 - **RN-09** Estimativa **nunca** aparece como fato confirmado. Todo dado mostrado é marcado como **observado** (veio da base), **estimado** (calculado) ou **confirmado** (o cliente respondeu).
 - **RN-10** Logradouro, número, complemento, CEP agregado e **coordenadas são fictícios ou perturbados**. Não usar como localização real. Só município, UF e código IBGE são reais.
@@ -126,11 +126,13 @@ Você está ajudando um time no Datathon Proteção Inteligente do Banco do Bras
 - **D-05** Bens sem histórico (presente, usado, começo de vida): **piso pelo tamanho do imóvel** (área × valor por m² do tipo, medido na base) + evidência de compras + 1 pergunta de faixa se precisar.
 - **D-06** Apartamento: a estrutura do prédio já tem o seguro obrigatório do condomínio (Código Civil, art. 1.346). O seguro do morador cobre acabamentos e bens.
 - **D-07** O seguro não pode valer mais que o valor em risco (Código Civil, art. 778): evitar superseguro e subseguro.
+- **D-08** (28/10, mentoria BB) **Renda pode ser usada.** No motor, ela entra só nos bens de quem não tem compras nem bens ligados ao imóvel, combinada com a média da região (erro mediano fora da amostra: 40,5% → 22,7%). Quem tem compras segue pelas compras. A renda não decide elegibilidade, canal nem confiança, e quando entra o texto do cliente avisa ("estimamos ... e pela sua renda"). Próximo uso proposto: quando a renda indica bem mais bens que as compras vistas no BB, perguntar se há compras em outros bancos.
 
 ## 11. Ideias proibidas já discutidas e a alternativa permitida
 | Ideia | Regra | Alternativa permitida |
 |---|---|---|
-| Usar o **salário/renda** para estimar o valor dos bens ou criar um piso | RN-07 | Piso pelo **tamanho do imóvel** (área × valor por m² do tipo) + compras + 1 pergunta de faixa |
+| ~~Usar o **salário/renda** para estimar o valor dos bens~~ **Liberado em 28/10 (D-08)** | RN-07 revisada | Pode, como reforço combinado com região e compras; nunca sozinha nem no lugar das compras |
+| Usar a **renda sozinha** para decidir plano, elegibilidade ou canal | RN-08 | Combinar com sinais do imóvel e das transações |
 | Jovem paga mais caro ou recebe outro plano pela **idade** | RN-07 | Plano pela situação do imóvel (tipo, vínculo, uso, bens) |
 | Escolher canal ou "modo idoso" pela **idade** | RN-07 | Índice de maturidade digital, uso e frequência do app |
 | Inferir comunidade/favela pelo bairro ou renda | RN-07, RN-19 | Declaração do cliente na confirmação de elegibilidade |

@@ -49,7 +49,7 @@ Herdadas da v1 (tiradas do guia oficial). Continuam valendo em todas as telas.
 
 | Código | Regra |
 |---|---|
-| RN-07 | Idade, renda e atributos pessoais nunca decidem risco, plano, valor ou canal. |
+| RN-07 | Idade e atributos pessoais nunca decidem risco, plano, valor ou canal. Renda liberada na mentoria do BB (28/10) só como reforço combinado (D-08). |
 | RN-09 | Estimativa nunca aparece como fato. Todo dado mostra a origem: observado, estimado ou confirmado. |
 | RN-12 | O fluxo funciona sem dado externo. Dado externo só enriquece o texto, com fonte e data. |
 | RN-15 a RN-19 | Elegibilidade antes de contratar. Falta de dado vira pergunta, não recusa. |
@@ -197,7 +197,7 @@ Todos sobem de baixo, têm alça, título, botão de fechar e um assunto só. To
 - **Coluna da proposta:** troca de plano, barras de vidros e roubo com chip "sugestão R$ X" / "sugestão aplicada", **novo preço ao vivo**, campo "Motivo que o cliente vai ler" (já preenchido), botões **Ligar para o cliente** e **Enviar ao app do cliente**.
 - **Coluna do motor:** "O motor sugere" (vidros: R$ 11.000 em vidraçaria em 24 meses; roubo: bens ≈ R$ 13.000; outro imóvel cadastrado), cada sugestão com o impacto no preço, e o botão **Aplicar sugestões**; "Roteiro" com 3 perguntas.
 - **Recolhidos:** "Dados e origem" (tabela com chips) e "Objeções prováveis" (está caro → Prático ajustado; condomínio já cobre → cobre o prédio; seguro do financiamento → protege imóvel e dívida).
-- **Privacidade:** "Você vê um resumo, não o extrato. Renda e idade não aparecem nem decidem nada. Acesso registrado no protocolo BB-8K2."
+- **Privacidade:** "Você vê um resumo, não o extrato. A renda não aparece e só ajuda a estimar os bens de quem não tem compras; a idade não decide nada. Acesso registrado no protocolo BB-8K2."
 
 **Volta para o cliente:** aviso na tela de bloqueio → Tela B com a faixa "Ricardo mudou 2 coisas" → painel `mudou` → contrata com as duas confirmações.
 
@@ -230,7 +230,7 @@ Para cada tela: título, **3 métricas fixas** (6 → 2 telas · 9 → 6 toques 
 - [ ] As duas confirmações da Tela B continuam separadas.
 - [ ] Ajuda → gerente → enviar → painel do gerente mostra a dúvida, o canal e a tela de origem certos.
 - [ ] "Aplicar sugestões" + "Enviar ao app" levam ao aviso de retorno e à faixa "Ricardo mudou 2 coisas" na Tela B.
-- [ ] Nenhuma decisão usa idade ou renda; o WhatsApp nunca leva link nem dados.
+- [ ] Nenhuma decisão usa idade; a renda só como o motor usa (bens sem compras, D-08); o WhatsApp nunca leva link nem dados.
 - [ ] Aa aumenta tudo; Ouvir lê a tela ou o painel aberto.
 - [ ] O detector da skill impeccable roda sem apontamentos (`impeccable detect --json indexprototipo_v2.html`).
 

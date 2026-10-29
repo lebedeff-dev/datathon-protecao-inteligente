@@ -23,6 +23,7 @@ O índice e a linha do tempo. Comece por aqui. Cada etapa tem um documento curto
 | 19 | Auditoria do código, métricas de mercado e backtest | [19-auditoria-codigo.md](19-auditoria-codigo.md) | ✅ |
 | 20 | Fontes territoriais: S2iD, ANEEL e CUB oficial | [20-fontes-territoriais.md](20-fontes-territoriais.md) | ✅ |
 | 21 | Pós-mentoria: motivo 2.0, média regional, gerente como último recurso e APIs ao vivo | [21-motivo-e-jornada.md](21-motivo-e-jornada.md) | ✅ |
+| 22 | Renda liberada depois da mentoria do BB (RN-07 revisada, D-08) | [22-renda-liberada.md](22-renda-liberada.md) | ✅ |
 | 90 | Revisão do time (comece por aqui amanhã) | [90-revisao.md](90-revisao.md) | 📋 para revisar |
 
 ## Onde está cada coisa

@@ -4,9 +4,11 @@ Toda premissa numérica fica aqui, separada da lógica, com a origem escrita ao
 lado: cláusula das Condições Gerais (CG v1.4), print do app atual, fonte externa
 (motor/externos/FONTES.md) ou "premissa do time".
 
-Regra do projeto: renda e idade NÃO entram em nenhum parâmetro de decisão
-(guardrail do guia; RN-07). Dependentes e pet só entram como necessidade de RC
-informada pelo cliente, nunca em valor, risco, canal ou confiança.
+Regra do projeto: idade NÃO entra em nenhum parâmetro de decisão (guardrail do
+guia; RN-07). A renda deixou de ser tratada como dado sensível (mentoria BB de
+28/10) e entra num ponto só: RENDA_NOS_BENS_SEM_COMPRAS. Dependentes e pet só
+entram como necessidade de RC informada pelo cliente, nunca em valor, risco,
+canal ou confiança.
 """
 import csv
 import statistics
@@ -180,6 +182,13 @@ FONTE_ANEEL = "Ranking de Continuidade do Fornecimento 2025 (ANEEL)"
 # --- Bens (três âncoras) -------------------------------------------------------
 FATOR_ESTOQUE = 2.7   # estoque ≈ compras/ano × vida útil (~8 anos) = 2,7 × compras de 36 meses (premissa)
 BENS_PISO = 15000     # cesta mínima de uma casa quando não há compras nem bens (premissa)
+# Renda (mentoria BB de 28/10: renda não é dado sensível). Entra só nos bens de quem não tem
+# compras nem bens ligados ao imóvel, combinada com a média da região por média geométrica,
+# para nenhum dos dois decidir sozinho (RN-08). Fora da amostra, o erro mediano das compras
+# cai de ~40% (só região) para ~23% (região e renda): ver calibrar(). Quem tem compras segue
+# pelas compras (a prova vence a estimativa), e a renda não entra em plano, elegibilidade,
+# canal nem confiança. False volta ao comportamento anterior (só a média da região).
+RENDA_NOS_BENS_SEM_COMPRAS = True
 
 # --- Limites do produto (prints do app atual; máximos sem print são premissa) ---
 LIMITES_PRODUTO = {

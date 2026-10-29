@@ -25,7 +25,8 @@ Natureza dos campos (guia): **cadastral/observado**, **derivado** (fórmula), **
 ## Clientes
 | Campo | O que é | Observação |
 |---|---|---|
-| `idade`, `renda_mensal` | atributos pessoais | **Não usar como atalho para patrimônio/risco** (guardrail) |
+| `idade` | atributo pessoal | **Não usar como atalho para patrimônio/risco** (guardrail) |
+| `renda_mensal` | renda (não é dado sensível: mentoria BB, 28/10) | Pode ser usada como **reforço**, combinada com outros sinais; no motor, só nos bens de quem não tem compras (D-08) |
 | `origem_renda` / `confianca_renda` | INFORMADA (ALTA) ou PRESUMIDA (MEDIA) | metade de cada |
 | `indice_maturidade_digital`, `usuario_app`, `frequencia_acesso_app_90d` | uso digital | bom para escolher o **canal** (app × gerente) |
 | `quantidade_dependentes`, `possui_pet_informado` | família | sinal para RC familiar |

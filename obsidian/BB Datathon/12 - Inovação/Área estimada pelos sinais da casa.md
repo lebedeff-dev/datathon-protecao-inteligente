@@ -5,7 +5,7 @@ tags: [inovacao, v2]
 
 **O que é:** 61% dos imóveis não têm área. Estimamos a área pelo IPTU, energia, água, tipo (casa/apto) e município, com uma faixa (intervalo) e confiança menor que a área cadastrada.
 
-**Dados que usa:** `pagamento_iptu_anual` (correlação 0,82 com a área), `energia_media_mensal_6m` (0,81), `agua_media_mensal_6m` (0,51), tipo e município. **Renda e idade ficam de fora** (correlação 0,01 e proibido pela RN-07).
+**Dados que usa:** `pagamento_iptu_anual` (correlação 0,82 com a área), `energia_media_mensal_6m` (0,81), `agua_media_mensal_6m` (0,51), tipo e município. **Renda e idade ficam de fora**: a renda tem correlação 0,01 com a área, então não ajuda aqui (mesmo liberada desde 28/10), e a idade segue proibida pela RN-07.
 
 **E o gerente?** Recebe a área já com a explicação: "estimada pelo IPTU e pela conta de luz".
 

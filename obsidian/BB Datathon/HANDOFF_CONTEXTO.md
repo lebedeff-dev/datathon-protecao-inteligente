@@ -14,7 +14,7 @@ Cole este arquivo no início de uma conversa nova com qualquer assistente (Claud
 
 ## 2. Regras que não podem ser quebradas (resumo)
 Arquivo completo: `prototipo/REGRAS_DE_NEGOCIO_DATATHON.md` (58 regras + decisões do time + tabela de ideias proibidas). As principais:
-- **RN-07:** renda, idade e atributos pessoais nunca como atalho para risco ou patrimônio. Na base, a renda tem correlação 0,87 com o valor dos bens: é a armadilha. (Slide 14 da banca cita pets e crianças como sinal para RC familiar: usar como **necessidade confirmada pelo cliente**, nunca como inferência.)
+- **RN-07 (revisada em 28/10):** idade e dado sensível nunca como atalho para risco ou patrimônio. **A renda foi liberada na mentoria do BB** (não é dado sensível) e entra como reforço combinado com outros sinais, nunca sozinha (decisão D-08). (Slide 14 da banca cita pets e crianças como sinal para RC familiar: usar como **necessidade confirmada pelo cliente**, nunca como inferência.)
 - **RN-09:** estimativa nunca como fato; todo dado é observado, estimado ou confirmado.
 - **RN-10:** coordenadas e endereços da base são fictícios; só município, UF e IBGE são reais.
 - **RN-12:** o motor funciona sem dados externos; fontes externas só oficiais, atualizadas e documentadas.

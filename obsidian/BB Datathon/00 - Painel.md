@@ -9,13 +9,16 @@ tags: [painel, datathon-bb]
 
 > [!codigo] Código do motor (atualizado 28/10 à noite)
 > **Comece por [[Visão geral do motor (comece aqui)]].** Depois: [[Mapa do código]] (cada arquivo e função) · [[Auditoria do código - 28-10]] (erros e correções) · [[Métricas do mercado x as nossas]] · [[Log de alterações do código]]
-> **82 testes** · 0 erros nas planilhas · Prático 59 · Total 49 · Essencial 30 · elegível 122 · 2,7 perguntas por caso (86% menos esforço que uma cotação tradicional)
+> **91 testes** · 0 erros nas planilhas · Prático 59 · Total 49 · Essencial 30 · elegível 122 · 2,7 perguntas por caso (86% menos esforço que uma cotação tradicional)
 
 > [!fonte] Dados externos em uso
 > SINAPI · CUB oficial (7 UFs) · IPCA · FipeZAP · sinistros BB · [[Atlas Digital de Desastres]] (S2iD) · [[ANEEL continuidade]]. Tudo salvo no projeto: o motor roda sem internet.
 
 > [!success] Pós-mentoria executado (28/10)
 > [[Plano - motivo, dados faltantes e gerente]]: motivo 2.0 (0 genéricos, 100% com fato do cliente), média regional em degraus, gerente só em último caso (71 → 35) e SINAPI/IPCA ao vivo pelas APIs do IBGE e do BC.
+
+> [!decisao] Renda liberada (mentoria BB, 28/10) e relatório de validação
+> A renda não é dado sensível: a RN-07 foi revisada (decisão D-08 em [[Regras de negócio]]). No motor, ela só reforça os bens de quem não tem compras (erro 40,5% → 22,7% fora da amostra). **91 testes**; as 2 planilhas não mudaram. Relatório completo: `documentos/RELATORIO_VALIDACAO.md` (branch `validacao/renda-liberada-e-relatorio`).
 
 > [!warning] Para o time decidir
 > Família mudando o plano em 18 casos (RN-07) · limites de danos elétricos e água que são premissa · "valor sugerido" no meio da faixa. Detalhes na [[Auditoria do código - 28-10]].

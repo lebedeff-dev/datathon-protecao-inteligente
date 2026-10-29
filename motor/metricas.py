@@ -24,11 +24,13 @@ def calcular_metricas(dados, cal, fichas, resultado, coberturas, segundos):
     catalogo = dados["catalogo"].groupby("plano").cobertura_fixa.apply(list).to_dict()
     por_id = {f["imovel_id"]: f for f in fichas}
 
-    # Justiça: trocar renda e idade não pode mudar nada.
+    # Justiça: trocar renda e idade não pode mudar nada em quem tem compras ou bens (a renda só
+    # entra nos bens de quem não tem nenhum dos dois; na base comum, nenhum caso).
     # Necessidade declarada: trocar dependentes e pet pode mudar só o plano, os motivos e as
     # perguntas; nunca a faixa de uma cobertura em comum, a elegibilidade, o canal ou a confiança.
     # Sensibilidade: área 10% maior deve aumentar (ou manter) o incêndio.
     mudou_justica, familia_fora_do_lugar, familia_muda_plano, variacoes, quedas = 0, 0, 0, [], 0
+    fora_do_teste_justica = 0
     base_nivel, base_nivel_plano = {}, {}
     for r in m.itertuples(index=False):
         b = bens.get(r.imovel_id, vazio)
@@ -37,7 +39,11 @@ def calcular_metricas(dados, cal, fichas, resultado, coberturas, segundos):
         base_nivel_plano[r.imovel_id] = base["plano"]
         trocado = SimpleNamespace(**{**r._asdict(), "renda_mensal": 99999, "idade": 99,
                                      "origem_renda": "PRESUMIDA", "confianca_renda": "BAIXA"})
-        if motor.processar_caso(trocado, b, cal, catalogo) != base:
+        trocada = motor.processar_caso(trocado, b, cal, catalogo)
+        if base["campos"]["bens"].get("usou_renda"):   # sem compras a renda entra de propósito nos bens:
+            fora_do_teste_justica += 1                  # o que não pode mudar é plano, elegibilidade, jornada e confiança
+            mudou_justica += any(trocada[k] != base[k] for k in ("plano", "elegibilidade", "jornada", "confianca"))
+        elif trocada != base:
             mudou_justica += 1
         sem_familia = 0 if (r.quantidade_dependentes or 0) > 0 or r.possui_pet_informado == "SIM" else 2
         outra = motor.processar_caso(SimpleNamespace(**{**r._asdict(), "quantidade_dependentes": sem_familia,
@@ -92,9 +98,9 @@ def calcular_metricas(dados, cal, fichas, resultado, coberturas, segundos):
     regras_eleg = Counter(p["codigo"] for f in fichas for p in f["pendencias"])
     regras_eleg["NAO_ELEGIVEL"] = sum(f["elegibilidade"] == "NAO" for f in fichas)
 
-    # Justiça por faixa de renda (como os testes de "impacto desigual" de crédito): a renda não entra
-    # no motor, mas pode chegar por tabela via bens (correlação 0,87 na base). A tabela mostra, por
-    # quinto de renda, o plano e os bens comprovados, para provar que o plano segue os bens.
+    # Justiça por faixa de renda (como os testes de "impacto desigual" de crédito): a renda só entra nos
+    # bens de quem não tem compras, mas pode chegar por tabela via bens (correlação 0,88 na base). A tabela
+    # mostra, por quinto de renda, o plano e os bens comprovados, para provar que o plano segue os bens.
     por_renda = renda_por_quinto(m, por_id)
 
     # Ordenação: quanto menor a confiança, mais larga a faixa de incêndio (máx ÷ mín).
@@ -135,6 +141,7 @@ def calcular_metricas(dados, cal, fichas, resultado, coberturas, segundos):
         "perguntas_media": round(sum(len(f["perguntas"]) for f in fichas) / n, 2),
         "perguntas_candidatas_media": round(sum(f["perguntas_candidatas"] for f in fichas) / n, 2),
         "teste_justica_casos_alterados": mudou_justica,
+        "teste_justica_casos_sem_compras_so_decisoes": fora_do_teste_justica,
         "justica_por_quinto_de_renda": por_renda,
         "familia_declarada_muda_plano": int(familia_muda_plano),
         "familia_declarada_muda_valor_ou_confianca": int(familia_fora_do_lugar),
@@ -159,7 +166,10 @@ def dados_faltantes(fichas, cal):
         "padrao_cadastrado": origem.get("cadastrado", 0),
         "padrao_estimado_pelo_iptu": origem.get("estimado pelo IPTU/m²", 0),
         "padrao_faixa_aberta_com_pergunta": origem.get("não cadastrado", 0),
-        "bens_pela_media_da_regiao": sum(bool(f["campos"]["bens"].get("regional")) for f in fichas),
+        "bens_pela_media_da_regiao": sum(bool(f["campos"]["bens"].get("regional")) and not f["campos"]["bens"].get("usou_renda")
+                                         for f in fichas),
+        "bens_pela_regiao_e_renda": sum(bool(f["campos"]["bens"].get("usou_renda")) for f in fichas),
+        "backtest_bens_sem_compras": cal.get("backtest_bens_sem_compras", {}),
         "teste_cep_da_base": cal.get("teste_cep", {}),
     }
 

@@ -33,11 +33,16 @@ def test_aluguel_m2_curitiba():
     assert P.aluguel_m2("PR") == 49.44
 
 
-def test_sem_parametro_de_renda():
-    assert not [n for n in dir(P) if "RENDA" in n.upper()]
+def test_renda_so_tem_um_parametro():
+    # Mentoria BB 28/10: renda não é dado sensível. Entra num único ponto (bens sem compras),
+    # ligado por um parâmetro; nenhum outro parâmetro de decisão usa renda.
+    assert [n for n in dir(P) if "RENDA" in n.upper()] == ["RENDA_NOS_BENS_SEM_COMPRAS"]
 
 
 # --- T2: tipo, área e bens -------------------------------------------------------
+import json  # noqa: E402
+from types import SimpleNamespace  # noqa: E402
+
 import pandas as pd  # noqa: E402
 
 import motor  # noqa: E402
@@ -56,10 +61,84 @@ def test_bens_sem_compras_nem_bens_usa_piso(linha, vazio):
     assert est["min"] == P.BENS_PISO and est["confianca"] == "BAIXA"
 
 
-def test_bens_nao_le_atributos_pessoais(linha, vazio):
-    a = motor.estimar_bens(linha(renda_mensal=1800, idade=20, quantidade_dependentes=0), vazio)
-    b = motor.estimar_bens(linha(renda_mensal=34000, idade=80, quantidade_dependentes=3), vazio)
+def test_bens_com_compras_ignoram_renda_e_idade(linha, vazio, cal):
+    # Quem tem compras tem prova: a renda não substitui nem mexe na evidência
+    a = motor.estimar_bens(linha(renda_mensal=1800, idade=20, quantidade_dependentes=0), vazio, cal)
+    b = motor.estimar_bens(linha(renda_mensal=34000, idade=80, quantidade_dependentes=3), vazio, cal)
     assert a == b
+
+
+SEM_COMPRAS = dict(compras_moveis_36m=0, compras_eletrodomesticos_36m=0, compras_eletronicos_36m=0)
+
+
+def test_bens_sem_compras_combinam_regiao_e_renda(linha, vazio, cal):
+    baixa = motor.estimar_bens(linha(renda_mensal=2000, **SEM_COMPRAS), vazio, cal)
+    alta = motor.estimar_bens(linha(renda_mensal=30000, **SEM_COMPRAS), vazio, cal)
+    assert alta["min"] > baixa["min"] and alta["max"] > baixa["max"]
+    assert "renda" in alta["fonte"] and alta["usou_renda"] and alta["confianca"] == "BAIXA"
+
+
+def test_bens_sem_compras_nem_renda_ficam_na_regiao(linha, vazio, cal, monkeypatch):
+    sem_renda = motor.estimar_bens(linha(renda_mensal=0, **SEM_COMPRAS), vazio, cal)
+    monkeypatch.setattr(P, "RENDA_NOS_BENS_SEM_COMPRAS", False)
+    desligada = motor.estimar_bens(linha(renda_mensal=30000, **SEM_COMPRAS), vazio, cal)
+    assert sem_renda == desligada and not sem_renda["usou_renda"] and "renda" not in sem_renda["fonte"]
+
+
+def test_renda_com_idade_nao_mexe_nos_bens(linha, vazio, cal):
+    a = motor.estimar_bens(linha(renda_mensal=9000, idade=19, **SEM_COMPRAS), vazio, cal)
+    b = motor.estimar_bens(linha(renda_mensal=9000, idade=85, **SEM_COMPRAS), vazio, cal)
+    assert a == b
+
+
+def test_motivo_avisa_quando_usou_a_renda(teste, cal, caso, vazio):
+    # Transparência (LGPD art. 20): se a renda entrou na estimativa, o cliente lê isso
+    catalogo = teste["catalogo"].groupby("plano").cobertura_fixa.apply(list).to_dict()
+    r, _ = caso("IMO_CASO_00005_01")
+    r = SimpleNamespace(**{**vars(r), **SEM_COMPRAS})
+    f = motor.processar_caso(r, vazio, cal, catalogo)
+    assert f["campos"]["bens"]["usou_renda"] and "sua renda" in motor.justificativa(f)
+
+
+def test_sem_compras_renda_nao_muda_plano_nem_jornada(teste, cal, caso, vazio):
+    # Revisão: a renda chegava ao plano pelos limiares de bens. Bens presumidos não somam pontos.
+    catalogo = teste["catalogo"].groupby("plano").cobertura_fixa.apply(list).to_dict()
+    for imovel_id in ("IMO_CASO_00001_01", "IMO_CASO_00005_01", "IMO_CASO_00031_01"):
+        r, _ = caso(imovel_id)
+        fs = [motor.processar_caso(SimpleNamespace(**{**vars(r), **SEM_COMPRAS, "renda_mensal": renda}), vazio, cal, catalogo)
+              for renda in (0, 1500, 8000, 40000, 150000)]
+        for k in ("plano", "elegibilidade", "jornada", "confianca", "adicionais"):
+            assert len({json.dumps(f[k], sort_keys=True) for f in fs}) == 1, (imovel_id, k)
+        for f in fs:   # sem compras, o texto não pode dizer que ele comprou nem dar a estimativa como fato
+            textos = [motor.justificativa(f)] + [c["justificativa"] for c in f["coberturas"]]
+            assert not any("suas compras" in t or "você comprou" in t for t in textos), imovel_id
+            assert "média de casas parecidas na sua região" in motor.justificativa(f), imovel_id
+
+
+def test_renda_em_texto_ou_invalida_nao_quebra(linha, vazio, cal):
+    texto = motor.estimar_bens(linha(renda_mensal="5000", **SEM_COMPRAS), vazio, cal)
+    ruim = motor.estimar_bens(linha(renda_mensal="abc", **SEM_COMPRAS), vazio, cal)
+    assert texto["usou_renda"] and not ruim["usou_renda"]
+
+
+def test_renda_nao_passa_de_2x_a_regiao(linha, vazio, cal, monkeypatch):
+    rica = motor.estimar_bens(linha(renda_mensal=500000, **SEM_COMPRAS), vazio, cal)
+    monkeypatch.setattr(P, "RENDA_NOS_BENS_SEM_COMPRAS", False)
+    so_regiao = motor.estimar_bens(linha(renda_mensal=500000, **SEM_COMPRAS), vazio, cal)
+    assert rica["max"] <= 2 * so_regiao["max"] + 1
+
+
+def test_razao_compras_renda_exige_amostra_minima():
+    df = pd.DataFrame({"codigo_ibge_municipio": [1] * 3 + [2] * P.REGIONAL_MIN_IMOVEIS,
+                       "compras": [100.0] * (3 + P.REGIONAL_MIN_IMOVEIS),
+                       "renda_mensal": [10.0] * (3 + P.REGIONAL_MIN_IMOVEIS)})
+    t = motor._compras_por_renda(df)
+    assert "1" not in t["municipio"] and "2" in t["municipio"]
+
+
+def test_backtest_regiao_com_renda_erra_menos(cal):
+    bt = cal["backtest_bens_sem_compras"]
+    assert bt["erro_mediano_regiao_e_renda_pct"] < bt["erro_mediano_so_regiao_pct"]
 
 
 def test_area_sem_iptu_nem_energia(linha, cal):
@@ -462,6 +541,8 @@ def test_metricas_e_casos(tmp_path):
     larg = met["confianca_largura_incendio_mediana"]
     assert larg["ALTA"] <= larg["MEDIA"] <= larg["BAIXA"]
     assert met["completude_coberturas_fixas_pct"] == 100.0 and met["sensibilidade_area_casos_com_queda"] == 0
+    assert "bens_pela_regiao_e_renda" in met["dados_faltantes"]
+    assert met["dados_faltantes"]["backtest_bens_sem_compras"]["erro_mediano_regiao_e_renda_pct"] > 0
     assert all(info["casos_contrastantes"].values())
 
 

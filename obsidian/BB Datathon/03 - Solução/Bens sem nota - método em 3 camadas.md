@@ -7,11 +7,13 @@ status: proposta
 
 **Problema levantado pelo time:** nem todo bem tem histórico de compra. A pessoa ganhou de presente, comprou usado, comprou em outro banco ou está começando a vida. O desgaste de um bem usado é incerto.
 
-## 1. Dá para usar o salário? **Não.**
-- **Regra:** RN-07 (guia, linha 30): "Não utilize dados sensíveis ou atributos pessoais como atalho para risco ou patrimônio."
-- **A armadilha:** na nossa base, a renda tem **correlação de 0,87** com o valor dos bens, muito maior que a área (0,32) ou a luz (0,26). É o atalho mais "fácil" e é exatamente o que a regra proíbe. A banca provavelmente vai procurar isso.
-- **Por que a regra existe:** usar renda para estimar patrimônio trata igual quem ganha bem e mora com pouco, e penaliza quem tem renda baixa e bens herdados. É o tipo de viés que o critério de privacidade e responsabilidade (10%) avalia.
-- **Vira argumento de pitch:** "A renda explicaria 0,87 do valor dos bens. A gente não usou, por regra e por justiça. E o nosso teste de justiça mostra que trocar a renda não muda a recomendação."
+## 1. Dá para usar o salário? **Sim, desde 28/10, como reforço.**
+> [!decisao] Atualizado depois da mentoria com o BB (28/10)
+> Antes respondíamos "não" pela RN-07. Na mentoria, o BB confirmou que **renda não é dado sensível** (a LGPD, art. 5º, II, também não a lista). A regra foi revisada (D-08).
+- **Onde entra:** como uma camada extra para quem **não tem compras nem bens ligados ao imóvel**: compras estimadas = média geométrica entre a média da região e renda × (compras ÷ renda do município). Fora da amostra, o erro mediano cai de **40,5%** (só região) para **22,7%** (região + renda).
+- **Onde não entra:** quem tem compras segue pelas compras (a prova vence a estimativa); a renda não decide elegibilidade, canal nem confiança, e nunca decide sozinha (RN-08).
+- **O cuidado que continua:** usar só a renda trataria igual quem ganha bem e mora com pouco, e penalizaria quem tem renda baixa e bens herdados. Por isso ela é combinada com a região e o cliente lê no motivo que a renda entrou ("estimamos ... e pela sua renda").
+- **Argumento de pitch:** "A renda explica muito dos bens (correlação 0,88). Depois da mentoria passamos a usá-la, mas só onde falta prova, e sempre junto com outro sinal."
 
 ## 2. Dá para usar Open Finance?
 - **No MVP: não como dado.** Ele não vem na base do datathon (RN-06) e inventar extratos seria apresentar estimativa como fato (RN-09).
