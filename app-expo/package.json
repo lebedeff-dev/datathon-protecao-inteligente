@@ -47,7 +47,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "dados": "node scripts/dados.js"
+    "dados": "node scripts/dados.js",
+    "icones": "node scripts/icones.js"
   },
   "private": true
 }

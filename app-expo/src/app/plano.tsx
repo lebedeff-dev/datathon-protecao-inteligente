@@ -1,6 +1,7 @@
 // 3/5 · Seleção de planos, no formato do app BB (cards com seleção, Personalizar e Avançar),
 // mas em lista vertical, com o recomendado primeiro e o motivo do motor.
 import { Feather } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import { router } from "expo-router";
 import { View } from "react-native";
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated";
@@ -9,10 +10,13 @@ import { COB, FIXAS, ORDEM_PLANO, PLANOS, Plano } from "@/logica/produto";
 import { brl2 } from "@/logica/textos";
 import { useAjuda } from "@/ui/ajuda";
 import { SeloAjustado, Botao, Entra, haptic, T, Titulo, Toque } from "@/ui/base";
+import { IMAGENS } from "@/ui/imagens";
 import { Tela } from "@/ui/tela";
 import { C, F } from "@/ui/tema";
 
 const REFLUXO = LinearTransition.duration(220);
+/** Emblema de cada plano (prompt 2, V4 a V6); sem o PNG, o cartão fica só com o texto. */
+const EMBLEMA: Record<Plano, number | undefined> = { ESSENCIAL: IMAGENS.plano_essencial, PRATICO: IMAGENS.plano_pratico, TOTAL: IMAGENS.plano_total };
 
 export default function PlanoTela() {
   const { s, set } = useEstado();
@@ -40,9 +44,15 @@ export default function PlanoTela() {
                 {on ? <Feather name="check-circle" size={24} color={C.azulEscuro} /> : <View style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: "#8D9199" }} />}
                 <T s={{ fontFamily: F.m, fontSize: 15.5 }}>12x de <T s={{ fontFamily: F.x, fontSize: 17 }}>{brl2(preco(s, k))}</T></T>
               </View>
-              <View style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", columnGap: 8, rowGap: 4, marginTop: 10 }}><T s={{ fontFamily: F.x, fontSize: 24, lineHeight: 30, color: on ? C.azulEscuro : C.texto }}>{p.nome}</T>{on && ajustado(s) ? <SeloAjustado gerente={s.ajustada} /> : null}</View>
-              <T s={{ fontSize: 15, color: "#3a3d44" }}>{n} coberturas</T>
-              <T s={{ fontSize: 15, color: "#3a3d44" }}>{p.pacotes} {p.pacotes > 1 ? "assistências" : "assistência"}</T>
+              {/* Nome e números à esquerda; o emblema do plano (prompt 2, V4 a V6), se já chegou, à direita no fluxo */}
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+                <View style={{ flex: 1 }}>
+                  <View style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", columnGap: 8, rowGap: 4, marginTop: 10 }}><T s={{ fontFamily: F.x, fontSize: 24, lineHeight: 30, color: on ? C.azulEscuro : C.texto }}>{p.nome}</T>{on && ajustado(s) ? <SeloAjustado gerente={s.ajustada} /> : null}</View>
+                  <T s={{ fontSize: 15, color: "#3a3d44" }}>{n} coberturas</T>
+                  <T s={{ fontSize: 15, color: "#3a3d44" }}>{p.pacotes} {p.pacotes > 1 ? "assistências" : "assistência"}</T>
+                </View>
+                {EMBLEMA[k] ? <Image source={EMBLEMA[k]} contentFit="contain" style={{ width: 76, height: 76, marginTop: 8 }} /> : null}
+              </View>
               <T s={{ fontSize: 14.5, marginTop: 8 }}>{p.frase}</T>
               {k === rec ? (
                 <View style={{ backgroundColor: on ? C.branco : C.azulClaro, borderRadius: 14, padding: 13, marginTop: 12 }}>

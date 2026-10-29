@@ -15,6 +15,11 @@ pasta: app-expo/
 
 Substitui o [[Protótipo v4 - app do cliente]] (HTML) para a gravação. O HTML continua no repositório como referência e para mostrar o raio-X do motor no computador.
 
+## Rodada 7 (29/10): prompt 2 (ícones e visuais) e app pronto para recebê-los
+- Segundo prompt para o ChatGPT: 28 ícones ilustrados em 5 folhas e 6 visuais (papel de parede, casa do Meu seguro, casa da moeda da animação, emblemas dos 3 planos). Avaliação e decisões em [[Prompt das ilustrações (ChatGPT)]].
+- `npm run icones` fatia as folhas; `src/ui/imagens.ts` liga cada PNG; sem o PNG fica o desenho atual.
+- **Para o próximo chat:** quando os PNGs chegarem, coloque-os em `assets/ilustracoes/` e `assets/icones/`, rode `npm run icones`, descomente as linhas em `imagens.ts` e confira na pré-visualização (Passo 2, entrada, Meu seguro, planos, sucesso, tela de bloqueio).
+
 ## Rodada 6 (29/10): gerente edita a proposta; selo sem sobrepor
 - **Gerente edita plano e coberturas** no pedido do cliente, com o mesmo seletor e a mesma lista do Personalizar; cada mudança vira frase para o cliente. Regras em [[Portal do gerente]].
 - **Bug do selo "ajustado pelo gerente":** no Conferir ele ficava em `position: absolute` por cima do nome do plano. Agora fica **no cabeçalho da seção, ao lado de "SEU PLANO"**, no fluxo normal. Regra para todo o app (skills better-layout/better-ui): selo nunca absoluto sobre conteúdo; em linha com quebra (`flexWrap`) ou numa linha própria. Ajustado também em Plano, Personalizar (rodapé) e Meu seguro (linha própria, porque a casa ilustrada ocupa o canto do cartão).

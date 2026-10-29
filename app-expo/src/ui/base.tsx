@@ -2,10 +2,12 @@
 // cards, selos, chave liga/desliga, contador de valores e entrada em cascata.
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
+import { Image } from "expo-image";
 import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Platform, Pressable, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
 import Animated, { FadeInDown, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { useAcessibilidade } from "./acessibilidade";
+import { ICONE_DE, ICONES } from "./imagens";
 import { C, EASE_OUT, F, SOMBRA, TIPO } from "./tema";
 
 export const haptic = {
@@ -28,10 +30,15 @@ const MCI: Record<string, string> = {
   fogo: "fire", carro: "car-side", vidro: "window-closed-variant", sirene: "alarm-light-outline", raio: "flash-outline", agua: "water-outline",
   vento: "weather-windy", ladrao: "lock-open-alert-outline", vizinho: "account-multiple-outline", casa: "home-outline", sofa: "sofa-outline",
   chuva: "weather-pouring", praia: "beach", ferramentas: "tools", maquina: "washing-machine", vassoura: "broom", inseto: "bug-outline",
-  escudo: "shield-home-outline", chave: "key-variant", tomada: "power-plug-outline", mais: "plus",
+  escudo: "shield-home-outline", chave: "key-variant", tomada: "power-plug-outline", mais: "plus", duvida: "chat-question-outline",
 };
 const FEA: Record<string, string> = {};
+/** Ícone de conteúdo. Se o ícone ilustrado (PNG do prompt 2) já chegou, ele entra no lugar do vetorial,
+ *  um pouco maior (1,5×): o desenho tem respiro próprio e enche o círculo azul-claro que o envolve.
+ *  Ícones pequenos (abaixo de 18) e brancos sobre fundo azul (ex.: chip selecionado) ficam vetoriais. */
 export function Icone({ n, tam = 20, cor = C.azul }: { n: string; tam?: number; cor?: string }) {
+  const arte = ICONES[ICONE_DE[n]];
+  if (arte && tam >= 18 && cor !== C.branco) return <Image source={arte} contentFit="contain" style={{ width: tam * 1.5, height: tam * 1.5 }} />;
   if (MCI[n]) return <MaterialCommunityIcons name={MCI[n] as any} size={tam} color={cor} />;
   return <Feather name={(FEA[n] || n) as any} size={tam} color={cor} />;
 }

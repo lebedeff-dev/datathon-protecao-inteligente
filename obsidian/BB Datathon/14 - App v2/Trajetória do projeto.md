@@ -57,6 +57,9 @@ Linha do tempo das decisões, para quem chega agora. Detalhes em cada nota ligad
 ## 29/10: gerente edita a proposta (rodada 6)
 - O gerente agora edita plano e coberturas antes de devolver a proposta (mesmos componentes do Personalizar). O selo "ajustado pelo gerente" que cobria o texto no Conferir foi para o cabeçalho da seção. Ver [[Portal do gerente]].
 
+## 29/10: prompt 2, ícones e visuais (rodada 7)
+- As ilustrações do ChatGPT ficaram boas; o resto do app precisava acompanhar. Prompt 2 enviado ao time (28 ícones em folhas + 6 visuais), e o app pronto para trocar cada peça sozinho. Ver [[Prompt das ilustrações (ChatGPT)]].
+
 ## Números atuais do motor (base comum, 138 casos)
 | Métrica | Valor |
 |---|---|

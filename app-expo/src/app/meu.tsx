@@ -99,7 +99,7 @@ export default function Meu() {
       <Entra i={1}><Rotulo>Aconteceu alguma coisa?</Rotulo></Entra>
       <Entra i={2}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          {[["Pedir\nassistência", "tool", assistencia, true], ["Avisar\nsinistro", "sirene", sinistro, false], ["O que\ncobre", "shield", () => router.push("/cobre"), false], ["Tirar\ndúvida", "message-circle", ajuda, false]].map(([n, ic, fn, urg]: any) => (
+          {[["Pedir\nassistência", "tool", assistencia, true], ["Avisar\nsinistro", "sirene", sinistro, false], ["O que\ncobre", "shield", () => router.push("/cobre"), false], ["Tirar\ndúvida", "duvida", ajuda, false]].map(([n, ic, fn, urg]: any) => (
             <Toque key={n} onPress={() => { haptic.toque(); fn(); }} style={{ alignItems: "center", gap: 8, width: 78 }}>
               <View style={{ width: 56, height: 56, borderRadius: 28, alignItems: "center", justifyContent: "center", backgroundColor: urg ? C.amarelo : C.azulClaro }}><Icone n={ic} tam={23} cor={urg ? C.azulEscuro : C.azul} /></View>
               <T s={{ fontFamily: F.m, fontSize: 13, lineHeight: 16, textAlign: "center" }}>{n}</T>

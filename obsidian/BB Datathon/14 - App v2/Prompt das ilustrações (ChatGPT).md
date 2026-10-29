@@ -32,4 +32,28 @@ As ilustrações em SVG feitas no código funcionam, mas o time vai trocá-las p
 - Descomentar a linha da imagem em `app-expo/src/ui/imagens.ts`.
 - Enquanto a imagem não existe, o app mostra o SVG atual (`Ilustracao`, `HeroiCasa` e `CasaProtegida` em `ilustracoes.tsx` escolhem sozinhos). O fundo em blocos diagonais continua em código, por baixo da imagem transparente.
 
+## Prompt 2: ícones e visuais (29/10)
+O time gerou as 17 ilustrações e ficaram boas o bastante para o resto do app parecer genérico ao lado. O segundo prompt está em **`app-expo/assets/icones/PROMPT_ChatGPT_icones.md`**.
+
+**O que ainda estava desenhado no código e entrou na lista (avaliação):**
+| Item | Onde aparece | Por que trocar |
+|---|---|---|
+| 28 ícones ilustrados (5 folhas I1 a I5) | Coberturas, assistências, atalhos do Meu seguro, fatos da entrada, pagamento, canais do gerente | Eram ícones de biblioteca (Material/Feather), genéricos ao lado das ilustrações |
+| V1 papel de parede | Tela de bloqueio (primeiro quadro do vídeo) | Era só um degradê em SVG |
+| V2 casa do Meu seguro | Cartão azul de "Meu seguro" | A casa em SVG era a peça mais simples da tela (print do time) |
+| V3 casa da moeda | Animação de contratação (frente da moeda que gira) | Mesma casa simples; o verso (círculo e ✓ desenhado) continua em código, porque é animado |
+| V4 a V6 emblemas dos planos | Cartões de Seleção de planos | Os cartões só tinham texto; a família de 3 emblemas mostra o que cada plano soma |
+
+**Decisões do prompt 2:**
+- Continuar **no mesmo chat** das ilustrações (ou anexar 4 imagens da primeira leva), para o traço não mudar.
+- **Ícones em folhas de 3 × 2** (células de 512 px, fundo transparente, ícone centrado com respiro), para o colega gerar 5 imagens em vez de 28. O script **`npm run icones`** (`app-expo/scripts/icones.js`, com pngjs) corta cada célula pela parte visível e grava `ic_<nome>.png`. Foi testado com uma folha falsa.
+- Regras próprias dos ícones (a **bíblia dos ícones**): aparecem com 28 a 40 pt, então contorno grosso (6% da largura), no máximo 3 formas e 1 acento amarelo, mesmo tamanho visual em todos e teste a 32 px. Nada de texto, cifrão ou logo (nem o do Pix, nem bandeira de cartão).
+- V4 a V6 com a mesma casa no mesmo lugar: Essencial (casa + guarda-chuva), Prático (+ caixa de ferramentas e cadeado), Total (+ casa vizinha e coração).
+
+**No app (pronto para receber):**
+- `src/ui/imagens.ts` tem as linhas comentadas de todos os PNGs (visuais em `IMAGENS`, ícones em `ICONES`) e o mapa `ICONE_DE` (nome usado na tela → ícone ilustrado).
+- `Icone` usa o PNG quando existe, em 1,5× (o desenho tem respiro próprio e enche o círculo azul-claro). Ícones pequenos (menos de 18) e brancos sobre azul continuam vetoriais.
+- `Papel`, `CasaProtegida` (prefere `meu_seguro_casa`), a frente da moeda em `sucesso.tsx` e os cartões de `plano.tsx` (emblema à direita, no fluxo, não por cima) trocam sozinhos.
+- "Tirar dúvida" ganhou ícone próprio (`duvida`), separado do chat do gerente.
+
 Ligações: [[App Expo - app de verdade no celular]] · [[Portal do gerente]] · [[Regras de design BB]]

@@ -280,8 +280,10 @@ export function HeroiCasa({ h = 190 }: P) {
   );
 }
 
+/** Casa do cartão "Meu seguro": a versão do prompt 2 (meu_seguro_casa), senão a do prompt 1, senão o SVG. */
 export function CasaProtegida({ tam = 120 }: { tam?: number }) {
-  if (IMAGENS.casa_protegida) return <Image source={IMAGENS.casa_protegida} contentFit="contain" style={{ width: tam, height: tam }} />;
+  const img = IMAGENS.meu_seguro_casa ?? IMAGENS.casa_protegida;
+  if (img) return <Image source={img} contentFit="contain" style={{ width: tam, height: tam }} />;
   return (
     <Svg width={tam} height={tam * 0.85} viewBox="0 0 130 110">
       <Path d="M12 56 L65 14 L118 56" fill="none" stroke={AM} strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
@@ -293,6 +295,7 @@ export function CasaProtegida({ tam = 120 }: { tam?: number }) {
 
 /** Papel de parede da tela de bloqueio (azul do BB com luzes suaves). */
 export function Papel() {
+  if (IMAGENS.papel_parede) return <Image source={IMAGENS.papel_parede} contentFit="cover" style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }} />;
   return (
     <Svg style={{ position: "absolute", top: 0, left: 0 }} width="100%" height="100%" preserveAspectRatio="xMidYMid slice" viewBox="0 0 390 844">
       <Defs>

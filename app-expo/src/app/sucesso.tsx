@@ -7,10 +7,12 @@ import { useEffect, useMemo } from "react";
 import { View } from "react-native";
 import Animated, { FadeInDown, SharedValue, useAnimatedProps, useAnimatedStyle, useSharedValue, withDelay, withSequence, withSpring, withTiming } from "react-native-reanimated";
 import Svg, { Circle, Path, Rect } from "react-native-svg";
+import { Image } from "expo-image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { tipoAtual, useEstado } from "@/logica/estado";
 import { PLANOS } from "@/logica/produto";
 import { Botao, haptic, T } from "@/ui/base";
+import { IMAGENS } from "@/ui/imagens";
 import { C, EASE_IN_OUT, EASE_OUT, F } from "@/ui/tema";
 
 const ACirculo = Animated.createAnimatedComponent(Circle);
@@ -70,13 +72,15 @@ export default function Sucesso() {
       <Animated.View style={[{ width: TAM, height: TAM }, moeda]}>
         <Animated.View style={[{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, alignItems: "center", justifyContent: "center" }, ladoFrente]}>
           <View style={{ width: TAM, height: TAM, borderRadius: TAM / 2, backgroundColor: "rgba(255,255,255,0.12)", alignItems: "center", justifyContent: "center" }}>
+            {/* Frente da moeda: a casa ilustrada (prompt 2, V3) quando chegar; até lá, o desenho em SVG */}
+            {IMAGENS.sucesso_casa ? <Image source={IMAGENS.sucesso_casa} contentFit="contain" style={{ width: TAM * 0.78, height: TAM * 0.78 }} /> : (
             <Svg width={118} height={108} viewBox="0 0 130 120">
               <Rect x="86" y="18" width="12" height="26" rx="2" fill="#FF6F68" />
               <Rect x="24" y="54" width="82" height="60" rx="6" fill={C.branco} />
               <Path d="M10 60 L65 14 L120 60" fill="none" stroke={C.amarelo} strokeWidth={11} strokeLinecap="round" strokeLinejoin="round" />
               <Rect x="36" y="68" width="20" height="18" rx="3" fill={C.amarelo} /><Path d="M46 68v18M36 77h20" stroke={C.azul} strokeWidth={1.6} />
               <Path d="M70 114V86a9 9 0 0 1 18 0v28z" fill={C.azul} /><Circle cx="83" cy="101" r="1.8" fill={C.amarelo} />
-            </Svg>
+            </Svg>)}
           </View>
         </Animated.View>
         <Animated.View style={[{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, alignItems: "center", justifyContent: "center" }, ladoVerso]}>
