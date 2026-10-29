@@ -46,6 +46,10 @@ Linha do tempo das decisões, para quem chega agora. Detalhes em cada nota ligad
 - O app **não precisa ser real**; é demonstração. Continuar **dentro do app do BB**, ligado ao motor, com botões A/B/C, modo raio-X e tela do gerente. Não criar app separado.
 - Plano de construção: [[Especificação do app v2 - ligado ao motor]].
 
+## 29/10: app Expo alinhado ao motor do Pedro (rodada 4)
+- O Pedro atualizou o motor e o vault (necessidades com provas, território, RN-07 revisada: renda só como sinal complementar de bens; idade nunca). O app foi refeito em cima desse commit, na branch `app-celular`; a minha versão anterior do F1/motor ficou em `backup/rodada-guilherme-29-10`.
+- App: moldura de iPhone para gravar no computador, só azuis do BB, escala tipográfica, selo "ajustado pelo gerente", pagamento trocável, Ajuda em todas as telas, herói e animação final refeitos, contrato de dados e importação com conferência. Detalhes em [[App Expo - app de verdade no celular]].
+
 ## Números atuais do motor (base comum, 138 casos)
 | Métrica | Valor |
 |---|---|
