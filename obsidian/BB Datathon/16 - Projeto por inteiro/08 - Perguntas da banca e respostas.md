@@ -36,9 +36,9 @@ Três mecanismos:
 
 ### "Como cada cobertura e cada motivo são escolhidos?"
 - **As coberturas não são escolhidas uma a uma:** vêm do **plano** (catálogo oficial). Essencial = 6 fixas (incêndio, água, vendaval, impacto de veículos, queda de aeronave, danos elétricos); Prático = + roubo e vidros; Total = + RC familiar, perda de aluguel e despesas emergenciais.
-- **O plano sai de pontos:** cada sinal real soma pontos (paga aluguel = 2 para o Total; bens comprovados ≥ R$ 36 mil = 2 para o Prático etc.). Tabela completa em [[02 - O motor passo a passo]].
+- **O plano sai das necessidades** (desde 29/10): aluguel em jogo → Total; roubo e vidros → Prático; danos a terceiros → RC familiar. Cada necessidade tem uma prova do cliente. Explicação em [[02 - O motor passo a passo]].
 - **Adicional:** a RC familiar entra em prédio ou condomínio com dependentes ou pet, quando o plano não é o Total.
-- **O motivo do plano** é o texto dos **sinais que deram os pontos**, com os números do cliente. Ex.: "você gastou R$ 11 mil com vidraçaria" é o sinal VIDROS, que deu 1 ponto ao Prático. Sem sinal (Essencial), o motivo vira o patrimônio: valor da casa e dos aparelhos.
+- **O motivo do plano** é a prova da necessidade que decidiu, com os números do cliente. Ex.: "você gastou R$ 11 mil com vidraçaria" acendeu a necessidade de roubo e vidros, que o Prático resolve.
 - **O motivo de cada cobertura** é o valor calculado + a frequência real de sinistros da BB + o dado oficial da cidade.
 
 ### "A tabela da jornada: do que se trata?"
@@ -80,7 +80,7 @@ O guia aceita "fontes externas **públicas ou devidamente autorizadas**", desde 
 ### B. Coerência
 6. ✅ **Corrigido em 29/10:** 1 toque puro **45,7%** dos elegíveis, sem pessoa **81,2%**. STP de 72,5% estava inflado. Procede. O 1 toque puro é **63 de 122 elegíveis (52%)**. **Correção:** mostrar os dois: "52% contratam sem nenhuma pergunta obrigatória; até 82% sem falar com uma pessoa".
 7. ✅ **94 × 63.** Os 31 de diferença são: **14 não elegíveis**, **9 com pouca familiaridade com o app** (maturidade < 40: modo simples) e **8 que não usam o app**. Falta escrever isso no relatório.
-8. 🟡 **Limiar do plano na mediana.** A mediana é escolha de produto (os bens acima de metade da carteira merecem roubo), não risco atuarial; não temos sinistralidade por faixa. Assumir como premissa e citar o caso instável (`IMO_CASO_00013_01`).
+8. ✅ **Tratado em 29/10:** os pontos viraram necessidades, e quem está a menos de 15% do limite é marcado "no limite" e recebe a pergunta que decide (14 casos; o único instável está entre eles). **Limiar do plano na mediana.** A mediana é escolha de produto (os bens acima de metade da carteira merecem roubo), não risco atuarial; não temos sinistralidade por faixa. Assumir como premissa e citar o caso instável (`IMO_CASO_00013_01`).
 9. 🟡 **Proporções sem dado** (vendaval 10–20%, água 3–8%, RC 70 m² × 30–60%, despesas 2–5%). São premissas do time e estão em `parametros.py`. Defesa: telhado e esquadrias são uma fração da obra; RC usa o tamanho médio de um apartamento vizinho. **Ação:** citar a composição de custo por etapa do CUB, se der tempo, ou assumir como premissa.
 10. ✅ **Corrigido em 29/10:** por padrão só os bens; a estrutura entra se o contrato pedir. Inquilino de casa com a estrutura no incêndio (15 casos). Procede pela D-07 e pela Lei do Inquilinato. **Correção:** por padrão, só bens; a estrutura entra se o contrato pedir (a pergunta já existe).
 

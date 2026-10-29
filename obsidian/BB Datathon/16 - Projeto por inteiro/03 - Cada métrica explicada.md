@@ -13,11 +13,11 @@ Todas saem de `motor/metricas.py` para `entrega/metricas.json` a cada `python mo
 | `com_justificativa_pct` | 100% | Linhas com motivo preenchido | O motivo é o principal (mentoria) |
 | `completude_coberturas_fixas_pct` | 100% | Casos com todas as coberturas fixas do plano | RN-21, RN-22 |
 | `linhas_de_cobertura` · `faixas_vazias` · `faixas_invertidas` | 1.232 · 0 · 0 | Linhas da planilha 2; faixas sem valor; mínimo maior que o máximo | RN-30, RN-32 |
-| `planos` | Prático 68 · Total 38 · Essencial 32 | Contagem | Distribuição coerente (nem todo mundo no Total) |
+| `planos` | Prático 66 · Total 38 · Essencial 34 | Contagem | Distribuição coerente (nem todo mundo no Total) |
 | `elegibilidade` · `elegibilidade_por_regra` | SIM 138 · seguro existente 30 (16 "provável BB", com pergunta) · reforma 10 | Cada regra do guia 9.1 e quantos casos pegou | Elegibilidade antes de recomendar |
 | `casos_com_confirmacao_de_elegibilidade` | 37 | Casos com pendência que vira pergunta | Sinal fraco vira pergunta, não recusa |
-| `coberturas_adicionais` | RC familiar 41 | Adicionais fora do plano | Slide 23: plano + **adicionais** |
-| `perguntas_media` · `perguntas_candidatas_media` | 2,77 · 3,55 | Perguntas feitas e possíveis | Poucas e priorizadas (RN-36) |
+| `coberturas_adicionais` | RC familiar 93 | Adicionais fora do plano (todo prédio ou família abaixo do Total) | Slide 23: plano + **adicionais** |
+| `perguntas_media` · `perguntas_candidatas_media` | 2,75 · 3,5 | Perguntas feitas e possíveis | Poucas e priorizadas (RN-36) |
 | `perguntas_obrigatorias_media` · `casos_sem_pergunta_obrigatoria` | 0,34 · 94 | Perguntas que travam a contratação | Quanto dá para contratar direto |
 | `confianca` · `confianca_baixa_pct` | alta 17 · média 101 · baixa 20 (14,5%) | Nível por regra | O guia pede o % de confiança baixa |
 | `confianca_por_cobertura` | ex.: danos elétricos ALTA 69 · MÉDIA 69 | O pior dos dados que a cobertura usa | A coluna de confiança da planilha 2 informa algo |
@@ -26,6 +26,10 @@ Todas saem de `motor/metricas.py` para `entrega/metricas.json` a cada `python mo
 | `confianca_largura_incendio_mediana` | alta 1,89 · média 2,33 · baixa 2,56 | Máximo ÷ mínimo do incêndio por nível | Menos confiança = faixa mais larga (honesto) |
 | `sensibilidade_area_10pct_incendio_media_pct` · `..._casos_com_queda` | +4,65% · 0 | Área 10% maior: quanto sobe o incêndio | Coerência: área maior nunca reduz |
 | `casos_com_falha` · `tempo_segundos` | 0 · ~1 s | Falhas e tempo dos 138 casos | Viabilidade |
+
+| `necessidades` | aluguel 38 · roubo 84 · terceiros 126 | Quantos clientes têm cada necessidade (a base do plano) | A recomendação se explica pelas necessidades |
+| `forca_da_recomendacao` | clara 124 · no limite 14 | Recomendações decididas com folga × por menos de 15% do limite | Dizer quando a decisão foi por pouco |
+| `instaveis_marcados_no_limite_pct` | 100% | Dos casos que mudam de plano com ±5% nos valores, quantos estão marcados "no limite" | A instabilidade está avisada, não escondida |
 
 ## 2. Responsabilidade (justiça)
 | Métrica | Valor | Como | Por que |

@@ -33,6 +33,7 @@ atualizado: 2026-10-28
 | 29/10 | **Família nunca muda o plano**: só RC familiar como adicional ou pergunta (RN-07) |
 | 29/10 | Inquilino de casa: só os bens no incêndio; a estrutura entra se o contrato pedir (D-07) |
 | 29/10 | Fontes por nível de confiança; sinistros da matéria só como contexto |
+| 29/10 | **Recomendação por necessidades** no lugar dos pontos: aluguel → Total; roubo e vidros → Prático; terceiros → RC; força "clara" ou "no limite" com pergunta decisiva |
 
 ## Ainda em aberto
 - **Quem não usa o app** (16 casos): gerente direto ou convite ao app antes (D-01).

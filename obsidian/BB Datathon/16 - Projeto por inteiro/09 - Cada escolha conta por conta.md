@@ -46,20 +46,16 @@ Aqui o motor é seguido **passo a passo em dois clientes reais da base de teste*
 ## 4. Pode contratar?
 Situação cadastral regular; material vazio (não pergunta, porque só pergunta quando o cadastro diz outro material); material de construção R$ 0 (abaixo de R$ 15 mil); sem seguro residencial. → **Elegível, sem pendência.**
 
-## 5. Qual plano?
-| Sinal | Tem? | Pontos |
-|---|---|---|
-| Paga aluguel | não | — |
-| Recebe aluguel | não | — |
-| Prédio ou condomínio | **sim** | Total +1 |
-| Bens comprovados ≥ R$ 36 mil | não (R$ 22.190) | — |
-| Eletrônicos comprovados ≥ R$ 10 mil | não (R$ 9.411, por pouco) | — |
-| Casa fora de condomínio | não | — |
-| Gasto com vidraçaria em 24 meses | **sim** (R$ 11.000) | Prático +1 |
+## 5. Qual plano? (as três necessidades)
+| Necessidade | Pergunta | Resposta e prova | Força |
+|---|---|---|---|
+| **A · Aluguel em jogo** | Paga ou recebe aluguel deste imóvel? | **Não** (paga parcela de financiamento, não aluguel) | — |
+| **B · Roubo e vidros** | Bens ≥ R$ 36 mil? Eletrônicos ≥ R$ 10 mil? Gastou com vidros? | Bens R$ 22.190 (não); eletrônicos R$ 9.411 (não, mas perto); **vidraçaria R$ 11.000 (sim)** | **Clara**: a vidraçaria é uma prova direta, não depende de limite |
+| **C · Danos a terceiros** | Prédio ou condomínio? Dependentes ou pet? | **Sim**: apartamento (o vizinho está colado) e 1 dependente | Clara |
 
-**Regra:** Total exige 2 pontos de Total (tem 1). Prático exige 2 de Prático **ou** 1 de Prático + 1 de Total → tem (1 + 1). → **Prático.**
-**Adicional:** 1 dependente + apartamento + plano abaixo do Total → **RC familiar** como adicional.
-**Motivo do plano:** o sinal que deu o ponto ao Prático (vidraçaria).
+**Decisão:** não tem A → não é Total. Tem B → **Prático**. Tem C e o plano não é o Total → **RC familiar como adicional**.
+**Motivo do plano:** a prova que acendeu B (a vidraçaria).
+**Por que a força é "clara" mesmo com eletrônicos perto do limite:** a necessidade B já está provada pela vidraçaria. O valor dos eletrônicos não muda o plano, então não há pergunta decisiva.
 
 ## 6. As faixas
 Cada faixa: a conta → os limites do produto → o arredondamento (de 500 em 500 até R$ 20 mil, de 1.000 em 1.000 acima).
@@ -82,7 +78,7 @@ Cada faixa: a conta → os limites do produto → o arredondamento (de 500 em 50
 | Bens | A faixa dos bens tem 59,9 − 22,2 = R$ 37,7 mil de largura | 58 | opcional |
 | Acabamento | 110 × 2.739 × (1,30 − 1,00) × 40% = R$ 36,2 mil do incêndio | 56 | opcional |
 | Área | Não entra: a área é cadastrada | — | — |
-| RC da família | Não entra: a RC já veio como adicional | — | — |
+| Pergunta decisiva | Não entra: a recomendação é clara | — | — |
 
 → **2 perguntas, as duas opcionais.**
 
@@ -91,7 +87,7 @@ Cada faixa: a conta → os limites do produto → o arredondamento (de 500 em 50
 - **Jornada:** elegível · sem obra · usa o app · nenhuma pergunta obrigatória · maturidade 62 (≥ 40) → **1 toque**.
 
 ## 9. O que o cliente lê
-> Recomendamos o plano Prático porque você gastou R$ 11 mil com vidraçaria nos últimos 2 anos, e vidro quebrado custa caro para repor. A estrutura tem o seguro do condomínio; o seu protege os acabamentos, cerca de R$ 105 mil, e os seus bens, de R$ 22 mil a R$ 60 mil. Incluímos a responsabilidade civil familiar, que paga danos que dependentes ou pet causem a vizinhos. Se você escolher menos, roubo e vidros ficarão descobertos: um arrombamento sairia do seu bolso. O Total acrescenta perda de aluguel e despesas emergenciais. Confiança alta: os dados vêm do seu cadastro e das suas contas.
+> Recomendamos o plano Prático porque você gastou R$ 11 mil com vidraçaria nos últimos 2 anos, e vidro quebrado custa caro para repor. A estrutura tem o seguro do condomínio; o seu protege os acabamentos, cerca de R$ 105 mil, e os seus bens, de R$ 22 mil a R$ 60 mil. Incluímos a responsabilidade civil familiar, que paga danos que a sua casa cause ao vizinho ou a terceiros. Se você escolher menos, roubo e vidros ficarão descobertos. O Total acrescenta perda de aluguel e despesas emergenciais. Confiança alta: os dados vêm do seu cadastro e das suas contas.
 
 ---
 
@@ -114,10 +110,20 @@ Cada faixa: a conta → os limites do produto → o arredondamento (de 500 em 50
 ## 3. Bens
 Compras 8.400 + 8.050 + 4.700 = R$ 21.150; bens ligados R$ 9.650. Mínimo 21.150 × 1,0694 = **R$ 22.618**; máximo 2,7 × 21.150 × 1,0694 = **R$ 61.069**. Bens com vínculo forte: 10.450 de 13.850 (75%, acima de 60%) e há compras → confiança dos bens **ALTA**.
 
-## 4. Plano
-Só um sinal: casa fora de condomínio (Prático +1). Bens R$ 22.618 (< 36 mil); eletrônicos R$ 8.983 (< 10 mil); sem vidraçaria. Prático 1, Total 0 → **Essencial**.
-**Motivo sem sinal = patrimônio:** não há aluguel nem financiamento (o prejuízo seria todo dele) + quanto valem os aparelhos + danos elétricos são a cobertura mais acionada.
-**Família:** 1 dependente, numa casa e abaixo do Total → **pergunta** da RC (casa não ganha a RC automaticamente).
+## 4. Plano (as três necessidades)
+| Necessidade | Resposta e prova | Força |
+|---|---|---|
+| **A · Aluguel em jogo** | **Não**: sem aluguel pago nem recebido | — |
+| **B · Roubo e vidros** | **Não**: bens R$ 22.618 (< 36 mil); eletrônicos **R$ 8.983** (< 10 mil); sem vidraçaria. A casa fora de condomínio é só agravante | **No limite**: 8.983 ÷ 10.000 = 0,90, a menos de 15% do limite |
+| **C · Danos a terceiros** | **Sim**: 1 dependente | Clara |
+
+**Decisão:** sem A e sem B → **Essencial**, + **RC familiar como adicional** (por causa de C).
+**Como a recomendação "no limite" aparece:**
+1. a pergunta decisiva entra em primeiro: "Seus eletrônicos (TV, notebook, celulares, videogame) valem mais de R$ 10 mil?";
+2. o motivo avisa: "Você está perto de precisar do Prático, que cobre roubo e vidros";
+3. se o cliente responder "sim", a necessidade B acende e o plano sobe para o Prático.
+
+**Motivo sem necessidade A ou B = patrimônio:** não há aluguel nem financiamento (o prejuízo seria todo dele), quanto valem os aparelhos e o fato de danos elétricos serem a cobertura mais acionada.
 
 ## 5. Faixas (as principais)
 | Cobertura | Conta | Faixa |
@@ -129,16 +135,16 @@ Só um sinal: casa fora de condomínio (Prático +1). Bens R$ 22.618 (< 36 mil);
 ## 6. Perguntas
 | Candidata | Quanto aperta | Prioridade | Tipo |
 |---|---|---|---|
-| RC da família | muda o que está coberto | 59 | opcional |
+| **Pergunta decisiva** (eletrônicos > R$ 10 mil?) | decide entre Essencial e Prático | 65 | opcional |
 | Área | (165 − 92) × 2.944 × 1,30 = **R$ 278 mil** do incêndio | 58 | opcional |
 | Acabamento | 165 × 2.944 × (1,30 − 0,85) = **R$ 219 mil** | 56 | opcional |
-| Bens (R$ 38 mil) e "o imóvel é seu e quitado?" | Ficam de fora (só 3 vagas) | 54 · 30 | — |
+| Bens (R$ 38 mil) e "o imóvel é seu e quitado?" | Ficam de fora (só 3 vagas; a RC agora entra como adicional, sem pergunta) | 54 · 30 | — |
 
 ## 7. Confiança e jornada
 Área e vínculo **estimados** (nenhum presumido) → **MÉDIA**. Nenhuma pergunta obrigatória, usa o app, maturidade 55 → **1 toque**: contrata com a faixa sugerida, e as 3 perguntas só ajustam.
 
 ## 8. O que o cliente lê
-> Recomendamos o plano Essencial porque não vemos aluguel nem financiamento nas suas contas, então um incêndio ou um temporal sairia todo do seu bolso; seus eletrônicos e eletrodomésticos valem hoje de R$ 18 mil a R$ 47 mil, e danos elétricos são 53,3% dos acionamentos do residencial da BB. Reconstruir o imóvel custaria cerca de R$ 397 mil pelo custo oficial do IBGE, fora os seus bens. O Prático acrescenta roubo e vidros. Confiança média: a área foi estimada pelo IPTU e pela conta de luz.
+> Recomendamos o plano Essencial porque não há aluguel nem financiamento nas suas contas, então um incêndio sairia todo do seu bolso; seus eletrônicos e eletrodomésticos valem hoje de R$ 18 mil a R$ 47 mil, e danos elétricos são 53,3% dos acionamentos do residencial da BB. Reconstruir o imóvel custaria cerca de R$ 397 mil pelo custo oficial do IBGE, fora os seus bens. Incluímos a responsabilidade civil familiar, que paga danos que a sua casa cause ao vizinho ou a terceiros. Você está perto de precisar do Prático, que cobre roubo e vidros: a pergunta sobre os seus bens decide. Confiança média: a área foi estimada pelo IPTU e pela conta de luz.
 
 ---
 
@@ -152,11 +158,12 @@ Só um sinal: casa fora de condomínio (Prático +1). Bens R$ 22.618 (< 36 mil);
 | 25%–40% de acabamentos | Segundo risco | Condições Gerais cl. 15.2 + premissa do percentual | Premissa: citar como tal |
 | IPCA^1,5 (1,0694) | Bens | Banco Central (API); 1,5 ano = meio da janela de 36 meses | Coerente |
 | 2,7 × compras | Bens | Premissa: ~8 anos de vida útil ÷ 3 anos de compras | Premissa: citar como tal |
-| R$ 36 mil · R$ 10 mil | Plano | Medianas da base de desenvolvimento | Escolha de produto, não risco atuarial (1 caso muda com ±5%) |
+| R$ 36 mil · R$ 10 mil | Necessidade B (roubo) | Medianas da base de desenvolvimento | Escolha de produto, não risco atuarial. Por isso existe a faixa "no limite" (±15%) com pergunta decisiva; o único caso que muda com ±5% está marcado "no limite" |
+| ±15% ("no limite") | Força da recomendação | Premissa: a margem de erro típica das estimativas da base (15% a 17%) | Coerente com o backtest |
 | 10–20% (casa) · 2–5% (apartamento) | Vendaval | Premissa: telhado e esquadrias | Premissa: citar como tal |
 | 50–100% bens + 3–8% reconstrução | Água | Premissa | Premissa; o teto de R$ 50 mil prende 134 casos |
 | R$ 5 mil | Perguntas | Corte mínimo de valor de uma pergunta (RN-36) | Coerente com "poucas perguntas" |
-| Prioridade 59 da RC da família | Perguntas | Muda o que está coberto, então vem antes das perguntas de valor | Corrigido em 29/10: 33 de 34 casas com família recebem a oferta (antes, 11) |
+| RC familiar como adicional | Necessidade C | Prédio, condomínio ou família | Desde 29/10, 93 imóveis com RC (antes, 52); todo prédio tem a proteção do vizinho |
 
 ## O que esta conta revelou (e foi corrigido em 29/10)
 - **A oferta da RC sumia:** em 23 de 34 casas com família, a pergunta da RC (prioridade 45) ficava de fora atrás das 3 perguntas de valor. Subiu para 59.

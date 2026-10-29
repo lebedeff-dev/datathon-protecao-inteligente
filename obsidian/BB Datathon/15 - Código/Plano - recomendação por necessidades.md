@@ -1,12 +1,12 @@
 ---
 tags: [plano, recomendacao, motor, documentacao]
 data: 2026-10-29
-status: aguardando aprovação
+status: aprovado e executado em 29/10
 ---
 # 🎯 Plano: recomendação por necessidades + documentação completa
 
-> [!warning] Nada implementado ainda
-> Este plano troca a **pontuação** por uma escolha baseada nas **necessidades** do cliente e reescreve o vault para quem não conhece nada do projeto. Só vira código depois da aprovação do time.
+> [!success] Executado em 29/10
+> Planos: Prático 66 · Total 38 · Essencial 34 · RC adicional 93 · força clara 124 · no limite 14 (todos com pergunta decisiva) · 111 testes. Documentação: [[00b - Glossário (termos de seguro e de dados)]] e [[10 - Dicionário de funções]].
 
 ## 1. O problema da pontuação de hoje
 | Problema | Evidência (base de teste) |

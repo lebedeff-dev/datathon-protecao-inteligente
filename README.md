@@ -18,7 +18,7 @@ Python 3.11 (registrado em `.python-version`).
 
 ```bash
 pip install -r requirements.txt
-python -m pytest -q                 # 105 testes
+python -m pytest -q                 # 111 testes
 python motor/gerar.py --entrega     # gera, valida e copia as planilhas para entrega/
 ```
 
@@ -34,7 +34,7 @@ dados/desenvolvimento ──► calibrar()  (R$ de IPTU e de energia por m², po
 dados/teste_comum ──► processar_caso() para cada cliente-imóvel
    1. inferir tipo, vínculo, uso, área e bens  → cada dado com natureza, fonte e confiança
    2. elegibilidade (guia 9.1)                 → SIM / NAO / SIM + pergunta
-   3. plano por pontos de sinais               → Essencial, Prático ou Total (+ adicionais)
+   3. plano pelas necessidades                 → aluguel → Total; roubo e vidros → Prático; terceiros → RC
    4. faixa mín/máx de cada cobertura          → SINAPI, CUB, IPCA, FipeZAP, condições gerais
    5. até 3 perguntas, pelo valor da informação
    6. confiança por regra + jornada (1 toque, app com perguntas, gerente só em último caso)
@@ -63,7 +63,7 @@ dados/teste_comum ──► processar_caso() para cada cliente-imóvel
 - **Bens:** compras de 36 meses e bens vinculados, corrigidos pelo IPCA (Banco Central), até 2,7 × as compras (estoque). Sem compras nem bens ligados ao imóvel: média da região combinada com a renda (média geométrica; erro mediano fora da amostra de 40,5% só com a região para 22,7%).
 - **Área sem cadastro (67% dos casos):** estimada pelo IPTU e pela energia, comparados aos imóveis do mesmo município com área conhecida. A renda não ajuda aqui (correlação 0,01 com a área).
 - **Padrão construtivo vazio:** faixa do econômico ao superior (0,85 a 1,30) e pergunta do acabamento.
-- **Plano:** pontos por sinal (aluguel, vizinhos, bens, eletrônicos, vidros, dependentes e pet, só como necessidade de RC). Tabela completa em `documentos/contexto/17-revisao-qa.md`.
+- **Plano:** pelas três necessidades do cliente (aluguel em jogo → Total; roubo e vidros → Prático; danos a terceiros → RC familiar), cada uma com a prova e a força ("clara" ou "no limite", com pergunta decisiva). Explicação completa no vault: `obsidian/BB Datathon/16 - Projeto por inteiro/02 - O motor passo a passo.md`.
 - **Idade não entra em nenhuma decisão** (guia: "não utilize dados sensíveis ou atributos pessoais como atalho para risco ou patrimônio"). Dependentes e pet só como necessidade de RC familiar, nunca em valor, risco, canal ou confiança.
 - **Renda:** na mentoria de 28/10, o Banco do Brasil confirmou que renda não é dado sensível (a LGPD, art. 5º, II, também não a lista). Ela entra num ponto só: os bens de quem não tem compras nem bens ligados ao imóvel, sempre combinada com a média da região, e o cliente lê no motivo que a renda foi usada. Quem tem compras segue pelas compras. Elegibilidade, canal e confiança não usam renda. Desligável em `parametros.RENDA_NOS_BENS_SEM_COMPRAS`.
 
@@ -90,8 +90,9 @@ dados/teste_comum ──► processar_caso() para cada cliente-imóvel
 |---|---|
 | Casos processados / com justificativa / coberturas fixas completas | 100% · 100% · 100% |
 | Falhas na execução | 0 |
-| Planos | Prático 68 · Total 38 · Essencial 32 (dependentes e pet não mudam o plano) |
-| Coberturas adicionais | 52 (RC familiar em prédio ou condomínio com dependentes ou pet; em casa, vira pergunta) |
+| Planos | Prático 66 · Total 38 · Essencial 34, pelas necessidades: aluguel em jogo → Total; roubo e vidros → Prático; danos a terceiros → RC |
+| Força da recomendação | clara 124 · no limite 14 (a menos de 15% do limite; recebem a pergunta que decide o plano) |
+| Coberturas adicionais | 93 (RC familiar para quem mora em prédio ou condomínio, ou tem dependentes ou pet) |
 | Elegibilidade | SIM 138 · NÃO só com prova (situação cadastral irregular; nenhum na base) · 37 com confirmação pendente, 16 deles "provável seguro BB" (o app pergunta; RN-19) |
 | Confiança | ALTA 17 · MÉDIA 101 · BAIXA 20 (14%) |
 | Jornada | 1 toque 63 (nenhuma pergunta obrigatória) · app com perguntas 49 (elegibilidade, uso duvidoso, confiança baixa, modo simples) · gerente 26 (19%: obra 10, sem app 16) |

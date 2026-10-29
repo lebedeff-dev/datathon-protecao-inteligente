@@ -32,19 +32,42 @@ flowchart LR
 
 **Regra de ouro (RN-19):** sinal fraco nunca vira NÃO; vira pergunta. Por isso, desde 29/10, "seguro residencial + produto de seguridade BB" (produto que pode ser vida ou previdência) também vira **pergunta obrigatória** ("O seu seguro atual é da BB?"). Resultado: SIM 138 · NÃO só com situação cadastral irregular (nenhum na base).
 
-## 3 · Plano (pontos por sinais)
-| Sinal | Pontos | Para |
-|---|---|---|
-| Paga aluguel (inquilino) | 2 | Total |
-| Recebe aluguel do imóvel | 2 | Total |
-| Prédio ou condomínio (vizinhos) | 1 | Total |
-| Bens comprovados ≥ R$ 36 mil | 2 | Prático |
-| Eletrônicos comprovados ≥ R$ 10 mil | 1 | Prático |
-| Casa fora de condomínio | 1 | Prático |
-| Gasto com vidraçaria em 24 meses | 1 | Prático |
+## 3 · Plano: as três necessidades (desde 29/10)
+O motor **não soma pontos**. Ele faz três perguntas sobre o cliente. Cada "sim" precisa de uma **prova** (um dado do próprio cliente) e aponta a **cobertura que resolve**:
 
-**Decisão:** Total com 2 pontos ou mais de Total; Prático com 2 de Prático (ou 1 de Prático + 1 de Total); senão, Essencial. Veraneio não soma para o Prático (o roubo não cobre casa desocupada). Bens presumidos não somam pontos. **Dependentes e pet nunca somam pontos** (decisão de 29/10, RN-07): só pedem a **RC familiar**, como adicional em prédio ou condomínio ou como pergunta numa casa.
-Resultado: Prático 68 · Total 38 · Essencial 32 · RC adicional 52.
+| Necessidade | Acende quando (a prova) | Cobertura que resolve | Está em |
+|---|---|---|---|
+| **A · Aluguel em jogo** | Paga aluguel deste imóvel, **ou** recebe aluguel dele | Perda de aluguel | só no **Total** |
+| **B · Roubo e vidros** | Bens comprovados ≥ R$ 36 mil, **ou** eletrônicos ≥ R$ 10 mil, **ou** gastou com vidraçaria nos últimos 2 anos | Roubo e quebra de vidros | **Prático** e Total |
+| **C · Danos a terceiros** | Mora em prédio ou condomínio (o vizinho está colado), **ou** tem dependentes ou pet | RC familiar | no Total; nos outros, **adicional** |
+
+**Exceções da necessidade B:** não acende em imóvel de **veraneio** (o roubo não cobre casa desocupada, CG Roubo 2.1 c) nem com bens **presumidos** (sem compras, a estimativa não é prova). "Casa fora de condomínio" não acende B sozinha: é um agravante citado no motivo quando B já acendeu.
+
+**O plano é o menor que cobre as necessidades:**
+```
+Tem A (aluguel)?   ── sim ──► TOTAL (já tem roubo, vidros e RC)
+        │ não
+Tem B (roubo)?     ── sim ──► PRÁTICO  (+ RC adicional se tiver C)
+        │ não
+                   ──────────► ESSENCIAL (+ RC adicional se tiver C)
+```
+
+**Por que esses limites:** R$ 36 mil e R$ 10 mil são as **medianas** da base de desenvolvimento ("mais que a metade das casas"). Não temos dado de sinistro nem de preço para um limite atuarial. Por isso existe a força da recomendação.
+
+**Força da recomendação**
+- **Clara:** a prova que decide está a mais de 15% do limite. Ex.: R$ 49 mil em bens; paga R$ 3 mil de aluguel; gastou com vidros.
+- **No limite:** o valor que decide está a menos de 15% do limite, para cima ou para baixo. Ex.: R$ 9.411 em eletrônicos (limite de R$ 10 mil).
+- **No limite** → o motor (1) faz a **pergunta decisiva** ("Seus eletrônicos valem mais de R$ 10 mil?"), (2) avisa no motivo ("você está perto de precisar do Prático") e (3) marca a ficha para o gerente.
+
+**Exemplos reais**
+| Cliente | A | B | C | Plano | Força |
+|---|---|---|---|---|---|
+| Inquilino em Fortaleza (`00008`) | paga aluguel | — | prédio | **Total** | clara |
+| Apartamento em Curitiba (`00005`) | não | gastou R$ 11 mil com vidros | prédio + dependente | **Prático + RC** | clara |
+| Casa em Porto Alegre (`00015`) | não | não (eletrônicos R$ 8.983, perto de R$ 10 mil) | dependente | **Essencial + RC** | **no limite** → pergunta decisiva |
+
+**Resultado (base de teste):** Prático 66 · Total 38 · Essencial 34 · RC adicional 93 · força clara 124 · no limite 14.
+**O que nunca entra:** renda, idade, dependentes e pet nunca acendem A nem B. Dependentes e pet só acendem C (a RC).
 
 ## 4 · Faixas de cada cobertura
 | Cobertura | Mínimo → máximo | Limite do produto |
@@ -68,14 +91,14 @@ Depois, cada faixa vai para dentro do limite do produto e é arredondada (de 500
 |---|---|---|
 | 95–100 | Elegibilidade (seguro BB? obra? material?) | **obrigatória** |
 | 70 | "É onde você mora, veraneio ou alugado?" (uso duvidoso) | **obrigatória** |
+| 65 | **Pergunta decisiva** (recomendação no limite): "Seus eletrônicos valem mais de R$ 10 mil?" ou "Sua casa tem mais de R$ 36 mil em bens?" | opcional |
 | 60 | "Você recebe aluguel deste imóvel?" | opcional |
 | 59 | Inquilino de casa: "O contrato pede que você segure o imóvel?" | opcional |
 | 58 · 56 · 54 | Bens, área, acabamento, **na ordem de quanto cada resposta aperta a faixa** | opcional |
-| 59 | "Quer proteção para danos que dependentes ou pet causem?" (casa com família; muda o que está coberto, por isso vem antes das de valor) | opcional |
 | 40 | "É apartamento ou casa?" (complemento diverge) | **obrigatória** |
 | 30 | "O imóvel é seu e já está quitado?" | opcional |
 
-Pergunta de valor que aperta a faixa em menos de R$ 5 mil não é feita, e nenhuma promete apertar mais do que a largura da faixa entregue. **Obrigatória trava a contratação; opcional só ajusta o valor.** Média: 2,78 perguntas por caso, sendo 0,46 obrigatória; 80 casos não têm nenhuma obrigatória.
+Pergunta de valor que aperta a faixa em menos de R$ 5 mil não é feita, e nenhuma promete apertar mais do que a largura da faixa entregue. **Obrigatória trava a contratação; opcional só ajusta o valor.** Média: 2,75 perguntas por caso, sendo 0,46 obrigatória; 80 casos não têm nenhuma obrigatória.
 
 ## 6 · Confiança
 **Geral (do caso):** cada dado crítico (tipo, vínculo, uso, área, bens) é **observado** (documento, transação ou confirmado), **estimado** (derivado ou inferido) ou **presumido**. Observado mais velho que a meia-vida do campo conta como estimado.

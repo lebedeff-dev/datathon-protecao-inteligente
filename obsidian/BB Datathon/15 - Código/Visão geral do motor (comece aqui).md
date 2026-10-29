@@ -29,7 +29,7 @@ flowchart TD
 |---|---|---|---|
 | 1 · Entender o imóvel | Deduz tipo, vínculo, uso, área e bens pelos dados | Apartamento, financiado (R$ 950/mês), 110 m², bens de R$ 22 mil a R$ 60 mil | `motor.py` |
 | 2 · Elegibilidade | Só diz NÃO com prova; o resto vira pergunta | Elegível | `motor.py` |
-| 3 · Plano | Soma pontos por sinais do imóvel e das contas | Prático (gastou R$ 11 mil com vidros) | `motor.py` |
+| 3 · Plano | Três necessidades (aluguel, roubo e vidros, terceiros); o menor plano que cobre | Prático (gastou R$ 11 mil com vidros) + RC (prédio) | `motor.py` |
 | 4 · Faixas | Reconstrução pelo SINAPI/CUB + bens pelo IPCA, dentro dos limites do produto | Incêndio de R$ 100 mil a R$ 203 mil | `motor.py` |
 | 5 · Perguntas | Até 3, pelo quanto apertam a faixa | "Seus bens ficam entre R$ 22 mil e R$ 60 mil?" | `motor.py` |
 | 6 · Confiança e jornada | Alta, média ou baixa por regra; gerente só em último caso | Confiança alta → 1 toque | `motor.py` |
@@ -74,7 +74,7 @@ Todas saem em `entrega/metricas.json` a cada execução.
 | Grupo | Métricas | Valores |
 |---|---|---|
 | **Pedidas pelo guia (§8)** | processados, com justificativa, coberturas completas, faixas vazias | 100% · 100% · 100% · 0 |
-| | planos | Prático 68 · Total 38 · Essencial 32 |
+| | planos | Prático 66 · Total 38 · Essencial 34 (por necessidades: aluguel → Total; roubo → Prático) |
 | | elegibilidade | SIM 138 (16 com pergunta obrigatória: "seu seguro é da BB?") |
 | | confiança | alta 17 · média 101 · baixa 20 |
 | | perguntas por caso | 2,78 (0,46 obrigatória) |

@@ -34,7 +34,7 @@ flowchart LR
 | `motor/templates.py` | Confere se as 2 planilhas obedecem ao guia antes de gravar |
 | `motor/api.py` | API de demonstração (FastAPI): a mesma ficha para qualquer canal |
 | `motor/externos/` | Fontes externas salvas (CSV) + `FONTES.md` (licença, data, limitações) + `coletar.py` (atualiza o IPCA) |
-| `tests/` | 99 testes automáticos (`python -m pytest -q`) |
+| `tests/` | 111 testes automáticos (`python -m pytest -q`) |
 | `entrega/` | As 2 planilhas finais, `metricas.json` e `casos_contrastantes.json` |
 | `prototipos/` | O protótipo com gerente, que lê `fichas_demo.js` |
 
@@ -82,7 +82,7 @@ flowchart LR
 |---|---|
 | `avaliar_elegibilidade(r, uso, n_imoveis)` | "Não" só com prova. Sinal fraco (obra, material, seguro de outra seguradora) vira pergunta |
 | `familia_declarada(r)` | Dependentes no cadastro e pet informado. Só serve para a necessidade de RC |
-| `escolher_plano(...)` | Soma pontos por sinais do imóvel e escolhe Essencial, Prático ou Total. Escreve o motivo, a alternativa e o que fica descoberto |
+| `avaliar_necessidades(...)` · `escolher_plano(...)` | As três necessidades (aluguel, roubo e vidros, terceiros), cada uma com prova e força; o plano é o menor que cobre. Detalhes em [[10 - Dicionário de funções]] |
 | `faixa_bruta_incendio(ctx)` | Reconstrução + bens, ou só acabamentos + bens no segundo risco |
 | `dimensionar(cob, ctx)` (confiança e sugerido) | Cada cobertura sai com a **confiança dos dados que usa** (área, padrão, bens, fonte) e um **valor sugerido** (meio da faixa; no incêndio, o valor em risco) |
 | `dimensionar(cob, ctx)` | A faixa mínima e máxima de cada cobertura, com regra, justificativa, o que confirmar e observação. Avisa quando a estimativa passa do limite do produto (subseguro) |
