@@ -18,7 +18,8 @@ Tudo o que o projeto faz, explicado do zero: os dados, o tratamento, cada passo 
 | 5 | [[05 - Saídas - planilhas, ficha, API e demo]] | O que vai em cada coluna das planilhas, o que tem na ficha e como a API e a demo usam |
 | 6 | [[06 - Testes e qualidade]] | Os 99 testes, o que cada grupo prova e como rodar |
 | 7 | [[07 - Regras, decisões e pendências]] | Que regra cada parte atende, as decisões do time e o que ainda falta decidir |
-| 8 | [[Mapa do código]] | Cada arquivo e cada função |
+| 8 | [[08 - Perguntas da banca e respostas]] | As perguntas difíceis, com a resposta e o número de cada uma |
+| 9 | [[Mapa do código]] | Cada arquivo e cada função |
 
 ## O projeto em 5 frases
 1. **Problema:** o cliente não sabe responder "quanto valem seus eletrônicos?" e desiste, ou contrata um seguro que não serve para a casa dele.

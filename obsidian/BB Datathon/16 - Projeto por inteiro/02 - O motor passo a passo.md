@@ -87,12 +87,12 @@ Pergunta de valor que aperta a faixa em menos de R$ 5 mil não é feita, e nenhu
 **Por cobertura:** o pior dos dados que a cobertura usa. Incêndio: área, padrão, bens e fonte; vendaval: área, padrão e fonte; danos elétricos e roubo: bens. Assim, danos elétricos saem ALTA em 69 casos e o incêndio só é ALTA com área e padrão cadastrados.
 
 ## 7 · Jornada (gerente em último caso)
-| Jornada | Quando | Casos |
-|---|---|---|
-| **1 toque** | Nenhuma pergunta obrigatória: contrata com a faixa sugerida | 63 |
-| **App com perguntas** | Pergunta obrigatória (elegibilidade, uso duvidoso) ou pouca familiaridade com o app. Na confiança baixa, o app pergunta primeiro e o gerente entra se a resposta mudar o caso | 37 |
-| **Gerente** | Sinal de obra ou cliente sem o app | 22 (18% dos elegíveis) |
-| **Sem nova proposta** | Não elegível: o app informa e a ficha serve para revisar a apólice | 16 |
+| Jornada               | Quando                                                                                                                                                                        | Casos                  |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| **1 toque**           | Nenhuma pergunta obrigatória: contrata com a faixa sugerida                                                                                                                   | 63                     |
+| **App com perguntas** | Pergunta obrigatória (elegibilidade, uso duvidoso) ou pouca familiaridade com o app. Na confiança baixa, o app pergunta primeiro e o gerente entra se a resposta mudar o caso | 37                     |
+| **Gerente**           | Sinal de obra ou cliente sem o app                                                                                                                                            | 22 (18% dos elegíveis) |
+| **Sem nova proposta** | Não elegível: o app informa e a ficha serve para revisar a apólice                                                                                                            | 16                     |
 
 O campo `canal` (1 toque × gerente) continua existindo para o protótipo.
 
