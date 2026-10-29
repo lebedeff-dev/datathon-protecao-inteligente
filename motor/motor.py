@@ -495,7 +495,7 @@ def avaliar_elegibilidade(r, uso, n_imoveis=None):
             pendencias.append({"codigo": "SEGURO_EXISTENTE", "prioridade": 100, "provavel_bb": True,
                                "texto": "provável seguro BB neste endereço: há seguro residencial e produto de seguridade do BB; "
                                         "se o seguro for da BB, não pode haver nova proposta para o mesmo endereço",
-                               "pergunta": "O seu seguro residencial atual é da BB Seguros? Se for, ele já protege este endereço."})
+                               "pergunta": "O seu seguro residencial atual é da BB Seguros?"})
         elif n_imoveis == 1:
             pendencias.append({"codigo": "SEGURO_EXISTENTE", "prioridade": 100,
                                "texto": "há seguro residencial, mas nenhum produto de seguridade do BB; se o seguro atual "
@@ -525,74 +525,119 @@ O_QUE_ACRESCENTA = {"PRATICO": "roubo com arrombamento e quebra de vidros",
                     "TOTAL": "o conserto de danos a terceiros, a perda de aluguel e as despesas emergenciais"}
 
 
-def escolher_plano(r, tipo, vinculo, uso, bens):
-    """Pontos por sinal observado no imóvel e nas transações (PLANO_UNIFICADO §5).
-    Renda e idade não entram, nem por tabela: bens presumidos (região, e renda quando
-    não há compras) não somam pontos, porque não são prova. Dependentes e pet entram só
-    como necessidade que o próprio cliente informou (slide 14, casa familiar → RC
-    familiar). Crianças E pet somam 1 ponto ao Total; só um dos dois vira pergunta
-    (montar_perguntas). Não mudam faixa, elegibilidade, canal nem confiança."""
-    motivos = []
-    comprovados = not bens.get("regional")
+COBRE = {"ALUGUEL": "a perda de aluguel", "ROUBO": "o roubo e a quebra de vidros", "TERCEIROS": "os danos a terceiros"}
+PLANO_DA_NECESSIDADE = {"ALUGUEL": "TOTAL", "ROUBO": "PRATICO", "TERCEIROS": "RC"}
 
-    def soma(plano, peso, codigo, texto):
-        motivos.append({"plano": plano, "peso": peso, "codigo": codigo, "texto": texto})
 
+def _forca_por_limite(valor, limite):
+    """'clara' se o valor está a mais de P.FAIXA_NO_LIMITE do limite (para cima ou para baixo);
+    senão, 'no_limite'. É o quanto a decisão depende de um número estimado."""
+    razao = valor / limite
+    return "no_limite" if (1 - P.FAIXA_NO_LIMITE) <= razao < (1 + P.FAIXA_NO_LIMITE) else "clara"
+
+
+def avaliar_necessidades(r, tipo, vinculo, uso, bens):
+    """As três perguntas que decidem a proteção (recomendação por necessidades, 29/10).
+    A · ALUGUEL: paga ou recebe aluguel deste imóvel → perda de aluguel (só no Total).
+    B · ROUBO: bens comprovados ≥ R$ 36 mil, eletrônicos ≥ R$ 10 mil ou gasto com vidraçaria
+        → roubo e vidros (Prático). Não conta em veraneio (o roubo não cobre casa desocupada,
+        CG Roubo 2.1 c) nem com bens presumidos (não são prova).
+    C · TERCEIROS: prédio ou condomínio (vizinho colado) ou dependentes/pet → RC familiar.
+    Cada uma devolve: codigo, sim, forca ('clara' ou 'no_limite'), provas (texto com o número do
+    cliente), cobertura que resolve e, se estiver no limite, a pergunta que decide.
+    Renda, idade, dependentes e pet nunca acendem A nem B."""
+    def prova(codigo, texto):
+        return {"codigo": codigo, "texto": texto}
+
+    # A · aluguel em jogo (prova de transação: sempre clara)
+    a = []
     if vinculo["valor"] == "INQUILINO":
-        soma("TOTAL", 2, "INQUILINO", f"você paga {M.reais(r.valor_aluguel_recorrente)} de aluguel por mês e, se o imóvel ficar "
-                                      f"inabitável, precisaria pagar outra moradia")
+        a.append(prova("INQUILINO", f"você paga {M.reais(r.valor_aluguel_recorrente)} de aluguel por mês e, se o imóvel ficar "
+                                    f"inabitável, precisaria pagar outra moradia"))
     if vinculo["valor"] == "PROPRIETARIO_LOCADOR":
-        soma("TOTAL", 2, "RECEBE_ALUGUEL", f"este imóvel rende cerca de {M.reais(r.valor_medio_credito_recorrente)} de aluguel por mês, que para de entrar se ele precisar de reparo")
+        a.append(prova("RECEBE_ALUGUEL", f"este imóvel rende cerca de {M.reais(r.valor_medio_credito_recorrente)} de aluguel "
+                                         f"por mês, que para de entrar se ele precisar de reparo"))
+    nec_a = {"codigo": "ALUGUEL", "sim": bool(a), "forca": "clara", "provas": a, "cobertura": COBRE["ALUGUEL"], "pergunta": None}
+
+    # B · roubo e vidros
+    b, perto = [], []
+    comprovados = not bens.get("regional")
+    veraneio = uso["valor"] == "LAZER_VERANEIO"
+    limites = [("BENS_ALTOS", bens["min"], P.BENS_RELEVANTES,
+                lambda v: f"suas compras para a casa nos últimos 3 anos valem hoje pelo menos {M.reais(v)}",
+                f"Somando móveis, eletrodomésticos e eletrônicos, sua casa tem mais de {M.reais(P.BENS_RELEVANTES)} em bens?"),
+               ("ELETRONICOS", bens["portateis"]["min"], P.PORTATEIS_RELEVANTES,
+                lambda v: f"você tem pelo menos {M.reais(v)} em eletrônicos, os itens mais levados num arrombamento",
+                f"Seus eletrônicos (TV, notebook, celulares, videogame) valem mais de {M.reais(P.PORTATEIS_RELEVANTES)}?")]
+    forcas = []
+    if comprovados and not veraneio:
+        for codigo, valor, limite, texto, pergunta in limites:
+            forca = _forca_por_limite(valor, limite)
+            if valor >= limite:
+                b.append(prova(codigo, texto(valor)))
+                forcas.append(forca)
+            if forca == "no_limite":
+                perto.append((abs(valor / limite - 1), codigo, pergunta))
+        if r.gastos_vidracaria_24m > 0:
+            b.append(prova("VIDROS", f"você gastou {M.reais(r.gastos_vidracaria_24m)} com vidraçaria nos últimos 2 anos, "
+                                     f"e vidro quebrado custa caro para repor"))
+            forcas.append("clara")
+    if b and tipo["valor"] == "CASA":
+        b.append(prova("CASA_SEM_CONDOMINIO", "a casa fica fora de condomínio, mais exposta a arrombamento"))
+    # clara se alguma prova é clara; no limite se a decisão (sim ou não) depende de um valor a menos de 15% do limite
+    forca_b = "clara" if "clara" in forcas else "no_limite" if (forcas or perto) else "clara"
+    pergunta_b = min(perto)[2] if forca_b == "no_limite" and perto else None
+    nec_b = {"codigo": "ROUBO", "sim": bool(b), "forca": forca_b, "provas": b, "cobertura": COBRE["ROUBO"],
+             "pergunta": pergunta_b}
+
+    # C · danos a terceiros
+    c = []
     if tipo["valor"] in ("APARTAMENTO", "CASA_EM_CONDOMINIO"):
-        soma("TOTAL", 1, "VIZINHOS", "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho")
-    if comprovados and bens["min"] >= P.BENS_RELEVANTES:
-        soma("PRATICO", 2, "BENS_ALTOS", f"suas compras para a casa nos últimos 3 anos valem hoje pelo menos {M.reais(bens['min'])}")
-    if comprovados and bens["portateis"]["min"] >= P.PORTATEIS_RELEVANTES:
-        soma("PRATICO", 1, "ELETRONICOS", f"você tem pelo menos {M.reais(bens['portateis']['min'])} em eletrônicos, os itens mais levados num arrombamento")
-    if tipo["valor"] == "CASA":
-        soma("PRATICO", 1, "CASA_SEM_CONDOMINIO", "a casa fica fora de condomínio, mais exposta a arrombamento")
-    if r.gastos_vidracaria_24m > 0:
-        soma("PRATICO", 1, "VIDROS", f"você gastou {M.reais(r.gastos_vidracaria_24m)} com vidraçaria nos últimos 2 anos, e vidro quebrado custa caro para repor")
-    # Veraneio não soma ponto para o Prático: o roubo não cobre residência desocupada
-    # (CG, Roubo 2.1 c), então recomendar o Prático por o imóvel ficar vazio seria incoerente.
-    # Decisão de 29/10 (RN-07): dependentes e pet nunca somam pontos ao plano; só pedem a RC familiar,
-    # como adicional (prédio ou condomínio) ou como pergunta (casa). Ver coberturas_adicionais e montar_perguntas.
+        c.append(prova("VIZINHOS", "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"))
+    if any(familia_declarada(r)):
+        c.append(prova("FAMILIA", "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"))
+    nec_c = {"codigo": "TERCEIROS", "sim": bool(c), "forca": "clara", "provas": c, "cobertura": COBRE["TERCEIROS"], "pergunta": None}
+    return [nec_a, nec_b, nec_c]
 
-    total = sum(m["peso"] for m in motivos if m["plano"] == "TOTAL")
-    pratico = sum(m["peso"] for m in motivos if m["plano"] == "PRATICO")
-    # Total: dependência de aluguel ou exposição a terceiros com reforço. Prático: sinais de roubo/vidros.
-    # Um sinal de Total sozinho não leva ao Prático, porque o Prático não cobre terceiros nem aluguel.
-    # A família declarada não entra nessa conta: ela pede RC, que o Prático não tem.
-    plano = "TOTAL" if total >= 2 else "PRATICO" if (pratico >= 2 or (pratico >= 1 and total >= 1)) else "ESSENCIAL"
 
-    a_favor = sorted([m for m in motivos if ORDEM_PLANO[m["plano"]] <= ORDEM_PLANO[plano]],
-                     key=lambda m: (-ORDEM_PLANO[m["plano"]], -m["peso"]))[:2]
+def escolher_plano(r, tipo, vinculo, uso, bens):
+    """O menor plano que cobre as necessidades: aluguel em jogo → Total; senão, roubo e vidros →
+    Prático; senão → Essencial. Danos a terceiros entram como RC adicional (coberturas_adicionais)
+    quando o plano não é o Total. A força da recomendação é a da necessidade que decidiu (ou,
+    no Essencial e no Prático, a da necessidade logo acima, que pode mudar o plano)."""
+    nec = {n["codigo"]: n for n in avaliar_necessidades(r, tipo, vinculo, uso, bens)}
+    a, b = nec["ALUGUEL"], nec["ROUBO"]
+    plano = "TOTAL" if a["sim"] else "PRATICO" if b["sim"] else "ESSENCIAL"
+    forca = a["forca"] if plano == "TOTAL" else b["forca"]
+    motivos = [{"plano": PLANO_DA_NECESSIDADE[n["codigo"]], "peso": 0, **p} for n in nec.values() if n["sim"] for p in n["provas"]]
+
+    decisiva = a if plano == "TOTAL" else b if plano == "PRATICO" else None
+    a_favor = [{"plano": plano, "peso": 0, **p} for p in decisiva["provas"][:2]] if decisiva else []
     patrimonio = M.motivos_de_patrimonio(vinculo["valor"], bens)
     if not a_favor and uso["valor"] == "LAZER_VERANEIO":
         a_favor = [{"plano": "ESSENCIAL", "peso": 0, "codigo": "VERANEIO",
                     "texto": "o imóvel é de lazer e fica vazio parte do tempo, quando fogo, água, vento e danos elétricos "
                              "seguem cobertos, mas o roubo do Prático não cobre residência desocupada"}, patrimonio[-1]]
-    if not a_favor:   # sem sinal de roubo nem de terceiros: o porquê é o patrimônio (antes, um "não há sinais")
+    if not a_favor:   # sem aluguel nem roubo: o porquê é o patrimônio (antes, um "não há sinais")
         a_favor = patrimonio[:2]
     if not any("R$" in m["texto"] for m in a_favor):   # todo motivo leva pelo menos um número do próprio cliente
         a_favor = a_favor + [patrimonio[-1]]
+
     abaixo = {"ESSENCIAL": None, "PRATICO": "ESSENCIAL", "TOTAL": "PRATICO"}[plano]
     acima = {"ESSENCIAL": "PRATICO", "PRATICO": "TOTAL", "TOTAL": None}[plano]
-    pontos_de = {"PRATICO": pratico, "TOTAL": total}
     por_que_nao_abaixo = f"o {NOME_PLANO[abaixo]} não cobre {O_QUE_ACRESCENTA[plano]}" if abaixo else ""
     por_que_nao_acima = ""
     if acima:
-        falta = {"PRATICO": "eletrônicos de valor alto nem gasto com vidros", "TOTAL": "aluguel em jogo nem risco a vizinhos"}[acima]
-        por_que_nao_acima = (f"o {NOME_PLANO[acima]} acrescenta {O_QUE_ACRESCENTA[acima]}, mas "
-                             + (f"hoje não vemos {falta} que peçam isso" if pontos_de[acima] == 0 else "esses sinais ainda são poucos"))
-    alt = acima if acima and pontos_de[acima] > 0 else (abaixo or acima)
-    if ORDEM_PLANO[alt] > ORDEM_PLANO[plano]:
-        texto_alt = f"{NOME_PLANO[alt]}: acrescenta {O_QUE_ACRESCENTA[alt]}"
-    else:
-        texto_alt = f"{NOME_PLANO[alt]}: mais barato, sem {O_QUE_ACRESCENTA[plano]}"
-    return {"plano": plano, "motivos": motivos, "motivos_plano": a_favor,
-            "pontos": {"pratico": pratico, "total": total},
-            "alternativa": {"plano": alt, "texto": texto_alt},
+        falta = {"PRATICO": "bens, eletrônicos ou gasto com vidros que peçam isso", "TOTAL": "aluguel em jogo"}[acima]
+        por_que_nao_acima = (f"o {NOME_PLANO[acima]} acrescenta {O_QUE_ACRESCENTA[acima]}, e você está perto de precisar dele"
+                             if acima == "PRATICO" and b["forca"] == "no_limite" else
+                             f"o {NOME_PLANO[acima]} acrescenta {O_QUE_ACRESCENTA[acima]}, mas hoje não vemos {falta}")
+    alt = acima if (acima == "PRATICO" and b["forca"] == "no_limite") else (abaixo or acima)
+    texto_alt = (f"{NOME_PLANO[alt]}: acrescenta {O_QUE_ACRESCENTA[alt]}" if ORDEM_PLANO[alt] > ORDEM_PLANO[plano]
+                 else f"{NOME_PLANO[alt]}: mais barato, sem {O_QUE_ACRESCENTA[plano]}")
+    return {"plano": plano, "forca": forca, "necessidades": list(nec.values()), "motivos": motivos,
+            "motivos_plano": a_favor, "alternativa": {"plano": alt, "texto": texto_alt},
+            "pergunta_decisiva": b["pergunta"] if plano != "TOTAL" else None,
             "por_que_nao_abaixo": por_que_nao_abaixo, "por_que_nao_acima": por_que_nao_acima}
 
 
@@ -835,13 +880,18 @@ def coberturas_adicionais(r, tipo, plano):
     e do Total podem ser incluídas ou excluídas). Hoje uma regra: dependentes ou pet informados +
     imóvel em prédio ou condomínio → RC familiar, sem levar o cliente ao Total inteiro."""
     adicionais = []
-    if plano != "TOTAL" and any(familia_declarada(r)) and tipo["valor"] in ("APARTAMENTO", "CASA_EM_CONDOMINIO"):
-        adicionais.append(("RESPONSABILIDADE_CIVIL_FAMILIAR",
-                           "há dependentes ou pet na casa e vizinhos por perto; a RC familiar paga danos que eles causem a terceiros"))
+    predio = tipo["valor"] in ("APARTAMENTO", "CASA_EM_CONDOMINIO")
+    familia = any(familia_declarada(r))
+    if plano != "TOTAL" and (predio or familia):   # necessidade C · danos a terceiros
+        motivo = ("o vizinho está colado e há dependentes ou pet na casa" if predio and familia else
+                  "o vizinho está colado: um vazamento ou incêndio no seu imóvel pode atingi-lo" if predio else
+                  "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros")
+        adicionais.append(("RESPONSABILIDADE_CIVIL_FAMILIAR", f"{motivo}; a RC familiar paga esse dano no seu lugar"))
     return adicionais
 
 
-def montar_perguntas(r, pendencias, tipo, uso, vinculo, area, bens, plano=None, imovel=None, largura_incendio=None):
+def montar_perguntas(r, pendencias, tipo, uso, vinculo, area, bens, plano=None, imovel=None, largura_incendio=None,
+                     decisiva=None):
     """Até 3 perguntas, das que mais mudam o resultado (PLANO_UNIFICADO §7).
     Ordem: elegibilidade (95-100), as que mudam o plano (60-70) e depois as que mudam o
     valor, ordenadas pelo valor da informação (58, 56, 54: quem mais aperta a faixa vem antes).
@@ -852,6 +902,8 @@ def montar_perguntas(r, pendencias, tipo, uso, vinculo, area, bens, plano=None, 
     cand = [(p["prioridade"], p["pergunta"], p["codigo"]) for p in pendencias if p.get("pergunta")]
     if uso["confianca"] == "BAIXA":
         cand.append((70, "Este imóvel é onde você mora, uma casa de veraneio ou está alugado para outra pessoa?", "USO"))
+    if decisiva:   # recomendação no limite: a resposta decide o plano (opcional; acima das de valor)
+        cand.append((65, decisiva, "DECIDE_PLANO"))
     if r.credito_recorrente_compativel_aluguel == "SIM" and vinculo["valor"] != "PROPRIETARIO_LOCADOR":
         cand.append((60, "Você recebe aluguel referente a este imóvel?", "RECEBE_ALUGUEL"))
     textos = {
@@ -875,10 +927,6 @@ def montar_perguntas(r, pendencias, tipo, uso, vinculo, area, bens, plano=None, 
                      "SEGURO_DO_IMOVEL"))
     if vinculo["valor"] == "PROPRIETARIO":
         cand.append((30, "O imóvel é seu e já está quitado?", "VINCULO"))
-    if plano and plano != "TOTAL" and any(familia_declarada(r)) and not coberturas_adicionais(r, tipo, plano):
-        # prioridade 59: antes das perguntas de valor, porque muda o que está coberto (decisão de 29/10)
-        cand.append((59, "Há dependentes ou pet na sua casa. Quer proteção para danos que eles causem a terceiros? "
-                         "Ela entra como cobertura adicional.", "RC_FAMILIA"))
     cand.sort(key=lambda x: -x[0])
     vdi = vdi if imovel else {}
     obrigatorias = {p["codigo"] for p in pendencias} | PERGUNTAS_QUE_TRAVAM
@@ -1011,7 +1059,7 @@ def processar_caso(r, bens_imovel, cal, catalogo, outro_principal=False, confirm
         avisos = [a for a in avisos if "roubo" not in a]
     inc = next(c for c in coberturas if c["cobertura"] == "INCENDIO_RAIO_EXPLOSAO_FUMACA")
     perguntas, n_cand = montar_perguntas(r, pendencias, tipo, uso, vinculo, area, bens, rec["plano"], imovel,
-                                         inc["max"] - inc["min"])
+                                         inc["max"] - inc["min"], rec["pergunta_decisiva"])
     campos = {"tipo": tipo, "vinculo": vinculo, "uso": uso, "area": area, "bens": bens}
     for k in confirmados:
         campos[k]["natureza"] = "CONFIRMADO"

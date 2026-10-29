@@ -3,12 +3,12 @@
  "processados_pct": 100.0,
  "com_justificativa_pct": 100.0,
  "completude_coberturas_fixas_pct": 100.0,
- "linhas_de_cobertura": 1206,
+ "linhas_de_cobertura": 1243,
  "faixas_vazias": 0,
  "faixas_invertidas": 0,
  "planos": {
-  "PRATICO": 68,
-  "ESSENCIAL": 32,
+  "PRATICO": 66,
+  "ESSENCIAL": 34,
   "TOTAL": 38
  },
  "elegibilidade": {
@@ -21,7 +21,7 @@
   "NAO_ELEGIVEL": 0
  },
  "coberturas_adicionais": {
-  "RESPONSABILIDADE_CIVIL_FAMILIAR": 52
+  "RESPONSABILIDADE_CIVIL_FAMILIAR": 93
  },
  "estabilidade_plano_casos_que_mudam_com_valores_5pct": 1,
  "estabilidade_plano_casos_instaveis": [
@@ -65,17 +65,17 @@
    "ALTA": 31
   },
   "QUEBRA_DE_VIDROS": {
-   "BAIXA": 95,
+   "BAIXA": 93,
    "MEDIA": 11
   },
   "QUEDA_AERONAVE": {
    "MEDIA": 138
   },
   "RESPONSABILIDADE_CIVIL_FAMILIAR": {
-   "MEDIA": 90
+   "MEDIA": 131
   },
   "ROUBO_FURTO_ARROMBAMENTO": {
-   "ALTA": 55,
+   "ALTA": 53,
    "MEDIA": 51
   },
   "VENDAVAL_GRANIZO": {
@@ -92,13 +92,23 @@
   "GERENTE": 26,
   "UM_TOQUE": 63
  },
+ "necessidades": {
+  "ALUGUEL": 38,
+  "ROUBO": 84,
+  "TERCEIROS": 126
+ },
+ "forca_da_recomendacao": {
+  "clara": 124,
+  "no_limite": 14
+ },
+ "instaveis_marcados_no_limite_pct": 100.0,
  "gerente_pct_dos_elegiveis": 18.8,
  "gerente_motivos": {
   "sinal de obra ou reforma, que impede a contratação e pede conversa": 10,
   "o cliente não usa o app": 16
  },
- "perguntas_media": 2.78,
- "perguntas_candidatas_media": 3.59,
+ "perguntas_media": 2.75,
+ "perguntas_candidatas_media": 3.45,
  "perguntas_obrigatorias_media": 0.46,
  "casos_sem_pergunta_obrigatoria": 80,
  "teste_justica_casos_alterados": 0,
@@ -134,8 +144,8 @@
    },
    "Q4": {
     "casos": 27,
-    "essencial_pct": 3.7,
-    "pratico_pct": 77.8,
+    "essencial_pct": 7.4,
+    "pratico_pct": 74.1,
     "total_pct": 18.5,
     "elegivel_pct": 100.0,
     "inquilino_pct": 14.8,
@@ -143,8 +153,8 @@
    },
    "Q5": {
     "casos": 28,
-    "essencial_pct": 0.0,
-    "pratico_pct": 78.6,
+    "essencial_pct": 3.6,
+    "pratico_pct": 75.0,
     "total_pct": 21.4,
     "elegivel_pct": 100.0,
     "inquilino_pct": 17.9,
@@ -157,7 +167,7 @@
  "familia_declarada_muda_valor_ou_confianca": 0,
  "sensibilidade_area_10pct_incendio_media_pct": 4.0,
  "sensibilidade_area_casos_com_queda": 0,
- "tempo_segundos": 0.44,
+ "tempo_segundos": 0.49,
  "backtest_fora_da_amostra": {
   "metodo": "2 metades da base de desenvolvimento (calibra numa, mede na outra)",
   "area_casos": 1016,
@@ -171,9 +181,9 @@
  "mercado": {
   "um_toque_pct_dos_elegiveis": 45.7,
   "sem_pessoa_pct_dos_elegiveis": 81.2,
-  "esforco_campos_cotacao_tradicional_media": 19.74,
-  "esforco_perguntas_nossa_jornada_media": 2.78,
-  "esforco_reducao_pct": 85.9,
+  "esforco_campos_cotacao_tradicional_media": 20.01,
+  "esforco_perguntas_nossa_jornada_media": 2.75,
+  "esforco_reducao_pct": 86.2,
   "itv_incendio_no_maximo_mediana": 1.48,
   "itv_incendio_no_maximo_abaixo_de_80pct_casos": 7,
   "itv_incendio_no_minimo_mediana": 0.62,
@@ -184,11 +194,11 @@
    "DANOS_POR_AGUA": 132,
    "VENDAVAL_GRANIZO": 55,
    "DANOS_ELETRICOS": 122,
-   "RESPONSABILIDADE_CIVIL_FAMILIAR": 38,
+   "RESPONSABILIDADE_CIVIL_FAMILIAR": 40,
    "INCENDIO_RAIO_EXPLOSAO_FUMACA": 26,
    "PERDA_PAGAMENTO_ALUGUEL": 18,
    "DESPESAS_EMERGENCIAIS": 12,
-   "ROUBO_FURTO_ARROMBAMENTO": 25
+   "ROUBO_FURTO_ARROMBAMENTO": 24
   },
   "recomendacoes_com_coberturas_mais_acionadas_pct": 100.0,
   "acionamentos_bb_cobertos_por_elas_pct": 79.4
@@ -197,11 +207,11 @@
   "motivos_genericos": 0,
   "motivo_com_fato_do_cliente_pct": 100.0,
   "justificativa_com_valor_em_risco_pct": 100.0,
-  "alternativas_mostradas_pct": 100.0,
+  "alternativas_mostradas_pct": 89.1,
   "justificativas_com_termo_interno": 0,
-  "palavras_mediana": 100.0,
-  "palavras_max": 128,
-  "palavras_entre_60_e_120_pct": 90.6,
+  "palavras_mediana": 103.0,
+  "palavras_max": 130,
+  "palavras_entre_60_e_120_pct": 97.1,
   "coberturas_texto_distinto_pct": {
    "DANOS_ELETRICOS": 97.8,
    "DANOS_POR_AGUA": 94.9,
@@ -209,10 +219,10 @@
    "IMPACTO_VEICULOS_TERRESTRES": 1.4,
    "INCENDIO_RAIO_EXPLOSAO_FUMACA": 100.0,
    "PERDA_PAGAMENTO_ALUGUEL": 76.3,
-   "QUEBRA_DE_VIDROS": 87.7,
+   "QUEBRA_DE_VIDROS": 88.5,
    "QUEDA_AERONAVE": 0.7,
-   "RESPONSABILIDADE_CIVIL_FAMILIAR": 95.6,
-   "ROUBO_FURTO_ARROMBAMENTO": 69.8,
+   "RESPONSABILIDADE_CIVIL_FAMILIAR": 93.1,
+   "ROUBO_FURTO_ARROMBAMENTO": 69.2,
    "VENDAVAL_GRANIZO": 97.8
   }
  },

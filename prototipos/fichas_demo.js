@@ -121,54 +121,102 @@ window.FICHAS_DEMO = {
    "pendencias": [],
    "avisos": [],
    "plano": "PRATICO",
-   "motivos": [
+   "forca": "clara",
+   "necessidades": [
     {
-     "plano": "TOTAL",
-     "peso": 1,
-     "codigo": "VIZINHOS",
-     "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
+     "codigo": "ALUGUEL",
+     "sim": false,
+     "forca": "clara",
+     "provas": [],
+     "cobertura": "a perda de aluguel",
+     "pergunta": null
     },
     {
+     "codigo": "ROUBO",
+     "sim": true,
+     "forca": "clara",
+     "provas": [
+      {
+       "codigo": "BENS_ALTOS",
+       "texto": "suas compras para a casa nos últimos 3 anos valem hoje pelo menos R$ 50 mil"
+      },
+      {
+       "codigo": "ELETRONICOS",
+       "texto": "você tem pelo menos R$ 13 mil em eletrônicos, os itens mais levados num arrombamento"
+      }
+     ],
+     "cobertura": "o roubo e a quebra de vidros",
+     "pergunta": null
+    },
+    {
+     "codigo": "TERCEIROS",
+     "sim": true,
+     "forca": "clara",
+     "provas": [
+      {
+       "codigo": "VIZINHOS",
+       "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
+      },
+      {
+       "codigo": "FAMILIA",
+       "texto": "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"
+      }
+     ],
+     "cobertura": "os danos a terceiros",
+     "pergunta": null
+    }
+   ],
+   "motivos": [
+    {
      "plano": "PRATICO",
-     "peso": 2,
+     "peso": 0,
      "codigo": "BENS_ALTOS",
      "texto": "suas compras para a casa nos últimos 3 anos valem hoje pelo menos R$ 50 mil"
     },
     {
      "plano": "PRATICO",
-     "peso": 1,
+     "peso": 0,
      "codigo": "ELETRONICOS",
      "texto": "você tem pelo menos R$ 13 mil em eletrônicos, os itens mais levados num arrombamento"
+    },
+    {
+     "plano": "RC",
+     "peso": 0,
+     "codigo": "VIZINHOS",
+     "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
+    },
+    {
+     "plano": "RC",
+     "peso": 0,
+     "codigo": "FAMILIA",
+     "texto": "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"
     }
    ],
    "motivos_plano": [
     {
      "plano": "PRATICO",
-     "peso": 2,
+     "peso": 0,
      "codigo": "BENS_ALTOS",
      "texto": "suas compras para a casa nos últimos 3 anos valem hoje pelo menos R$ 50 mil"
     },
     {
      "plano": "PRATICO",
-     "peso": 1,
+     "peso": 0,
      "codigo": "ELETRONICOS",
      "texto": "você tem pelo menos R$ 13 mil em eletrônicos, os itens mais levados num arrombamento"
     }
    ],
-   "pontos": {
-    "pratico": 3,
-    "total": 1
-   },
    "alternativa": {
-    "plano": "TOTAL",
-    "texto": "Total: acrescenta o conserto de danos a terceiros, a perda de aluguel e as despesas emergenciais"
+    "plano": "ESSENCIAL",
+    "texto": "Essencial: mais barato, sem roubo com arrombamento e quebra de vidros"
    },
+   "pergunta_decisiva": null,
    "por_que_nao_abaixo": "o Essencial não cobre roubo com arrombamento e quebra de vidros",
-   "por_que_nao_acima": "o Total acrescenta a perda de aluguel e as despesas emergenciais (a RC familiar já entra como adicional), mas esses sinais ainda são poucos",
+   "por_que_nao_acima": "o Total acrescenta a perda de aluguel e as despesas emergenciais (a RC familiar já entra como adicional), mas hoje não vemos aluguel em jogo",
    "adicionais": [
     {
      "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
-     "motivo": "há dependentes ou pet na casa e vizinhos por perto; a RC familiar paga danos que eles causem a terceiros"
+     "motivo": "o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar"
     }
    ],
    "coberturas": [
@@ -296,7 +344,7 @@ window.FICHAS_DEMO = {
      "regra": "reparo de uma unidade vizinha do mesmo tamanho: 105 m² × R$ 1.833–R$ 2.060/m² (SINAPI DF até CUB DF oficial) × 30%–60%",
      "justificativa": "Um vazamento ou incêndio no seu imóvel pode atingir a unidade vizinha, de tamanho parecido com a sua (cerca de 105 m²): repará-la custa de R$ 58 mil a R$ 130 mil, e a cobertura paga isso no seu lugar.",
      "confirmar": "",
-     "observacao": "Cobertura adicional ao plano Prático (guia 9.2): há dependentes ou pet na casa e vizinhos por perto; a RC familiar paga danos que eles causem a terceiros.",
+     "observacao": "Cobertura adicional ao plano Prático (guia 9.2): o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar.",
      "limitada_pelo_produto": false,
      "sugerido": 94000
     }
@@ -457,54 +505,102 @@ window.FICHAS_DEMO = {
    ],
    "avisos": [],
    "plano": "PRATICO",
-   "motivos": [
+   "forca": "clara",
+   "necessidades": [
     {
-     "plano": "TOTAL",
-     "peso": 1,
-     "codigo": "VIZINHOS",
-     "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
+     "codigo": "ALUGUEL",
+     "sim": false,
+     "forca": "clara",
+     "provas": [],
+     "cobertura": "a perda de aluguel",
+     "pergunta": null
     },
     {
+     "codigo": "ROUBO",
+     "sim": true,
+     "forca": "clara",
+     "provas": [
+      {
+       "codigo": "BENS_ALTOS",
+       "texto": "suas compras para a casa nos últimos 3 anos valem hoje pelo menos R$ 49 mil"
+      },
+      {
+       "codigo": "ELETRONICOS",
+       "texto": "você tem pelo menos R$ 16 mil em eletrônicos, os itens mais levados num arrombamento"
+      }
+     ],
+     "cobertura": "o roubo e a quebra de vidros",
+     "pergunta": null
+    },
+    {
+     "codigo": "TERCEIROS",
+     "sim": true,
+     "forca": "clara",
+     "provas": [
+      {
+       "codigo": "VIZINHOS",
+       "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
+      },
+      {
+       "codigo": "FAMILIA",
+       "texto": "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"
+      }
+     ],
+     "cobertura": "os danos a terceiros",
+     "pergunta": null
+    }
+   ],
+   "motivos": [
+    {
      "plano": "PRATICO",
-     "peso": 2,
+     "peso": 0,
      "codigo": "BENS_ALTOS",
      "texto": "suas compras para a casa nos últimos 3 anos valem hoje pelo menos R$ 49 mil"
     },
     {
      "plano": "PRATICO",
-     "peso": 1,
+     "peso": 0,
      "codigo": "ELETRONICOS",
      "texto": "você tem pelo menos R$ 16 mil em eletrônicos, os itens mais levados num arrombamento"
+    },
+    {
+     "plano": "RC",
+     "peso": 0,
+     "codigo": "VIZINHOS",
+     "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
+    },
+    {
+     "plano": "RC",
+     "peso": 0,
+     "codigo": "FAMILIA",
+     "texto": "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"
     }
    ],
    "motivos_plano": [
     {
      "plano": "PRATICO",
-     "peso": 2,
+     "peso": 0,
      "codigo": "BENS_ALTOS",
      "texto": "suas compras para a casa nos últimos 3 anos valem hoje pelo menos R$ 49 mil"
     },
     {
      "plano": "PRATICO",
-     "peso": 1,
+     "peso": 0,
      "codigo": "ELETRONICOS",
      "texto": "você tem pelo menos R$ 16 mil em eletrônicos, os itens mais levados num arrombamento"
     }
    ],
-   "pontos": {
-    "pratico": 3,
-    "total": 1
-   },
    "alternativa": {
-    "plano": "TOTAL",
-    "texto": "Total: acrescenta o conserto de danos a terceiros, a perda de aluguel e as despesas emergenciais"
+    "plano": "ESSENCIAL",
+    "texto": "Essencial: mais barato, sem roubo com arrombamento e quebra de vidros"
    },
+   "pergunta_decisiva": null,
    "por_que_nao_abaixo": "o Essencial não cobre roubo com arrombamento e quebra de vidros",
-   "por_que_nao_acima": "o Total acrescenta a perda de aluguel e as despesas emergenciais (a RC familiar já entra como adicional), mas esses sinais ainda são poucos",
+   "por_que_nao_acima": "o Total acrescenta a perda de aluguel e as despesas emergenciais (a RC familiar já entra como adicional), mas hoje não vemos aluguel em jogo",
    "adicionais": [
     {
      "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
-     "motivo": "há dependentes ou pet na casa e vizinhos por perto; a RC familiar paga danos que eles causem a terceiros"
+     "motivo": "o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar"
     }
    ],
    "coberturas": [
@@ -632,7 +728,7 @@ window.FICHAS_DEMO = {
      "regra": "reparo de uma unidade vizinha do mesmo tamanho: 265 m² × R$ 1.605–R$ 2.789/m² (SINAPI PE até SINAPI PE × 1.136 (razão CUB/SINAPI das UFs com CUB oficial), padrão não cadastrado: fator 0,85 a 1,30) × 30%–60%",
      "justificativa": "Um vazamento ou incêndio no seu imóvel pode atingir a unidade vizinha, de tamanho parecido com a sua (cerca de 265 m²): repará-la custa de R$ 128 mil a R$ 443 mil, e a cobertura paga isso no seu lugar.",
      "confirmar": "",
-     "observacao": "Cobertura adicional ao plano Prático (guia 9.2): há dependentes ou pet na casa e vizinhos por perto; a RC familiar paga danos que eles causem a terceiros. O máximo estimado (R$ 443.000) passa do limite do produto (R$ 200.000): o valor acima do limite fica descoberto.",
+     "observacao": "Cobertura adicional ao plano Prático (guia 9.2): o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar. O máximo estimado (R$ 443.000) passa do limite do produto (R$ 200.000): o valor acima do limite fica descoberto.",
      "limitada_pelo_produto": true,
      "sugerido": 164000
     }
@@ -801,12 +897,54 @@ window.FICHAS_DEMO = {
    "pendencias": [],
    "avisos": [],
    "plano": "ESSENCIAL",
+   "forca": "clara",
+   "necessidades": [
+    {
+     "codigo": "ALUGUEL",
+     "sim": false,
+     "forca": "clara",
+     "provas": [],
+     "cobertura": "a perda de aluguel",
+     "pergunta": null
+    },
+    {
+     "codigo": "ROUBO",
+     "sim": false,
+     "forca": "clara",
+     "provas": [],
+     "cobertura": "o roubo e a quebra de vidros",
+     "pergunta": null
+    },
+    {
+     "codigo": "TERCEIROS",
+     "sim": true,
+     "forca": "clara",
+     "provas": [
+      {
+       "codigo": "VIZINHOS",
+       "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
+      },
+      {
+       "codigo": "FAMILIA",
+       "texto": "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"
+      }
+     ],
+     "cobertura": "os danos a terceiros",
+     "pergunta": null
+    }
+   ],
    "motivos": [
     {
-     "plano": "TOTAL",
-     "peso": 1,
+     "plano": "RC",
+     "peso": 0,
      "codigo": "VIZINHOS",
      "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
+    },
+    {
+     "plano": "RC",
+     "peso": 0,
+     "codigo": "FAMILIA",
+     "texto": "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"
     }
    ],
    "motivos_plano": [
@@ -823,20 +961,17 @@ window.FICHAS_DEMO = {
      "texto": "seus eletrônicos e eletrodomésticos valem hoje de R$ 15 mil a R$ 40 mil, e danos elétricos são 53,3% dos acionamentos do residencial da BB"
     }
    ],
-   "pontos": {
-    "pratico": 0,
-    "total": 1
-   },
    "alternativa": {
     "plano": "PRATICO",
     "texto": "Prático: acrescenta roubo com arrombamento e quebra de vidros"
    },
+   "pergunta_decisiva": null,
    "por_que_nao_abaixo": "",
-   "por_que_nao_acima": "o Prático acrescenta roubo com arrombamento e quebra de vidros, mas hoje não vemos eletrônicos de valor alto nem gasto com vidros que peçam isso",
+   "por_que_nao_acima": "o Prático acrescenta roubo com arrombamento e quebra de vidros, mas hoje não vemos bens, eletrônicos ou gasto com vidros que peçam isso",
    "adicionais": [
     {
      "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
-     "motivo": "há dependentes ou pet na casa e vizinhos por perto; a RC familiar paga danos que eles causem a terceiros"
+     "motivo": "o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar"
     }
    ],
    "coberturas": [
@@ -936,7 +1071,7 @@ window.FICHAS_DEMO = {
      "regra": "reparo de uma unidade vizinha do mesmo tamanho: 104 m² × R$ 1.678–R$ 2.916/m² (SINAPI BA até CUB BA oficial, padrão não cadastrado: fator 0,85 a 1,30) × 30%–60%",
      "justificativa": "Um vazamento ou incêndio no seu imóvel pode atingir a unidade vizinha, de tamanho parecido com a sua (cerca de 104 m²): repará-la custa de R$ 52 mil a R$ 182 mil, e a cobertura paga isso no seu lugar.",
      "confirmar": "",
-     "observacao": "Cobertura adicional ao plano Essencial (guia 9.2): há dependentes ou pet na casa e vizinhos por perto; a RC familiar paga danos que eles causem a terceiros.",
+     "observacao": "Cobertura adicional ao plano Essencial (guia 9.2): o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar.",
      "limitada_pelo_produto": false,
      "sugerido": 117000
     }
@@ -1108,47 +1243,91 @@ window.FICHAS_DEMO = {
      "prioridade": 100,
      "provavel_bb": true,
      "texto": "provável seguro BB neste endereço: há seguro residencial e produto de seguridade do BB; se o seguro for da BB, não pode haver nova proposta para o mesmo endereço",
-     "pergunta": "O seu seguro residencial atual é da BB Seguros? Se for, ele já protege este endereço."
+     "pergunta": "O seu seguro residencial atual é da BB Seguros?"
     }
    ],
    "avisos": [],
    "plano": "PRATICO",
+   "forca": "clara",
+   "necessidades": [
+    {
+     "codigo": "ALUGUEL",
+     "sim": false,
+     "forca": "clara",
+     "provas": [],
+     "cobertura": "a perda de aluguel",
+     "pergunta": null
+    },
+    {
+     "codigo": "ROUBO",
+     "sim": true,
+     "forca": "clara",
+     "provas": [
+      {
+       "codigo": "ELETRONICOS",
+       "texto": "você tem pelo menos R$ 12 mil em eletrônicos, os itens mais levados num arrombamento"
+      }
+     ],
+     "cobertura": "o roubo e a quebra de vidros",
+     "pergunta": null
+    },
+    {
+     "codigo": "TERCEIROS",
+     "sim": true,
+     "forca": "clara",
+     "provas": [
+      {
+       "codigo": "VIZINHOS",
+       "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
+      },
+      {
+       "codigo": "FAMILIA",
+       "texto": "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"
+      }
+     ],
+     "cobertura": "os danos a terceiros",
+     "pergunta": null
+    }
+   ],
    "motivos": [
     {
-     "plano": "TOTAL",
-     "peso": 1,
+     "plano": "PRATICO",
+     "peso": 0,
+     "codigo": "ELETRONICOS",
+     "texto": "você tem pelo menos R$ 12 mil em eletrônicos, os itens mais levados num arrombamento"
+    },
+    {
+     "plano": "RC",
+     "peso": 0,
      "codigo": "VIZINHOS",
      "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
     },
     {
-     "plano": "PRATICO",
-     "peso": 1,
-     "codigo": "ELETRONICOS",
-     "texto": "você tem pelo menos R$ 12 mil em eletrônicos, os itens mais levados num arrombamento"
+     "plano": "RC",
+     "peso": 0,
+     "codigo": "FAMILIA",
+     "texto": "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"
     }
    ],
    "motivos_plano": [
     {
      "plano": "PRATICO",
-     "peso": 1,
+     "peso": 0,
      "codigo": "ELETRONICOS",
      "texto": "você tem pelo menos R$ 12 mil em eletrônicos, os itens mais levados num arrombamento"
     }
    ],
-   "pontos": {
-    "pratico": 1,
-    "total": 1
-   },
    "alternativa": {
-    "plano": "TOTAL",
-    "texto": "Total: acrescenta o conserto de danos a terceiros, a perda de aluguel e as despesas emergenciais"
+    "plano": "ESSENCIAL",
+    "texto": "Essencial: mais barato, sem roubo com arrombamento e quebra de vidros"
    },
+   "pergunta_decisiva": null,
    "por_que_nao_abaixo": "o Essencial não cobre roubo com arrombamento e quebra de vidros",
-   "por_que_nao_acima": "o Total acrescenta a perda de aluguel e as despesas emergenciais (a RC familiar já entra como adicional), mas esses sinais ainda são poucos",
+   "por_que_nao_acima": "o Total acrescenta a perda de aluguel e as despesas emergenciais (a RC familiar já entra como adicional), mas hoje não vemos aluguel em jogo",
    "adicionais": [
     {
      "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
-     "motivo": "há dependentes ou pet na casa e vizinhos por perto; a RC familiar paga danos que eles causem a terceiros"
+     "motivo": "o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar"
     }
    ],
    "coberturas": [
@@ -1276,7 +1455,7 @@ window.FICHAS_DEMO = {
      "regra": "reparo de uma unidade vizinha do mesmo tamanho: 90 m² × R$ 1.881–R$ 2.239/m² (SINAPI SP até CUB SP oficial, padrão estimado pelo IPTU/m²: fator 0,85 a 1,00) × 30%–60%",
      "justificativa": "Um vazamento ou incêndio no seu imóvel pode atingir a unidade vizinha, de tamanho parecido com a sua (cerca de 90 m²): repará-la custa de R$ 51 mil a R$ 121 mil, e a cobertura paga isso no seu lugar.",
      "confirmar": "",
-     "observacao": "Cobertura adicional ao plano Prático (guia 9.2): há dependentes ou pet na casa e vizinhos por perto; a RC familiar paga danos que eles causem a terceiros.",
+     "observacao": "Cobertura adicional ao plano Prático (guia 9.2): o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar.",
      "limitada_pelo_produto": false,
      "sugerido": 86000
     }
@@ -1284,7 +1463,7 @@ window.FICHAS_DEMO = {
    "perguntas": [
     {
      "prioridade": 100,
-     "texto": "O seu seguro residencial atual é da BB Seguros? Se for, ele já protege este endereço.",
+     "texto": "O seu seguro residencial atual é da BB Seguros?",
      "codigo": "SEGURO_EXISTENTE",
      "obrigatoria": true
     },
@@ -1443,42 +1622,86 @@ window.FICHAS_DEMO = {
    "pendencias": [],
    "avisos": [],
    "plano": "PRATICO",
+   "forca": "clara",
+   "necessidades": [
+    {
+     "codigo": "ALUGUEL",
+     "sim": false,
+     "forca": "clara",
+     "provas": [],
+     "cobertura": "a perda de aluguel",
+     "pergunta": null
+    },
+    {
+     "codigo": "ROUBO",
+     "sim": true,
+     "forca": "clara",
+     "provas": [
+      {
+       "codigo": "VIDROS",
+       "texto": "você gastou R$ 11 mil com vidraçaria nos últimos 2 anos, e vidro quebrado custa caro para repor"
+      }
+     ],
+     "cobertura": "o roubo e a quebra de vidros",
+     "pergunta": null
+    },
+    {
+     "codigo": "TERCEIROS",
+     "sim": true,
+     "forca": "clara",
+     "provas": [
+      {
+       "codigo": "VIZINHOS",
+       "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
+      },
+      {
+       "codigo": "FAMILIA",
+       "texto": "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"
+      }
+     ],
+     "cobertura": "os danos a terceiros",
+     "pergunta": null
+    }
+   ],
    "motivos": [
     {
-     "plano": "TOTAL",
-     "peso": 1,
+     "plano": "PRATICO",
+     "peso": 0,
+     "codigo": "VIDROS",
+     "texto": "você gastou R$ 11 mil com vidraçaria nos últimos 2 anos, e vidro quebrado custa caro para repor"
+    },
+    {
+     "plano": "RC",
+     "peso": 0,
      "codigo": "VIZINHOS",
      "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
     },
     {
-     "plano": "PRATICO",
-     "peso": 1,
-     "codigo": "VIDROS",
-     "texto": "você gastou R$ 11 mil com vidraçaria nos últimos 2 anos, e vidro quebrado custa caro para repor"
+     "plano": "RC",
+     "peso": 0,
+     "codigo": "FAMILIA",
+     "texto": "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"
     }
    ],
    "motivos_plano": [
     {
      "plano": "PRATICO",
-     "peso": 1,
+     "peso": 0,
      "codigo": "VIDROS",
      "texto": "você gastou R$ 11 mil com vidraçaria nos últimos 2 anos, e vidro quebrado custa caro para repor"
     }
    ],
-   "pontos": {
-    "pratico": 1,
-    "total": 1
-   },
    "alternativa": {
-    "plano": "TOTAL",
-    "texto": "Total: acrescenta o conserto de danos a terceiros, a perda de aluguel e as despesas emergenciais"
+    "plano": "ESSENCIAL",
+    "texto": "Essencial: mais barato, sem roubo com arrombamento e quebra de vidros"
    },
+   "pergunta_decisiva": null,
    "por_que_nao_abaixo": "o Essencial não cobre roubo com arrombamento e quebra de vidros",
-   "por_que_nao_acima": "o Total acrescenta a perda de aluguel e as despesas emergenciais (a RC familiar já entra como adicional), mas esses sinais ainda são poucos",
+   "por_que_nao_acima": "o Total acrescenta a perda de aluguel e as despesas emergenciais (a RC familiar já entra como adicional), mas hoje não vemos aluguel em jogo",
    "adicionais": [
     {
      "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
-     "motivo": "há dependentes ou pet na casa e vizinhos por perto; a RC familiar paga danos que eles causem a terceiros"
+     "motivo": "o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar"
     }
    ],
    "coberturas": [
@@ -1606,7 +1829,7 @@ window.FICHAS_DEMO = {
      "regra": "reparo de uma unidade vizinha do mesmo tamanho: 110 m² × R$ 2.287–R$ 3.561/m² (SINAPI PR até CUB PR oficial, padrão estimado pelo IPTU/m²: fator 1,00 a 1,30) × 30%–60%",
      "justificativa": "Um vazamento ou incêndio no seu imóvel pode atingir a unidade vizinha, de tamanho parecido com a sua (cerca de 110 m²): repará-la custa de R$ 75 mil a R$ 235 mil, e a cobertura paga isso no seu lugar.",
      "confirmar": "",
-     "observacao": "Cobertura adicional ao plano Prático (guia 9.2): há dependentes ou pet na casa e vizinhos por perto; a RC familiar paga danos que eles causem a terceiros. O máximo estimado (R$ 235.000) passa do limite do produto (R$ 200.000): o valor acima do limite fica descoberto.",
+     "observacao": "Cobertura adicional ao plano Prático (guia 9.2): o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar. O máximo estimado (R$ 235.000) passa do limite do produto (R$ 200.000): o valor acima do limite fica descoberto.",
      "limitada_pelo_produto": true,
      "sugerido": 138000
     }
@@ -1768,42 +1991,80 @@ window.FICHAS_DEMO = {
    "pendencias": [],
    "avisos": [],
    "plano": "TOTAL",
+   "forca": "clara",
+   "necessidades": [
+    {
+     "codigo": "ALUGUEL",
+     "sim": true,
+     "forca": "clara",
+     "provas": [
+      {
+       "codigo": "INQUILINO",
+       "texto": "você paga R$ 1,5 mil de aluguel por mês e, se o imóvel ficar inabitável, precisaria pagar outra moradia"
+      }
+     ],
+     "cobertura": "a perda de aluguel",
+     "pergunta": null
+    },
+    {
+     "codigo": "ROUBO",
+     "sim": false,
+     "forca": "no_limite",
+     "provas": [],
+     "cobertura": "o roubo e a quebra de vidros",
+     "pergunta": "Seus eletrônicos (TV, notebook, celulares, videogame) valem mais de R$ 10 mil?"
+    },
+    {
+     "codigo": "TERCEIROS",
+     "sim": true,
+     "forca": "clara",
+     "provas": [
+      {
+       "codigo": "VIZINHOS",
+       "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
+      },
+      {
+       "codigo": "FAMILIA",
+       "texto": "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"
+      }
+     ],
+     "cobertura": "os danos a terceiros",
+     "pergunta": null
+    }
+   ],
    "motivos": [
     {
      "plano": "TOTAL",
-     "peso": 2,
+     "peso": 0,
      "codigo": "INQUILINO",
      "texto": "você paga R$ 1,5 mil de aluguel por mês e, se o imóvel ficar inabitável, precisaria pagar outra moradia"
     },
     {
-     "plano": "TOTAL",
-     "peso": 1,
+     "plano": "RC",
+     "peso": 0,
      "codigo": "VIZINHOS",
      "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
+    },
+    {
+     "plano": "RC",
+     "peso": 0,
+     "codigo": "FAMILIA",
+     "texto": "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"
     }
    ],
    "motivos_plano": [
     {
      "plano": "TOTAL",
-     "peso": 2,
+     "peso": 0,
      "codigo": "INQUILINO",
      "texto": "você paga R$ 1,5 mil de aluguel por mês e, se o imóvel ficar inabitável, precisaria pagar outra moradia"
-    },
-    {
-     "plano": "TOTAL",
-     "peso": 1,
-     "codigo": "VIZINHOS",
-     "texto": "em prédio ou condomínio, um vazamento ou incêndio no seu imóvel pode atingir o vizinho"
     }
    ],
-   "pontos": {
-    "pratico": 0,
-    "total": 3
-   },
    "alternativa": {
     "plano": "PRATICO",
     "texto": "Prático: mais barato, sem o conserto de danos a terceiros, a perda de aluguel e as despesas emergenciais"
    },
+   "pergunta_decisiva": null,
    "por_que_nao_abaixo": "o Prático não cobre o conserto de danos a terceiros, a perda de aluguel e as despesas emergenciais",
    "por_que_nao_acima": "",
    "adicionais": [],
@@ -2128,48 +2389,91 @@ window.FICHAS_DEMO = {
    ],
    "avisos": [],
    "plano": "TOTAL",
+   "forca": "clara",
+   "necessidades": [
+    {
+     "codigo": "ALUGUEL",
+     "sim": true,
+     "forca": "clara",
+     "provas": [
+      {
+       "codigo": "RECEBE_ALUGUEL",
+       "texto": "este imóvel rende cerca de R$ 8,3 mil de aluguel por mês, que para de entrar se ele precisar de reparo"
+      }
+     ],
+     "cobertura": "a perda de aluguel",
+     "pergunta": null
+    },
+    {
+     "codigo": "ROUBO",
+     "sim": true,
+     "forca": "clara",
+     "provas": [
+      {
+       "codigo": "BENS_ALTOS",
+       "texto": "suas compras para a casa nos últimos 3 anos valem hoje pelo menos R$ 42 mil"
+      },
+      {
+       "codigo": "CASA_SEM_CONDOMINIO",
+       "texto": "a casa fica fora de condomínio, mais exposta a arrombamento"
+      }
+     ],
+     "cobertura": "o roubo e a quebra de vidros",
+     "pergunta": null
+    },
+    {
+     "codigo": "TERCEIROS",
+     "sim": true,
+     "forca": "clara",
+     "provas": [
+      {
+       "codigo": "FAMILIA",
+       "texto": "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"
+      }
+     ],
+     "cobertura": "os danos a terceiros",
+     "pergunta": null
+    }
+   ],
    "motivos": [
     {
      "plano": "TOTAL",
-     "peso": 2,
+     "peso": 0,
      "codigo": "RECEBE_ALUGUEL",
      "texto": "este imóvel rende cerca de R$ 8,3 mil de aluguel por mês, que para de entrar se ele precisar de reparo"
     },
     {
      "plano": "PRATICO",
-     "peso": 2,
+     "peso": 0,
      "codigo": "BENS_ALTOS",
      "texto": "suas compras para a casa nos últimos 3 anos valem hoje pelo menos R$ 42 mil"
     },
     {
      "plano": "PRATICO",
-     "peso": 1,
+     "peso": 0,
      "codigo": "CASA_SEM_CONDOMINIO",
      "texto": "a casa fica fora de condomínio, mais exposta a arrombamento"
+    },
+    {
+     "plano": "RC",
+     "peso": 0,
+     "codigo": "FAMILIA",
+     "texto": "há dependentes ou pet na casa, e um acidente com eles pode atingir terceiros"
     }
    ],
    "motivos_plano": [
     {
      "plano": "TOTAL",
-     "peso": 2,
+     "peso": 0,
      "codigo": "RECEBE_ALUGUEL",
      "texto": "este imóvel rende cerca de R$ 8,3 mil de aluguel por mês, que para de entrar se ele precisar de reparo"
-    },
-    {
-     "plano": "PRATICO",
-     "peso": 2,
-     "codigo": "BENS_ALTOS",
-     "texto": "suas compras para a casa nos últimos 3 anos valem hoje pelo menos R$ 42 mil"
     }
    ],
-   "pontos": {
-    "pratico": 3,
-    "total": 2
-   },
    "alternativa": {
     "plano": "PRATICO",
     "texto": "Prático: mais barato, sem o conserto de danos a terceiros, a perda de aluguel e as despesas emergenciais"
    },
+   "pergunta_decisiva": null,
    "por_que_nao_abaixo": "o Prático não cobre o conserto de danos a terceiros, a perda de aluguel e as despesas emergenciais",
    "por_que_nao_acima": "",
    "adicionais": [],

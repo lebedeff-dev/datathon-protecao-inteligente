@@ -201,7 +201,7 @@ def test_criancas_e_pet_pesam_so_no_plano(ficha):
     com = ficha(APTO_CURITIBA, quantidade_dependentes=2, possui_pet_informado="SIM")
     # decisão de 29/10: a família nunca muda o plano (RN-07); só pede a RC familiar como adicional
     assert not any(m["codigo"] == "FAMILIA_DECLARADA" for m in com["motivos"])
-    assert com["plano"] == sem["plano"] and com["pontos"] == sem["pontos"]
+    assert com["plano"] == sem["plano"] and com["forca"] == sem["forca"]
     assert any(a["cobertura"] == "RESPONSABILIDADE_CIVIL_FAMILIAR" for a in com["adicionais"]) or com["plano"] == "TOTAL"
     faixa = lambda f: {c["cobertura"]: (c["min"], c["max"]) for c in f["coberturas"]}
     fs, fc = faixa(sem), faixa(com)
@@ -222,8 +222,8 @@ def test_crianca_em_apartamento_ganha_rc_adicional(ficha):
 def test_casa_com_pet_recebe_pergunta_e_nao_adicional(ficha):
     f = ficha(APTO_CURITIBA, possui_termo_apartamento="NAO", possui_termo_condominio="NAO", complemento="CASA",
               quantidade_dependentes=0, possui_pet_informado="SIM", pagamento_aluguel_recorrente="NAO")
-    if f["plano"] != "TOTAL":
-        assert not f["adicionais"] and f["perguntas_candidatas"] >= 1
+    if f["plano"] != "TOTAL":   # desde 29/10: família numa casa também ganha a RC como adicional (necessidade C)
+        assert any(a["cobertura"] == "RESPONSABILIDADE_CIVIL_FAMILIAR" for a in f["adicionais"])
 
 
 def test_veraneio_nao_puxa_o_pratico(linha, cal, vazio):
@@ -245,7 +245,8 @@ def test_familia_nao_empurra_para_o_pratico(linha, cal, vazio):
               quantidade_dependentes=2, possui_pet_informado="SIM", endereco_principal_compativel="SIM", complemento="CASA")
     tipo, vinc = motor.inferir_tipo(r), motor.inferir_vinculo(r)
     rec = motor.escolher_plano(r, tipo, vinc, motor.inferir_uso(r, False), motor.estimar_bens(r, vazio))
-    assert rec["pontos"] == {"pratico": 1, "total": 0} and rec["plano"] == "ESSENCIAL"
+    nec = {n["codigo"]: n for n in rec["necessidades"]}
+    assert rec["plano"] == "ESSENCIAL" and not nec["ALUGUEL"]["sim"] and not nec["ROUBO"]["sim"] and nec["TERCEIROS"]["sim"]
 
 
 def test_seguro_existente_um_imovel_nao_elegivel(caso, cal, teste):
@@ -656,7 +657,7 @@ def test_um_toque_nao_tem_pergunta_obrigatoria(todas):
     assert len(um) >= 60
     for f in um:
         assert not any(p["obrigatoria"] for p in f["perguntas"]), f["imovel_id"]
-        assert all(p["codigo"] in ("BENS", "AREA", "PADRAO", "VINCULO", "RC_FAMILIA", "RECEBE_ALUGUEL", "SEGURO_DO_IMOVEL") for p in f["perguntas"])
+        assert all(p["codigo"] in ("BENS", "AREA", "PADRAO", "VINCULO", "RECEBE_ALUGUEL", "SEGURO_DO_IMOVEL", "DECIDE_PLANO") for p in f["perguntas"])
 
 
 def test_planilha_marca_perguntas_opcionais(planilhas):
@@ -749,12 +750,59 @@ def test_metricas_honestas_de_stp_e_itv(tmp_path):
     assert 0 < m["itv_sugerido_sobre_pessimista_mediana"] <= 1
 
 
-def test_casa_com_familia_sempre_recebe_a_oferta_da_rc(todas, teste):
-    # decisão de 29/10: numa casa, a família vira PERGUNTA de RC; ela não pode sumir atrás das perguntas de valor
-    cli = teste["clientes"].set_index("cliente_id")
+def _nec(f, codigo):
+    return next(n for n in f["necessidades"] if n["codigo"] == codigo)
+
+
+def test_inquilino_precisa_de_aluguel_e_vai_ao_total(ficha):
+    f = ficha("IMO_CASO_00008_01")
+    a = _nec(f, "ALUGUEL")
+    assert a["sim"] and a["forca"] == "clara" and f["plano"] == "TOTAL" and f["forca"] == "clara"
+
+
+def test_eletronicos_perto_do_limite_ficam_no_limite_com_pergunta_decisiva(ficha):
+    # R$ 9.411 em eletrônicos para um limite de R$ 10 mil, sem vidraçaria: não precisa do Prático, mas por pouco
+    f = ficha(APTO_CURITIBA, gastos_vidracaria_24m=0)
+    b = _nec(f, "ROUBO")
+    assert not b["sim"] and b["forca"] == "no_limite" and f["plano"] == "ESSENCIAL" and f["forca"] == "no_limite"
+    p = next(p for p in f["perguntas"] if p["codigo"] == "DECIDE_PLANO")
+    assert "R$ 10 mil" in p["texto"] and not p["obrigatoria"] and p["prioridade"] == 65
+    assert "perto" in motor.justificativa(f)
+
+
+def test_vidraca_decide_o_pratico_com_forca_clara(ficha):
+    f = ficha(APTO_CURITIBA)   # gastou R$ 11 mil com vidraçaria
+    b = _nec(f, "ROUBO")
+    assert b["sim"] and b["forca"] == "clara" and f["plano"] == "PRATICO"
+    assert not any(p["codigo"] == "DECIDE_PLANO" for p in f["perguntas"])
+
+
+def test_predio_sem_familia_ganha_rc(ficha):
+    f = ficha(APTO_CURITIBA, quantidade_dependentes=0, possui_pet_informado="NAO")
+    assert _nec(f, "TERCEIROS")["sim"]
+    assert any(a["cobertura"] == "RESPONSABILIDADE_CIVIL_FAMILIAR" for a in f["adicionais"])
+
+
+def test_veraneio_nao_acende_roubo(linha, vazio):
+    r = linha(compras_eletronicos_36m=40000, compras_moveis_36m=30000, pagamento_aluguel_recorrente="NAO",
+              credito_recorrente_compativel_aluguel="NAO", gastos_vidracaria_24m=0)
+    tipo, vinc = motor.inferir_tipo(r), motor.inferir_vinculo(r)
+    rec = motor.escolher_plano(r, tipo, vinc, {"valor": "LAZER_VERANEIO"}, motor.estimar_bens(r, vazio))
+    assert not _nec(rec, "ROUBO")["sim"] and rec["plano"] != "PRATICO"
+
+
+def test_plano_e_o_menor_que_cobre_as_necessidades(todas):
     for f in todas:
-        c = cli.loc[f["cliente_id"]]
-        familia = (c.quantidade_dependentes or 0) > 0 or c.possui_pet_informado == "SIM"
-        if familia and f["plano"] != "TOTAL" and not f["adicionais"]:
-            # só pode ficar de fora se as 3 vagas forem de perguntas mais importantes (obrigatórias ou que mudam o plano)
-            assert any(p["codigo"] == "RC_FAMILIA" for p in f["perguntas"]) or                 (len(f["perguntas"]) == 3 and all(p["prioridade"] > 59 for p in f["perguntas"])), f["imovel_id"]
+        a, b = _nec(f, "ALUGUEL")["sim"], _nec(f, "ROUBO")["sim"]
+        assert f["plano"] == ("TOTAL" if a else "PRATICO" if b else "ESSENCIAL"), f["imovel_id"]
+        if _nec(f, "TERCEIROS")["sim"] and f["plano"] != "TOTAL":
+            assert any(c["cobertura"] == "RESPONSABILIDADE_CIVIL_FAMILIAR" for c in f["coberturas"]), f["imovel_id"]
+
+
+def test_casos_instaveis_estao_marcados_no_limite(tmp_path):
+    import gerar
+    gerar.gerar(tmp_path)
+    m = json.loads((tmp_path / "metricas.json").read_text(encoding="utf-8"))
+    fichas = {f["imovel_id"]: f for f in json.loads((tmp_path / "fichas.json").read_text(encoding="utf-8"))}
+    assert all(fichas[i]["forca"] == "no_limite" for i in m["estabilidade_plano_casos_instaveis"])
+    assert set(m["forca_da_recomendacao"]) <= {"clara", "no_limite"}

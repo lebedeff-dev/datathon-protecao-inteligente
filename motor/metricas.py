@@ -137,6 +137,12 @@ def calcular_metricas(dados, cal, fichas, resultado, coberturas, segundos):
                                     for cob in sorted({c["cobertura"] for f in fichas for c in f["coberturas"]})},
         "canal": dict(Counter(f["canal"] for f in fichas)),
         "jornada": dict(Counter(f["jornada"] for f in fichas)),
+        # Recomendação por necessidades: quantos têm cada necessidade e quantos foram decididos por pouco
+        "necessidades": {cod: sum(any(n["codigo"] == cod and n["sim"] for n in f["necessidades"]) for f in fichas)
+                         for cod in ("ALUGUEL", "ROUBO", "TERCEIROS")},
+        "forca_da_recomendacao": dict(Counter(f["forca"] for f in fichas)),
+        "instaveis_marcados_no_limite_pct": round(100 * sum(por_id[i]["forca"] == "no_limite" for i in instaveis)
+                                                  / len(instaveis), 1) if instaveis else 100.0,
         "gerente_pct_dos_elegiveis": round(100 * sum(f["jornada"] == "GERENTE" for f in fichas)
                                            / max(1, sum(f["elegibilidade"] == "SIM" for f in fichas)), 1),
         "gerente_motivos": dict(Counter(r for f in fichas if f["jornada"] == "GERENTE"

@@ -54,8 +54,8 @@ def motivos_de_patrimonio(vinculo, bens):
     e a cobertura mais acionada (danos elétricos). Peso 0: não muda o plano."""
     motivos = []
     if vinculo == "PROPRIETARIO":
-        motivos.append(("PATRIMONIO", "não vemos aluguel nem financiamento nas suas contas, então um incêndio ou um "
-                                      "temporal sairia todo do seu bolso"))
+        motivos.append(("PATRIMONIO", "não há aluguel nem financiamento nas suas contas, então um incêndio "
+                                      "sairia todo do seu bolso"))
     elif vinculo == "FINANCIADO":
         motivos.append(("PATRIMONIO", "o seguro do financiamento protege a estrutura para o banco, não o que está dentro da casa"))
     e = bens["eletricos"]
@@ -95,7 +95,7 @@ def _se_escolher_menos(f):
     """A frase do slide 23 da Brasilseg, com a consequência concreta para este cliente."""
     plano, cods = f["plano"], {m["codigo"] for m in f["motivos"]}
     if plano == "PRATICO":
-        return "Se você escolher menos, roubo e vidros ficarão descobertos: um arrombamento sairia do seu bolso."
+        return "Se você escolher menos, roubo e vidros ficarão descobertos."
     if plano == "TOTAL":
         if "INQUILINO" in cods:
             return "Se você escolher menos, a perda de aluguel ficará descoberta."
@@ -103,6 +103,15 @@ def _se_escolher_menos(f):
             return "Se você escolher menos, a renda do aluguel ficará descoberta enquanto o imóvel é reparado."
         return "Se você escolher menos, danos a terceiros ficarão descobertos e sairiam do seu bolso."
     return ""
+
+
+def _no_limite(f):
+    """Recomendação decidida por pouco (a menos de 15% do limite): dizer com franqueza e apontar a pergunta."""
+    if f.get("forca") != "no_limite" or f["plano"] == "TOTAL":
+        return ""
+    if f["plano"] == "ESSENCIAL":
+        return "Você está perto de precisar do Prático, que cobre roubo e vidros: a pergunta sobre os seus bens decide."
+    return "A sua necessidade de proteção contra roubo está perto do limite: a pergunta sobre os seus bens confirma."
 
 
 def _opcao_acima(f):
@@ -156,10 +165,11 @@ def justificativa(f):
     partes.append(f"Recomendamos o plano {NOME_PLANO[f['plano']]} porque {'; '.join(motivos)}.")
     partes.append(_em_jogo(f))
     if f.get("adicionais"):
-        partes.append("Incluímos a responsabilidade civil familiar, que paga danos que dependentes ou pet causem a vizinhos.")
+        partes.append("Incluímos a responsabilidade civil familiar, que paga danos que a sua casa cause ao vizinho ou a terceiros.")
     if f["elegibilidade"] == "SIM":   # alternativas só fazem sentido para uma proposta nova (RN-37)
         partes.append(_se_escolher_menos(f))
-        partes.append(_opcao_acima(f))
+        if not f["pendencias"]:   # com elegibilidade a confirmar, o texto prioriza a confirmação (RN-51: equilíbrio)
+            partes.append(_no_limite(f) or _opcao_acima(f))
     if f["pendencias"] and f["elegibilidade"] == "SIM":
         perguntas = [p["pergunta"] for p in f["pendencias"] if p.get("pergunta")]
         if perguntas:

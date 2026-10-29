@@ -209,8 +209,11 @@ MESES_PERDA_ALUGUEL = (6, 12)
 
 # --- Elegibilidade, plano e canal ----------------------------------------------
 OBRA_LIMIAR_CONFIRMAR = 15000   # gasto em material de construção (24 meses) que pede confirmação
-BENS_RELEVANTES = 36000         # bens comprovados acima da mediana da base de desenvolvimento (Prático +2)
-PORTATEIS_RELEVANTES = 10000    # eletrônicos comprovados acima da mediana da base de desenvolvimento (Prático +1)
+BENS_RELEVANTES = 36000         # bens comprovados acima da mediana da base de desenvolvimento (acende ROUBO)
+PORTATEIS_RELEVANTES = 10000    # eletrônicos comprovados acima da mediana da base de desenvolvimento (acende ROUBO)
+# Recomendação "no limite": o valor que decide está a menos de 15% do limite (para cima ou para baixo).
+# Os limites são medianas, não um corte atuarial; a faixa assume essa incerteza e gera a pergunta que decide.
+FAIXA_NO_LIMITE = 0.15
 MATURIDADE_MIN_ONE_CLICK = 40   # comportamento digital, não atributo pessoal
 
 # --- Confiança e perguntas ------------------------------------------------------
