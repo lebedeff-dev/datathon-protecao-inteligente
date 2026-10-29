@@ -4,6 +4,9 @@ atualizado: 2026-10-28
 ---
 # 🚀 Visão geral do motor (comece aqui)
 
+> [!info] Versão completa
+> Cada dado, passo, métrica, fonte, saída e teste explicado em detalhe: [[00 - Índice (leia nesta ordem)]] (pasta 16 - Projeto por inteiro).
+
 Uma página só com **o que o motor faz, que números ele entrega, de onde vêm os dados e onde está cada detalhe**. Números da base Teste Comum (138 casos), versão de 28/10 à noite.
 
 > [!tip] Em uma frase

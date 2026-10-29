@@ -8,7 +8,7 @@ tags: [painel, datathon-bb]
 > **Próxima tarefa:** [[Especificação do app v2 - ligado ao motor]].
 
 > [!codigo] Código do motor (atualizado 28/10 à noite)
-> **Comece por [[Visão geral do motor (comece aqui)]].** Depois: [[Mapa do código]] (cada arquivo e função) · [[Auditoria do código - 28-10]] (erros e correções) · [[Métricas do mercado x as nossas]] · [[Log de alterações do código]]
+> **Comece por [[Visão geral do motor (comece aqui)]]. Tudo em detalhe: [[00 - Índice (leia nesta ordem)]] (pasta 16).** Depois: [[Mapa do código]] (cada arquivo e função) · [[Auditoria do código - 28-10]] (erros e correções) · [[Métricas do mercado x as nossas]] · [[Log de alterações do código]]
 > **91 testes** · 0 erros nas planilhas · Prático 59 · Total 49 · Essencial 30 · elegível 122 · 2,7 perguntas por caso (86% menos esforço que uma cotação tradicional)
 
 > [!fonte] Dados externos em uso

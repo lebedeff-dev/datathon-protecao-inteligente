@@ -18,7 +18,7 @@ Python 3.11 (registrado em `.python-version`).
 
 ```bash
 pip install -r requirements.txt
-python -m pytest -q                 # 91 testes
+python -m pytest -q                 # 99 testes
 python motor/gerar.py --entrega     # gera, valida e copia as planilhas para entrega/
 ```
 
@@ -94,9 +94,9 @@ dados/teste_comum ──► processar_caso() para cada cliente-imóvel
 | Coberturas adicionais | 41 (RC familiar em prédio ou condomínio com dependentes ou pet) |
 | Elegibilidade | SIM 122 · NAO 16 (provável seguro BB no endereço: seguro residencial + produto de seguridade BB + um imóvel) · 21 com confirmação pendente |
 | Confiança | ALTA 17 · MÉDIA 101 · BAIXA 20 (14%) |
-| Jornada | 1 toque 67 · app com perguntas 20 · gerente 35 (29% dos elegíveis: confiança baixa, obra ou sem app) · sem nova proposta 16 |
+| Jornada | 1 toque 63 (nenhuma pergunta obrigatória) · app com perguntas 37 (inclui a confiança baixa, que pergunta no app antes) · gerente 22 (18% dos elegíveis: obra ou sem app) · sem nova proposta 16 |
 | Qualidade do motivo | 0 motivos genéricos · 100% com fato do próprio cliente e valor em risco · 0 termos internos · mediana de 100 palavras |
-| Perguntas por caso | 2,70 (de 3,43 possíveis); nenhuma pergunta de valor que mude menos de R$ 5 mil |
+| Perguntas por caso | 2,77 (0,34 obrigatória; as demais só ajustam o valor e vêm marcadas "(opcional)"); 94 casos sem pergunta que trave |
 | Teste de justiça (troca renda e idade) | 0 casos mudam (todos os 138 têm compras ou bens; a renda só entra sem eles) |
 | Bens sem compras: só região × região + renda (fora da amostra, 2.578 imóveis) | erro mediano 40,5% → 22,7% |
 | Dependentes e pet mudando valor ou confiança | 0 casos (mudam o plano em 18, pela RC familiar) |
@@ -111,10 +111,10 @@ dados/teste_comum ──► processar_caso() para cada cliente-imóvel
 ### Métricas de mercado e validação
 | Métrica | Resultado | Como |
 |---|---|---|
-| STP (sem pessoa no meio) | 63,0% | 1 toque + app com perguntas de sim/não |
+| STP (sem pessoa no meio) | 72,5% | 1 toque + app com perguntas de sim/não |
 | Esforço | 2,7 perguntas × 19,9 campos de uma cotação tradicional (86,4% menos) | 5 dados do imóvel + 6 declarações de elegibilidade + 1 valor por cobertura |
 | Aderência aos sinistros reais | 100% das recomendações têm danos elétricos, água e vendaval, que somam 79,4% dos acionamentos do residencial BB | `motor/externos/sinistros_residencial_bb.csv` |
-| ITV do incêndio (segurado ÷ valor em risco) | máximo da faixa 1,46 · mínimo 0,60 | O app deve sugerir o meio da faixa, não o mínimo |
+| ITV do incêndio (segurado ÷ valor em risco) | máximo 1,47 · mínimo 0,60 · **sugerido 1,00** | Cada cobertura traz um valor sugerido (o app não puxa o mínimo) |
 | Backtest fora da amostra: área | erro mediano 15%; a faixa contém a área real em 78% (meta 80%) | Calibra em metade da base de desenvolvimento, mede na outra |
 | Backtest fora da amostra: padrão pelo IPTU/m² | intervalo certo em 97,8% dos 180 estreitados | Mesmo método |
 

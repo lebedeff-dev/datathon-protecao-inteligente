@@ -6,7 +6,7 @@
   --bb-azul: #465eff;
   --c01: #4cc9f0; --c02: #4895ef; --c03: #7b61ff; --c04: #6a4cff; --c05: #9d4edd;
   --c06: #b5179e; --c07: #f72585; --c08: #ff8fab; --c09: #2ec4b6; --c10: #56cfe1;
-  --c11: #48bfe3; --c12: #c77dff; --c13: #e0aaff; --c14: #ff4d9d; --c15: #06d6a0;
+  --c11: #48bfe3; --c12: #c77dff; --c13: #e0aaff; --c14: #ff4d9d; --c15: #06d6a0; --c16: #ffd166;
 }
 
 /* ---------- Explorador: uma cor por pasta ---------- */
@@ -26,6 +26,7 @@
 .nav-folder-title[data-path$="13 - Design"]            { --pasta: var(--c13); }
 .nav-folder-title[data-path$="14 - App v2"]            { --pasta: var(--c14); }
 .nav-folder-title[data-path$="15 - Código"]            { --pasta: var(--c15); }
+.nav-folder-title[data-path$="16 - Projeto por inteiro"] { --pasta: var(--c16); }
 .nav-folder-title[data-path$=" - Briefing"], .nav-folder-title[data-path$=" - Dados"],
 .nav-folder-title[data-path$=" - Solução"], .nav-folder-title[data-path$=" - Tecnologia"],
 .nav-folder-title[data-path$=" - Pesquisa"], .nav-folder-title[data-path$=" - Git e Entregas"],
@@ -33,7 +34,7 @@
 .nav-folder-title[data-path$=" - Conceitos"], .nav-folder-title[data-path$=" - Coberturas"],
 .nav-folder-title[data-path$=" - Fontes externas"], .nav-folder-title[data-path$=" - Inovação"],
 .nav-folder-title[data-path$=" - Design"], .nav-folder-title[data-path$=" - App v2"],
-.nav-folder-title[data-path$=" - Código"] {
+.nav-folder-title[data-path$=" - Código"], .nav-folder-title[data-path$=" - Projeto por inteiro"] {
   border-left-color: var(--pasta);
   background: color-mix(in srgb, var(--pasta) 10%, transparent);
   font-weight: 600;
@@ -52,7 +53,8 @@
 .nav-folder-title[data-path$=" - Inovação"] .nav-folder-title-content::before,
 .nav-folder-title[data-path$=" - Design"] .nav-folder-title-content::before,
 .nav-folder-title[data-path$=" - App v2"] .nav-folder-title-content::before,
-.nav-folder-title[data-path$=" - Código"] .nav-folder-title-content::before {
+.nav-folder-title[data-path$=" - Código"] .nav-folder-title-content::before,
+.nav-folder-title[data-path$=" - Projeto por inteiro"] .nav-folder-title-content::before {
   content: "●  "; color: var(--pasta);
 }
 /* Notas-chave na raiz em amarelo BB */

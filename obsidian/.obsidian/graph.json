@@ -118,6 +118,13 @@
         "a": 1,
         "rgb": 448160
       }
+    },
+    {
+      "query": "path:\"BB Datathon/16 - Projeto por inteiro\"",
+      "color": {
+        "a": 1,
+        "rgb": 16765286
+      }
     }
   ],
   "collapse-display": true,

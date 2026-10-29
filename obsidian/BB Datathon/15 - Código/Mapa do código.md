@@ -34,7 +34,7 @@ flowchart LR
 | `motor/templates.py` | Confere se as 2 planilhas obedecem ao guia antes de gravar |
 | `motor/api.py` | API de demonstração (FastAPI): a mesma ficha para qualquer canal |
 | `motor/externos/` | Fontes externas salvas (CSV) + `FONTES.md` (licença, data, limitações) + `coletar.py` (atualiza o IPCA) |
-| `tests/` | 82 testes automáticos (`python -m pytest -q`) |
+| `tests/` | 99 testes automáticos (`python -m pytest -q`) |
 | `entrega/` | As 2 planilhas finais, `metricas.json` e `casos_contrastantes.json` |
 | `prototipos/` | O protótipo com gerente, que lê `fichas_demo.js` |
 
@@ -84,6 +84,7 @@ flowchart LR
 | `familia_declarada(r)` | Dependentes no cadastro e pet informado. Só serve para a necessidade de RC |
 | `escolher_plano(...)` | Soma pontos por sinais do imóvel e escolhe Essencial, Prático ou Total. Escreve o motivo, a alternativa e o que fica descoberto |
 | `faixa_bruta_incendio(ctx)` | Reconstrução + bens, ou só acabamentos + bens no segundo risco |
+| `dimensionar(cob, ctx)` (confiança e sugerido) | Cada cobertura sai com a **confiança dos dados que usa** (área, padrão, bens, fonte) e um **valor sugerido** (meio da faixa; no incêndio, o valor em risco) |
 | `dimensionar(cob, ctx)` | A faixa mínima e máxima de cada cobertura, com regra, justificativa, o que confirmar e observação. Avisa quando a estimativa passa do limite do produto (subseguro) |
 | `contexto_territorio(cob, r)` | A frase com dado oficial do município: Defesa Civil para água e vento, ANEEL para danos elétricos. Sem dado ou com zero registros, devolve vazio |
 | `coberturas_adicionais(r, tipo, plano)` | RC familiar como adicional em prédio ou condomínio com dependentes ou pet |
@@ -92,7 +93,7 @@ flowchart LR
 | Função | O que faz |
 |---|---|
 | `valor_da_informacao(...)` | Quanto cada resposta aperta a faixa de incêndio, limitado à largura real que entregamos |
-| `montar_perguntas(...)` | Até 3 perguntas: elegibilidade primeiro, depois as que mudam o plano e as que mais apertam a faixa. Corta as que mudam menos de R$ 5 mil |
+| `montar_perguntas(...)` | Até 3 perguntas: elegibilidade primeiro, depois as que mudam o plano e as que mais apertam a faixa. Corta as que mudam menos de R$ 5 mil. Marca cada uma como **obrigatória** (elegibilidade e `PERGUNTAS_QUE_TRAVAM`: uso e tipo duvidosos) ou **opcional** (só ajusta valor) |
 | `peso_dado(d, campo)` | Nota de 0 a 1 = peso da fonte × frescor (dado antigo vale menos) |
 | `campos_faltantes(r)` | Quais campos do imóvel vieram vazios |
 | `classe_dado(d, campo)` | Observado, estimado ou presumido. Observado mais velho que a meia-vida conta como estimado |
@@ -101,7 +102,7 @@ flowchart LR
 ### Montar a saída
 | Função | O que faz |
 |---|---|
-| `escolher_jornada(...)` | 1 toque, app com perguntas, gerente (só confiança baixa, obra ou sem app) ou sem nova proposta, com o motivo |
+| `escolher_jornada(...)` | 1 toque (nenhuma pergunta obrigatória), app com perguntas (obrigatória ou confiança baixa: o app pergunta antes), gerente (só obra ou sem app) ou sem nova proposta, com o motivo |
 | `processar_caso(...)` | Junta tudo e devolve a **ficha** de um cliente-imóvel |
 | `processar(dados, cal)` | Roda `processar_caso` para todos os imóveis da base |
 | `justificativa(f)` | Chama `motivo.justificativa`: fato do cliente, valor em risco, "Se você escolher menos..." (slide 23), opção acima, o que confirmar e confiança |
