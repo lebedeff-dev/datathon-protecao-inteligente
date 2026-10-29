@@ -508,8 +508,8 @@ window.FICHAS_DEMO = {
    },
    "valor_imovel": {
     "custo_m2": [
-     1605.04,
-     2789.14
+     1888.28,
+     2145.49
     ],
     "fator_padrao": [
      0.85,
@@ -667,7 +667,7 @@ window.FICHAS_DEMO = {
      "max": 427000,
      "confianca": "MEDIA",
      "dados_utilizados": "área, tipo, vínculo, UF, padrão, compras 36m, bens; SINAPI, CUB, IPCA",
-     "regra": "área × padrão 197–345 m² de padrão normal (área estimada 262 m², padrão desconhecido; faixa calibrada de área × padrão: contém o valor real em 88% dos testes fora da amostra) × R$ 1.605–R$ 2.789/m² (SINAPI PE até SINAPI PE × 1.136 (razão CUB/SINAPI das UFs com CUB oficial)) × 25%–40% (acabamentos) + bens",
+     "regra": "área × padrão 197–345 m² de padrão normal (área estimada 262 m², padrão desconhecido; faixa calibrada de área × padrão: contém o valor real em 88% dos testes fora da amostra) × R$ 1.888–R$ 2.145/m² (SINAPI PE até SINAPI PE × 1.136 (razão CUB/SINAPI das UFs com CUB oficial)) × 25%–40% (acabamentos) + bens",
      "justificativa": "A estrutura tem seguro próprio (condomínio ou financiamento); o seu paga os acabamentos, estimados em de R$ 93 mil a R$ 296 mil, e repõe o que você comprou para a casa, de R$ 49 mil a R$ 131 mil.",
      "confirmar": "Área do imóvel e valor dos bens",
      "observacao": "Segundo risco (CG cl. 15.2): a estrutura é paga primeiro pelo seguro do condomínio ou do financiamento.",
@@ -777,16 +777,16 @@ window.FICHAS_DEMO = {
     {
      "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
      "tipo": "ADICIONAL",
-     "min": 126000,
+     "min": 148000,
      "max": 200000,
      "confianca": "MEDIA",
      "dados_utilizados": "tipo do imóvel; SINAPI, CUB",
-     "regra": "reparo de uma unidade vizinha do mesmo tamanho: 262 m² × R$ 1.605–R$ 2.789/m² (SINAPI PE até SINAPI PE × 1.136 (razão CUB/SINAPI das UFs com CUB oficial)) × 30%–60%",
-     "justificativa": "Um vazamento ou incêndio no seu imóvel pode atingir a unidade vizinha, de tamanho parecido com a sua (cerca de 262 m²): repará-la custa de R$ 126 mil a R$ 438 mil, e a cobertura paga isso no seu lugar.",
+     "regra": "reparo de uma unidade vizinha do mesmo tamanho: 262 m² × R$ 1.888–R$ 2.145/m² (SINAPI PE até SINAPI PE × 1.136 (razão CUB/SINAPI das UFs com CUB oficial)) × 30%–60%",
+     "justificativa": "Um vazamento ou incêndio no seu imóvel pode atingir a unidade vizinha, de tamanho parecido com a sua (cerca de 262 m²): repará-la custa de R$ 148 mil a R$ 337 mil, e a cobertura paga isso no seu lugar.",
      "confirmar": "",
-     "observacao": "Cobertura adicional ao plano Prático (guia 9.2): o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar. O máximo estimado (R$ 438.000) passa do limite do produto (R$ 200.000): o valor acima do limite fica descoberto.",
+     "observacao": "Cobertura adicional ao plano Prático (guia 9.2): o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar. O máximo estimado (R$ 337.000) passa do limite do produto (R$ 200.000): o valor acima do limite fica descoberto.",
      "limitada_pelo_produto": true,
-     "sugerido": 163000
+     "sugerido": 174000
     }
    ],
    "perguntas": [
@@ -936,8 +936,8 @@ window.FICHAS_DEMO = {
    },
    "valor_imovel": {
     "custo_m2": [
-     1678.15,
-     2916.19
+     1974.29,
+     2243.22
     ],
     "fator_padrao": [
      0.85,
@@ -1067,7 +1067,7 @@ window.FICHAS_DEMO = {
      "max": 175000,
      "confianca": "MEDIA",
      "dados_utilizados": "área, tipo, vínculo, UF, padrão, compras 36m, bens; SINAPI, CUB, IPCA",
-     "regra": "área × padrão 78–136 m² de padrão normal (área estimada 104 m², padrão desconhecido; faixa calibrada de área × padrão: contém o valor real em 88% dos testes fora da amostra) × R$ 1.678–R$ 2.916/m² (SINAPI BA até CUB BA oficial) × 25%–40% (acabamentos) + bens",
+     "regra": "área × padrão 78–136 m² de padrão normal (área estimada 104 m², padrão desconhecido; faixa calibrada de área × padrão: contém o valor real em 88% dos testes fora da amostra) × R$ 1.974–R$ 2.243/m² (SINAPI BA até CUB BA oficial) × 25%–40% (acabamentos) + bens",
      "justificativa": "A estrutura tem seguro próprio (condomínio ou financiamento); o seu paga os acabamentos, estimados em de R$ 38 mil a R$ 122 mil, e repõe o que você comprou para a casa, de R$ 19 mil a R$ 52 mil.",
      "confirmar": "Área do imóvel e valor dos bens",
      "observacao": "Segundo risco (CG cl. 15.2): a estrutura é paga primeiro pelo seguro do condomínio ou do financiamento.",
@@ -1149,16 +1149,16 @@ window.FICHAS_DEMO = {
     {
      "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
      "tipo": "ADICIONAL",
-     "min": 52000,
-     "max": 182000,
+     "min": 62000,
+     "max": 140000,
      "confianca": "MEDIA",
      "dados_utilizados": "tipo do imóvel; SINAPI, CUB",
-     "regra": "reparo de uma unidade vizinha do mesmo tamanho: 104 m² × R$ 1.678–R$ 2.916/m² (SINAPI BA até CUB BA oficial) × 30%–60%",
-     "justificativa": "Um vazamento ou incêndio no seu imóvel pode atingir a unidade vizinha, de tamanho parecido com a sua (cerca de 104 m²): repará-la custa de R$ 52 mil a R$ 182 mil, e a cobertura paga isso no seu lugar.",
+     "regra": "reparo de uma unidade vizinha do mesmo tamanho: 104 m² × R$ 1.974–R$ 2.243/m² (SINAPI BA até CUB BA oficial) × 30%–60%",
+     "justificativa": "Um vazamento ou incêndio no seu imóvel pode atingir a unidade vizinha, de tamanho parecido com a sua (cerca de 104 m²): repará-la custa de R$ 62 mil a R$ 140 mil, e a cobertura paga isso no seu lugar.",
      "confirmar": "",
      "observacao": "Cobertura adicional ao plano Essencial (guia 9.2): o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar.",
      "limitada_pelo_produto": false,
-     "sugerido": 117000
+     "sugerido": 101000
     }
    ],
    "perguntas": [
@@ -2540,8 +2540,8 @@ window.FICHAS_DEMO = {
    },
    "valor_imovel": {
     "custo_m2": [
-     1944.32,
-     3560.61
+     2287.43,
+     2738.93
     ],
     "fator_padrao": [
      0.85,
@@ -2689,7 +2689,7 @@ window.FICHAS_DEMO = {
      "max": 600000,
      "confianca": "MEDIA",
      "dados_utilizados": "área, tipo, vínculo, UF, padrão, compras 36m, bens; SINAPI, CUB, IPCA",
-     "regra": "área × padrão 121–213 m² de padrão normal (área estimada 162 m², padrão desconhecido; faixa calibrada de área × padrão: contém o valor real em 88% dos testes fora da amostra) × R$ 1.944–R$ 3.561/m² (SINAPI PR até CUB PR oficial) + bens",
+     "regra": "área × padrão 121–213 m² de padrão normal (área estimada 162 m², padrão desconhecido; faixa calibrada de área × padrão: contém o valor real em 88% dos testes fora da amostra) × R$ 2.287–R$ 2.739/m² (SINAPI PR até CUB PR oficial) + bens",
      "justificativa": "Se um incêndio atingir o imóvel, reconstruir custaria de R$ 278 mil a R$ 584 mil pelo custo oficial de construção, e repor o que você comprou para a casa, de R$ 42 mil a R$ 113 mil. Com limite único, a reconstrução é paga primeiro.",
      "confirmar": "Área do imóvel e valor dos bens",
      "observacao": "Limite único prédio + conteúdo, com prioridade do prédio (CG cl. 5.5–5.6). Imóvel alugado a terceiros: os bens do inquilino são dele (locatário); confirme se o imóvel é alugado mobiliado com bens seus. O máximo estimado (R$ 697.000) passa do limite do produto (R$ 600.000): o valor acima do limite fica descoberto.",

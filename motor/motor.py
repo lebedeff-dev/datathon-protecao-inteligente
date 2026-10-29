@@ -427,7 +427,8 @@ def valor_imovel(r, tipo, vinculo, area, cal=None):
         "area_padrao_q": cal["area_padrao_q"] if area_padrao else None,
         "area_padrao": area_padrao,   # (mín, máx) de área × padrão em m² "de padrão normal", só na faixa calibrada
         "area_padrao_acerto": cal.get("assertividade", {}).get("area_x_padrao", {}).get("na_faixa_pct") if area_padrao else None,
-        "custo_m2": (lo_m2 * f_lo, hi_m2 * f_hi),
+        # na faixa calibrada o padrão já está dentro de "área × padrão": o custo do m² entra sem fator
+        "custo_m2": (lo_m2, hi_m2) if area_padrao else (lo_m2 * f_lo, hi_m2 * f_hi),
         "custo_m2_base": (lo_m2, hi_m2),
         "fator_padrao": (f_lo, f_hi),
         "origem_padrao": origem_padrao,

@@ -160,3 +160,16 @@ def test_pergunta_nao_promete_mais_que_a_faixa_calibrada(fichas_teste):
         for p in f["perguntas"]:
             if p["codigo"] in ("AREA", "PADRAO"):
                 assert p["reduz_faixa_ate"] <= largura + 1000
+
+
+def test_regra_calibrada_nao_conta_o_padrao_duas_vezes(fichas_teste):
+    import parametros as P
+    for f in fichas_teste:
+        vi = f["valor_imovel"]
+        if vi["origem_padrao"] == A.ORIGEM_CALIBRADA:
+            # a reconstrução é área × padrão × custo SEM fator: o custo mostrado é o SINAPI/CUB de base
+            uf = f["local"].split("/")[1]
+            assert tuple(vi["custo_m2"]) == tuple(round(x, 2) for x in P.custo_m2(uf))
+            regra = next(c["regra"] for c in f["coberturas"] if c["cobertura"] == "INCENDIO_RAIO_EXPLOSAO_FUMACA")
+            if not vi["estrutura_do_locador"]:
+                assert f"{vi['custo_m2'][0]:,.0f}".replace(",", ".") in regra

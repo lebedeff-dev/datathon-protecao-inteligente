@@ -89,9 +89,10 @@ def fator_padrao(padrao):
 
 # Padrão vazio, mas área cadastrada: o IPTU por m² comparado à mediana do município indica o padrão,
 # porque a planta genérica de valores do IPTU considera o padrão de acabamento. Na base de
-# desenvolvimento (273 imóveis com área e padrão), a mediana dessa razão é 0,82 no econômico,
-# 0,98 no normal e 1,32 no superior. Abaixo de 0,90 o superior é descartado; acima de 1,15, o
-# econômico. Estreita 178 dos 273 e o padrão real fica dentro do intervalo em 98,5% (metricas.py).
+# desenvolvimento (273 imóveis com área e padrão, fora da amostra em 5 dobras), a mediana dessa razão
+# é 0,81 no econômico, 0,98 no normal e 1,35 no superior. Abaixo de 0,90 o superior é descartado;
+# acima de 1,15, o econômico. Estreita 182 dos 273 e o padrão real fica dentro do intervalo em 97,8%.
+# O IPTU NÃO acerta o padrão exato (51%, contra 63% de quem chuta "normal"): por isso é intervalo.
 IPTU_REL_SEM_SUPERIOR = 0.90
 IPTU_REL_SEM_ECONOMICO = 1.15
 
