@@ -140,26 +140,8 @@ def aluguel_m2(uf):
     return _tabela_aluguel().get(uf)
 
 
-# --- Acionamentos reais do Seguro Residencial BB (jan/2023 a mai/2026) ---------
-# Só entra no TEXTO do motivo (por que a cobertura importa), nunca no valor. Sem o arquivo,
-# o motor roda igual e o texto sai sem a frase.
-@lru_cache(maxsize=None)
-def _tabela_sinistros():
-    return {l["cobertura"]: l for l in _ler_csv("sinistros_residencial_bb.csv")}
-
-
-def sinistros_pct(cobertura):
-    """% dos acionamentos do Seguro Residencial BB nessa cobertura, ou None."""
-    l = _tabela_sinistros().get(cobertura)
-    return float(l["pct_acionamentos"]) if l else None
-
-
-# Fonte SECUNDÁRIA (dado da BB Seguros divulgado à imprensa, sem API nem relatório oficial): só contexto no texto.
-FONTE_SINISTROS = "BB Seguros, dado divulgado à imprensa (Monitor Mercantil, 22/07/2026): acionamentos jan/2023 a mai/2026 [fonte secundária]"
-
-
 # --- Território: desastres (Atlas/S2iD) e quedas de energia (ANEEL), por município ---
-# Mesma regra dos sinistros: só reforçam o TEXTO do motivo; sem o arquivo, a frase some.
+# Só reforçam o TEXTO do motivo, nunca o valor; sem o arquivo, a frase some.
 @lru_cache(maxsize=None)
 def _tabela_desastres():
     return {l["codigo_ibge_municipio"]: l for l in _ler_csv("desastres_municipio.csv")}

@@ -620,10 +620,6 @@ def escolher_plano(r, tipo, vinculo, uso, bens):
 
 # --- Coberturas: maior perda provável (CG cl. 15.1, primeiro risco absoluto) ---
 
-NOME_SINISTRO = {"DANOS_ELETRICOS": "danos elétricos", "DANOS_POR_AGUA": "danos por água",
-                 "VENDAVAL_GRANIZO": "vendaval e granizo", "ROUBO_FURTO_ARROMBAMENTO": "roubo ou furto com arrombamento"}
-
-
 GRUPO_DESASTRE = {"DANOS_POR_AGUA": ("agua", "chuvas intensas, alagamentos ou enxurradas"),
                   "VENDAVAL_GRANIZO": ("vento", "vendaval, ciclone ou granizo")}
 
@@ -696,11 +692,6 @@ def dimensionar(cob, ctx):
         if acima:
             obs = (f"{obs} {acima} ({brl(arred(bruto_hi))}) passa do limite do produto "
                    f"({brl(teto)}): o valor acima do limite fica descoberto.").strip()
-        pct = P.sinistros_pct(cob)
-        if pct is not None:   # frequência real na carteira BB: só reforça o motivo, não muda o valor
-            just = (f"{just} Na BB Seguros, {str(pct).replace('.', ',')}% dos acionamentos do residencial "
-                    f"são de {NOME_SINISTRO[cob]} (jan/2023 a mai/2026).")
-            ctx["fontes"].add(P.FONTE_SINISTROS)
         frase = contexto_territorio(cob, r)
         if frase:   # território: também só no texto
             just = f"{just} {frase}"
