@@ -34,7 +34,8 @@ flowchart LR
 | `motor/templates.py` | Confere se as 2 planilhas obedecem ao guia antes de gravar |
 | `motor/api.py` | API de demonstração (FastAPI): a mesma ficha para qualquer canal |
 | `motor/externos/` | Fontes externas salvas (CSV) + `FONTES.md` (licença, data, limitações) + `coletar.py` (atualiza o IPCA) |
-| `tests/` | 111 testes automáticos (`python -m pytest -q`) |
+| `motor/assertividade.py` | Mede quanto acerta cada cálculo de dado faltante (5 dobras, comparação com o chute); ver [[11 - Assertividade de cada cálculo (do zero)]] |
+| `tests/` | 155 testes automáticos (`python -m pytest -q`) |
 | `entrega/` | As 2 planilhas finais, `metricas.json` e `casos_contrastantes.json` |
 | `prototipos/` | O protótipo com gerente, que lê `fichas_demo.js` |
 

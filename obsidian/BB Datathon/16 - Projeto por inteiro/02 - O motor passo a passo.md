@@ -17,8 +17,8 @@ flowchart LR
 | **Tipo** | Termo "apartamento" no endereço → apartamento; "condomínio" → casa em condomínio; senão, casa. O complemento (AP, BLOCO, CASA, LOTE) confirma ou levanta dúvida | "BLOCO B APTO 305" confirma apartamento |
 | **Vínculo** | Paga aluguel → inquilino; paga parcela → financiado; recebe aluguel e não mora → locador; senão → proprietário (inferido) | Parcela de R$ 950 → financiado |
 | **Uso** | Endereço principal → moradia; recebe aluguel → alugado a terceiros; mora em outro imóvel → veraneio; senão, dúvida (cadastro desatualizado?) | — |
-| **Área** e **bens** | Ver [[01 - Os dados e como tratamos]] | 110 m² (IPTU) · bens de R$ 22 mil a R$ 60 mil |
-| **Valor da casa** | Área × custo do m² (SINAPI a CUB) × padrão; segundo risco = 25% a 40% | — |
+| **Área** e **bens** | Área sem cadastro: IPTU^0,6 × luz^0,4 (média geométrica), cada um dividido pelo R$/m² da cidade. Bens: compras de 36 meses × IPCA até 2,7 ×. Fórmulas, origem de cada número e acerto em [[11 - Assertividade de cada cálculo (do zero)]] | Recife: 297 m² pelo IPTU e 218 m² pela luz → **262 m²** (faixa 197 a 345) |
+| **Valor da casa** | Área × custo do m² (SINAPI a CUB) × padrão; segundo risco = 25% a 40%. **Sem área e sem padrão (64 casos):** faixa calibrada de área × padrão, que contém o valor real em 88% dos testes (antes, o pior caso de cada um: 2,7× mais largo) | Recife: R$ 371 mil a R$ 740 mil (antes: R$ 310 mil a R$ 961 mil) |
 
 ## 2 · Elegibilidade (antes de tudo; RN-15)
 | Situação | Resultado |
@@ -119,14 +119,16 @@ Pergunta de valor que aperta a faixa em menos de R$ 5 mil não é feita, e nenhu
 O campo `canal` (1 toque × gerente) continua existindo para o protótipo.
 
 ## 8 · Motivo (o porquê; `motor/motivo.py`)
-Roteiro fixo, em linguagem de cliente:
-1. **Fato dele:** "você gastou R$ 11 mil com vidraçaria nos últimos 2 anos".
-2. **Quanto está em jogo:** "reconstruir o imóvel custaria cerca de R$ 394 mil pelo custo oficial do IBGE".
-3. **Se escolher menos** (frase do slide 23): "roubo e vidros ficarão descobertos".
-4. **Opção acima:** "o Total acrescenta perda de aluguel e despesas emergenciais".
-5. **O que confirmar:** a pergunta obrigatória, se houver.
-6. **Confiança** em uma frase: "a área foi estimada pelo IPTU e pela conta de luz".
+Desde 28/10, o motivo é **feito para o cliente** (explicação completa em [[12 - O motivo feito para você]]):
+1. **A casa dele:** "Para o seu apartamento de 105 m² em Brasília, recomendamos o plano Prático com a responsabilidade civil familiar."
+2. **O porquê:** as provas das necessidades ("você tem pelo menos R$ 13 mil em eletrônicos…"; "no prédio, um vazamento seu pode atingir o vizinho").
+3. **O fato que o diferencia dos vizinhos** (só se ele estiver fora do meio): "Em eletrônicos, você está acima de 3 em cada 4 clientes com apartamento em Brasília."
+4. **O risco da cidade** (ANEEL ou Defesa Civil): "a distribuidora de luz ficou entre as piores no ranking de quedas de energia (25º de 33)".
+5. **O que fica descoberto, em reais:** "R$ 13 mil em eletrônicos no seu apartamento ficam descobertos contra roubo e quebra de vidros".
+6. **A confiança com o acerto medido:** "a área veio do seu IPTU e da sua conta de luz, comparados aos de Recife (erro abaixo de 20% em 2 de cada 3 testes)".
 
-Cada cobertura também tem a sua justificativa com os números do cliente, a frequência real de sinistros da BB e o dado oficial da cidade (Defesa Civil ou ANEEL). Números arredondados como gente fala ("R$ 49 mil"); estimativa sempre dita como estimativa.
+Até 140 palavras: se passar, saem primeiro as frases menos importantes (opção acima, valor em jogo, risco da cidade, fato). As perguntas também dizem o porquê, em reais ("A resposta pode mudar o valor do incêndio em até R$ 148 mil").
+
+Cada cobertura também tem a sua justificativa com os números do cliente, a frequência real de sinistros da BB e o dado oficial da cidade. Números arredondados como gente fala ("R$ 49 mil"); estimativa sempre dita como estimativa.
 
 Próxima: [[03 - Cada métrica explicada]]

@@ -1,12 +1,14 @@
 ---
 tags: [plano, assertividade, motivo, dados-faltantes, motor, documentacao]
 data: 2026-10-28
-status: aguardando aprovação
+status: aprovado e executado em 28/10
 ---
 # 🎯 Plano: a assertividade de cada cálculo + o motivo "feito para você"
 
-> [!warning] Nada implementado ainda
-> Este plano usa números **já medidos** (validação cruzada na base de desenvolvimento, 28/10). Só vira código depois da aprovação do time.
+> [!success] Executado em 28/10
+> Área 14,1% de erro (chute 44,4%) · faixa de área × padrão 1,76× contendo o real em 88% (antes 2,7×) · motivo com casa e cidade em 138 de 138, 125 esqueletos únicos (antes 83), frase mais repetida em 32 (antes 93) · 155 testes · revisão de código com 8 achados, todos corrigidos. Explicação do zero: [[11 - Assertividade de cada cálculo (do zero)]] e [[12 - O motivo feito para você]].
+>
+> **O que mudou do plano:** (1) o limite do motivo subiu de 130 para 140 palavras, porque com 130 o fato e o risco da cidade cabiam em menos de 30% dos textos; (2) as metas de 130 esqueletos e semelhança < 0,15 não foram batidas (125 e 0,21); (3) a faixa de área × padrão foi alargada até a de padrão normal na revisão de código (contém o real em 88%, não 82%).
 
 **Objetivo:** cada número que o motor inventa quando falta um dado vem com a **nota de acerto** dele, medida contra o valor real, e o motivo que o cliente lê passa a falar **da casa dele**, não do plano.
 

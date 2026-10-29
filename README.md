@@ -18,7 +18,7 @@ Python 3.11 (registrado em `.python-version`).
 
 ```bash
 pip install -r requirements.txt
-python -m pytest -q                 # 111 testes
+python -m pytest -q                 # 155 testes
 python motor/gerar.py --entrega     # gera, valida e copia as planilhas para entrega/
 ```
 
@@ -38,7 +38,8 @@ dados/teste_comum ──► processar_caso() para cada cliente-imóvel
    4. faixa mín/máx de cada cobertura          → SINAPI, CUB, IPCA, FipeZAP, condições gerais
    5. até 3 perguntas, pelo valor da informação
    6. confiança por regra + jornada (1 toque, app com perguntas, gerente só em último caso)
-   7. motivo para o cliente: fato dele, valor em risco, o que fica descoberto (motor/motivo.py)
+   7. motivo feito para o cliente: casa e cidade, porquê, fato que o diferencia dos vizinhos,
+      risco da cidade, o que fica descoberto em reais, confiança com o acerto medido (motor/motivo.py)
                                 │
                      ficha (JSON) ──► 2 planilhas · métricas · demo · API
 ```
@@ -48,11 +49,12 @@ dados/teste_comum ──► processar_caso() para cada cliente-imóvel
 | `motor/motor.py` | Toda a lógica: inferências, elegibilidade, plano, coberturas, perguntas, confiança, planilhas |
 | `motor/parametros.py` | Todas as premissas numéricas, com a origem escrita ao lado |
 | `motor/metricas.py` | Métricas do guia §8 e casos contrastantes |
+| `motor/assertividade.py` | Quanto acerta cada cálculo que completa um dado faltante (validação em 5 dobras, comparação com o chute) |
 | `motor/templates.py` | Valida as planilhas contra as regras do guia antes de gravar |
 | `motor/gerar.py` | Roda tudo de ponta a ponta |
 | `motor/api.py` | API de demonstração (ficha e recálculo com as respostas do cliente) |
 | `motor/externos/` | Fontes externas salvas + `FONTES.md` (fonte, data, licença, método, limitações) |
-| `entrega/` | As 2 planilhas, `metricas.json` e `casos_contrastantes.json` |
+| `entrega/` | As 2 planilhas, `metricas.json`, `casos_contrastantes.json` e `assertividade.json` |
 | `tests/` | Testes automáticos |
 | `documentos/contexto/` | Um documento curto por etapa (comece pelo `00-mapa.md`) |
 
@@ -60,9 +62,9 @@ dados/teste_comum ──► processar_caso() para cada cliente-imóvel
 - **Faixa = importância segurada** (quanto segurar), não valor de sinistro.
 - **Casa:** reconstrução = área × custo do m² (mínimo SINAPI/IBGE, máximo CUB oficial) × padrão construtivo. Terreno não entra.
 - **Apartamento, casa em condomínio ou financiado:** segundo risco (CG cl. 15.2). A estrutura tem seguro próprio; segura-se 25% a 40% (acabamentos) + bens.
-- **Bens:** compras de 36 meses e bens vinculados, corrigidos pelo IPCA (Banco Central), até 2,7 × as compras (estoque). Sem compras nem bens ligados ao imóvel: média da região combinada com a renda (média geométrica; erro mediano fora da amostra de 40,5% só com a região para 22,7%).
-- **Área sem cadastro (67% dos casos):** estimada pelo IPTU e pela energia, comparados aos imóveis do mesmo município com área conhecida. A renda não ajuda aqui (correlação 0,01 com a área).
-- **Padrão construtivo vazio:** faixa do econômico ao superior (0,85 a 1,30) e pergunta do acabamento.
+- **Bens:** compras de 36 meses e bens vinculados, corrigidos pelo IPCA (Banco Central), até 2,7 × as compras (estoque). Sem compras nem bens ligados ao imóvel: média da região combinada com a renda (média geométrica; erro mediano fora da amostra de 40,0% só com a região para 22,3%).
+- **Área sem cadastro (67% dos casos):** IPTU^0,6 × energia^0,4 (média geométrica), cada um dividido pelo R$/m² do município. Os pesos foram confirmados por regressão (0,59 e 0,42). Erro mediano fora da amostra de 14,1% (o chute erra 44,4%). A renda não ajuda aqui (correlação 0,01 com a área).
+- **Padrão construtivo vazio:** com área cadastrada, o IPTU/m² descarta um extremo (acerta o intervalo em 97,8%; não acerta o padrão exato, por isso é intervalo). Sem área e sem padrão (64 casos), faixa calibrada de área × padrão: contém o valor real em 88% dos testes, 1,76× de largura (o pior caso dava 2,7×). E a pergunta do acabamento.
 - **Plano:** pelas três necessidades do cliente (aluguel em jogo → Total; roubo e vidros → Prático; danos a terceiros → RC familiar), cada uma com a prova e a força ("clara" ou "no limite", com pergunta decisiva). Explicação completa no vault: `obsidian/BB Datathon/16 - Projeto por inteiro/02 - O motor passo a passo.md`.
 - **Idade não entra em nenhuma decisão** (guia: "não utilize dados sensíveis ou atributos pessoais como atalho para risco ou patrimônio"). Dependentes e pet só como necessidade de RC familiar, nunca em valor, risco, canal ou confiança.
 - **Renda:** na mentoria de 28/10, o Banco do Brasil confirmou que renda não é dado sensível (a LGPD, art. 5º, II, também não a lista). Ela entra num ponto só: os bens de quem não tem compras nem bens ligados ao imóvel, sempre combinada com a média da região, e o cliente lê no motivo que a renda foi usada. Quem tem compras segue pelas compras. Elegibilidade, canal e confiança não usam renda. Desligável em `parametros.RENDA_NOS_BENS_SEM_COMPRAS`.
@@ -77,7 +79,8 @@ dados/teste_comum ──► processar_caso() para cada cliente-imóvel
 | Comunidade, favela, atividade rural, MEI fora da lista | A base não tem esses dados: confirmação na contratação (ver limitações) |
 
 ## Limitações
-- Não há sinistros nem rótulos na base, então não há acurácia a medir. A qualidade é mostrada por testes de coerência, estabilidade, justiça e sensibilidade.
+- Não há sinistros nem rótulos de plano na base, então não há acurácia de recomendação a medir. O que **tem** gabarito (área e padrão cadastrados) é medido fora da amostra em `entrega/assertividade.json`. O que não tem (valor dos bens, uso, vínculo) é declarado como tal, com a concordância entre fontes.
+- O máximo dos bens (2,7 × as compras, ~8 anos de vida útil) é premissa: não há dado do valor real do que está dentro das casas.
 - Favela/comunidade, atividade rural e MEI não aparecem nos dados. Precisam de declaração do cliente na contratação.
 - O CUB de RJ, PE e CE não foi conferido em fonte oficial. Nessas UFs o máximo é SINAPI × razão CUB/SINAPI das 7 UFs oficiais (≈ 1,14).
 - Custos e aluguel são médias do estado ou da capital, não do bairro.
@@ -96,15 +99,16 @@ dados/teste_comum ──► processar_caso() para cada cliente-imóvel
 | Elegibilidade | SIM 138 · NÃO só com prova (situação cadastral irregular; nenhum na base) · 37 com confirmação pendente, 16 deles "provável seguro BB" (o app pergunta; RN-19) |
 | Confiança | ALTA 17 · MÉDIA 101 · BAIXA 20 (14%) |
 | Jornada | 1 toque 63 (nenhuma pergunta obrigatória) · app com perguntas 49 (elegibilidade, uso duvidoso, confiança baixa, modo simples) · gerente 26 (19%: obra 10, sem app 16) |
-| Qualidade do motivo | 0 motivos genéricos · 100% com fato do próprio cliente e valor em risco · 0 termos internos · mediana de 100 palavras |
-| Perguntas por caso | 2,78 (0,46 obrigatória; as demais só ajustam o valor e vêm marcadas "(opcional)"); 80 casos sem pergunta que trave |
+| Qualidade do motivo | 0 motivos genéricos · 100% com fato do próprio cliente e valor em risco · 0 termos internos · mediana de 127 palavras (máx. 140) |
+| Personalização do motivo | casa e cidade em 138 de 138 (antes 0) · 125 esqueletos únicos (antes 83) · frase mais repetida em 32 motivos (antes 93) · fato dos vizinhos em 38% · risco oficial da cidade em 47% |
+| Perguntas por caso | 2,75 (0,46 obrigatória; as demais só ajustam o valor e vêm marcadas "(opcional)"); 80 casos sem pergunta que trave |
 | Teste de justiça (troca renda e idade) | 0 casos mudam (todos os 138 têm compras ou bens; a renda só entra sem eles) |
-| Bens sem compras: só região × região + renda (fora da amostra, 2.578 imóveis) | erro mediano 40,5% → 22,7% |
+| Bens sem compras: só região × região + renda (fora da amostra, 2.578 imóveis) | erro mediano 40,0% → 22,3% |
 | Dependentes e pet mudando plano, valor ou confiança | 0 casos (só pedem a RC familiar como adicional ou pergunta) |
 | Estabilidade do plano (valores ±5%) | 1 caso muda (perto do limiar de eletrônicos) |
 | Estabilidade da confiança (pesos ±20%) | 0 casos mudam |
-| Faixa de incêndio por confiança (máx ÷ mín) | ALTA 1,89 · MÉDIA 2,33 · BAIXA 2,56 |
-| Sensibilidade (área +10%) | incêndio +4,6% em média, 0 quedas |
+| Faixa de incêndio por confiança (máx ÷ mín) | ALTA 1,89 · MÉDIA 2,14 · BAIXA 2,16 |
+| Sensibilidade (área +10%) | incêndio +4,1% em média, 0 quedas |
 | Regra dos 80% na elegibilidade por faixa de renda | 1,00 |
 | Reprodutibilidade | duas rodadas geram arquivos idênticos |
 | Tempo | ~0,5 s para os 138 casos |
@@ -116,8 +120,10 @@ dados/teste_comum ──► processar_caso() para cada cliente-imóvel
 | Esforço | 2,7 perguntas × 19,9 campos de uma cotação tradicional (86,4% menos) | 5 dados do imóvel + 6 declarações de elegibilidade + 1 valor por cobertura |
 | Aderência aos sinistros reais | 100% das recomendações têm danos elétricos, água e vendaval, que somam 79,4% dos acionamentos do residencial BB | `motor/externos/sinistros_residencial_bb.csv` |
 | ITV do incêndio (segurado ÷ valor em risco) | máximo 1,48 · mínimo 0,62 · sugerido ÷ cenário pessimista 0,67 | O valor sugerido evita o mínimo; contra o pior cenário ele cobre 67% (medida sem circularidade) |
-| Backtest fora da amostra: área | erro mediano 15%; a faixa contém a área real em 78% (meta 80%) | Calibra em metade da base de desenvolvimento, mede na outra |
-| Backtest fora da amostra: padrão pelo IPTU/m² | intervalo certo em 97,8% dos 180 estreitados | Mesmo método |
+| Fora da amostra: área | erro mediano 14,1% (chute 44,4%); 65% a menos de 20% da real; a faixa contém a área real em 81% (meta 80%) | Validação cruzada em 5 dobras: aprende em 4/5 da base de desenvolvimento, mede no 1/5 que não viu |
+| Fora da amostra: padrão pelo IPTU/m² | intervalo certo em 97,8% dos 182 estreitados (padrão exato: 51%, contra 63% do chute) | Mesmo método |
+| Fora da amostra: área × padrão (sem os dois) | faixa 1,76× contendo o real em 88% (pior caso: 2,7× e 98%) | Mesmo método |
+| Sem gabarito: tipo · vínculo · bens | termo × complemento concordam em 100% · 0 conflitos aluguel × financiamento · compras × bens cadastrados 0,63 | Concordância entre fontes; a luz não separa casa vazia (uso vira pergunta) |
 
 Tudo em `entrega/metricas.json`.
 

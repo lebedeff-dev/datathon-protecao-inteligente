@@ -45,9 +45,14 @@ Todas saem de `motor/metricas.py` para `entrega/metricas.json` a cada `python mo
 | `motivos_genericos` | **0** | Ninguém recebe "não há sinais" |
 | `motivo_com_fato_do_cliente_pct` | **100%** | O motivo traz um número do próprio cliente |
 | `justificativa_com_valor_em_risco_pct` | **100%** | Diz quanto ele perderia |
-| `alternativas_mostradas_pct` | **100%** | Mostra a opção mais barata e a mais completa (RN-37) |
+| `alternativas_mostradas_pct` | **89,1%** | Mostra uma alternativa (RN-37); os 15 que faltam têm pergunta de elegibilidade, que tem prioridade |
 | `justificativas_com_termo_interno` | **0** | Sem "presumido", "estimado:"... |
-| `palavras_mediana` · `palavras_max` · `palavras_entre_60_e_120_pct` | 100 · 130 · 92% | Tamanho de leitura (RN-51) |
+| `palavras_mediana` · `palavras_max` | 127 · 140 | Tamanho de leitura (RN-51); ~1 minuto |
+| `esqueletos_unicos` | **125** de 138 (antes 83) | Motivos cujo texto sem números é diferente de todos os outros: não é modelo com números trocados |
+| `semelhanca_media` | **0,21** (antes 0,29) | Quanto dois motivos têm em comum (pedaços de 3 palavras; 0 = nada, 1 = iguais) |
+| `frase_mais_repetida_n` | **32** (antes 93) | Em quantos motivos aparece a frase mais repetida |
+| `cita_cidade_pct` | **100%** (antes 0%) | O motivo diz a casa e a cidade do cliente |
+| `com_fato_dos_vizinhos_pct` · `com_risco_da_cidade_pct` | 38% · 47% | O fato que diferencia dos vizinhos e o risco oficial da cidade (ver [[12 - O motivo feito para você]]) |
 | `coberturas_texto_distinto_pct` | incêndio 100% · danos elétricos 98% | Texto personalizado por cliente |
 
 ## 4. Jornada
@@ -69,11 +74,15 @@ Todas saem de `motor/metricas.py` para `entrega/metricas.json` a cada `python mo
 ## 6. Validação fora da amostra (`backtest_fora_da_amostra` e `dados_faltantes`)
 | Métrica | Valor | O que é |
 |---|---|---|
-| `area_erro_mediano_pct` · `area_mape_pct` | 15% · 18,7% | Erro da área estimada contra a cadastrada |
-| `area_dentro_da_faixa_pct` | 80,9% | A faixa contém a área real (meta: 80%) |
-| `padrao_intervalo_correto_pct` | 97,8% (180 estreitados) | Padrão pelo IPTU/m² acerta |
-| `backtest_bens_sem_compras` | região 40,5% → região + renda 22,7% | Erro das compras estimadas |
+| `area_erro_mediano_pct` · `area_mape_pct` | 14,1% · 17,3% | Erro da área estimada contra a cadastrada (5 dobras; chute: 44,4%) |
+| `area_dentro_da_faixa_pct` | 81,0% | A faixa contém a área real (meta: 80%) |
+| `padrao_intervalo_correto_pct` | 97,8% (182 estreitados) | Padrão pelo IPTU/m² acerta o intervalo (a classe exata, só 51%) |
+| `area_padrao_dentro_calibrada_pct` · `area_padrao_largura_calibrada` | 88,3% · 1,76× (pior caso: 97,8% · 2,70×) | Faixa de área × padrão quando faltam os dois |
+| `backtest_bens_sem_compras` | região 40,0% → região + renda 22,3% | Erro das compras estimadas |
 | `teste_cep_da_base` | 0,215 contra 0,223 sorteado | O CEP é ruído (RN-10) |
-| `dados_faltantes` | área: 46 cadastradas · 92 pelo IPTU e energia · padrão: 40 · 25 pelo IPTU · 73 com pergunta | Como cada lacuna foi tratada |
+| `dados_faltantes` | área: 46 cadastradas · 92 pelo IPTU e energia · padrão: 40 cadastrados · 25 pelo IPTU · 64 na faixa calibrada · 9 com o fator inteiro | Como cada lacuna foi tratada |
+
+## 7. Assertividade de cada cálculo (`assertividade` e `entrega/assertividade.json`)
+Um **boletim** por cálculo, todos com as mesmas chaves: `o_que_estima`, `como`, `tem_gabarito`, `metodo`, `erro_mediano_pct`, `ate_20pct_pct`, `na_faixa_pct`, `chute_erro_mediano_pct`, `veredito` e `casos_no_teste`. Quando não há gabarito (tipo, vínculo, uso, bens), os campos de erro ficam vazios e o boletim mede a **concordância entre fontes**. Tabela completa e explicação do zero em [[11 - Assertividade de cada cálculo (do zero)]].
 
 Próxima: [[04 - Fontes externas e APIs]]

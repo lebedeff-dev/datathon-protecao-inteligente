@@ -12,11 +12,12 @@ Cada função do projeto, em português simples. Para cada uma: **o que faz**, *
 > - `cal` é a **calibração**: as referências que o motor aprendeu na base de desenvolvimento.
 > - Uma função cujo nome começa com `_` é auxiliar, usada só dentro do próprio arquivo.
 
-## Os 8 arquivos
+## Os 9 arquivos
 | Arquivo | Papel |
 |---|---|
 | `motor/motor.py` | O motor: decide tudo e monta a ficha |
 | `motor/motivo.py` | Escreve o texto que o cliente lê |
+| `motor/assertividade.py` | **Mede quanto acerta** cada cálculo de dado faltante (novo em 28/10) |
 | `motor/parametros.py` | Guarda os números fixos e lê as fontes externas |
 | `motor/metricas.py` | Calcula as provas para a banca |
 | `motor/templates.py` | Confere as planilhas antes de gravar |
@@ -32,19 +33,18 @@ Cada função do projeto, em português simples. Para cada uma: **o que faz**, *
 | Função | O que faz | Recebe → devolve | Exemplo | Por quê |
 |---|---|---|---|---|
 | `carregar(origem)` | Lê as 5 tabelas, os 2 modelos de planilha e o catálogo, de uma pasta ou do zip oficial | caminho → dicionário de tabelas | `carregar("dados/teste_comum")` | Ponto de entrada dos dados |
-| `calibrar(dados)` | Aprende as referências na base de desenvolvimento: IPTU e luz por m² por cidade, faixa de erro da área, médias da região, razão compras ÷ renda, backtests e teste do CEP | tabelas → `cal` | Curitiba: IPTU R$ 13,75/m² | O motor precisa de referências para estimar o que falta |
-| `_calibrar_area(a)` | A parte do aprendizado que usa imóveis com área conhecida | imóveis com área → referências | Percentis 9% e 91% do erro = 0,728 e 1,299 | Separada para o backtest poder recalibrar em metades |
-| `backtest(a)` | Divide a base em 2 metades, aprende numa e mede na outra: erro da área e acerto do padrão pelo IPTU | imóveis → resultados | Erro mediano 15%; faixa contém a real em 80,9% | Provar que a estimativa funciona (RN-47) |
-| `teste_cep(a)` | Mede se o CEP explica o IPTU/m² melhor que um CEP sorteado | imóveis → R² do CEP e do sorteado | 0,215 contra 0,223 | Mostrar que o CEP da base é ruído (RN-10) |
+| `calibrar(dados)` | Aprende as referências na base de desenvolvimento: IPTU e luz por m² por cidade, faixa de erro da área, médias e percentis da região, razão compras ÷ renda, e chama `assertividade.py` para medir tudo | tabelas → `cal` | Curitiba: IPTU R$ 13,75/m² | O motor precisa de referências para estimar o que falta |
+| `_calibrar_area(a)` | A parte do aprendizado que usa imóveis com área conhecida | imóveis com área → referências | Percentis 9% e 91% do erro = 0,75 e 1,32 | Separada para a validação poder recalibrar em cada dobra |
 | `_tipo_simples(df)` | Classifica cada imóvel como APTO ou CASA | tabela → coluna | — | Usado nas médias da região |
-| `_degraus(df, coluna)` | Calcula a mediana de um dado em cada "degrau" regional (cidade + tipo, cidade, estado, geral), só com 20+ imóveis | tabela, coluna → tabela de medianas | Apartamentos de Belo Horizonte: 95 m² | Média da região para dado faltante (mentoria) |
+| `_degraus(df, coluna, quantis=None)` | Calcula a mediana (ou, com `quantis`, os percentis) de um dado em cada "degrau" regional (cidade + tipo, cidade, estado, geral), só com 20+ imóveis | tabela, coluna → tabela de medianas | Apartamentos de Belo Horizonte: 95 m² | Média da região para dado faltante (mentoria) |
 | `regional(cal, campo, r)` | Busca a mediana do degrau mais próximo que tem dados | calibração, campo, cliente → (valor, degrau, nº de imóveis) | Londrina (fora da base) → sobe para o Paraná | Nunca ficar sem estimativa |
 | `_compras_por_renda(...)` | Razão compras ÷ renda por cidade | imóveis com compras → razões | — | Base do uso da renda (D-08) |
 | `_renda(r)` | Lê a renda como número; devolve vazio se faltar, for zero ou texto | cliente → número ou vazio | — | Não quebrar com dado ruim |
 | `compras_pela_renda(r, cal)` | Compras esperadas pela renda do cliente | cliente → R$ ou vazio | — | Só para quem não tem compras |
 | `_regiao_e_renda(med, pela_renda)` | Mistura região e renda (média geométrica), presa entre 0,5× e 2× a região | dois valores → um valor | Região 30 mil, renda 50 mil → 39 mil | A renda nunca decide sozinha (RN-08) |
+| `comparar_com_vizinhos(r, cal)` | O cliente contra os clientes do mesmo degrau: compras, eletrônicos e aluguel, com percentis 10, 25, 75 e 90 | cliente → {campo: valor, percentis, degrau, nº} | Eletrônicos R$ 12.150; p75 de Brasília R$ 11.775 | O fato que diferencia o cliente no motivo |
+| `territorio(r)` | Os números oficiais da cidade que o motivo pode citar (ANEEL, Defesa Civil) | cliente → dicionário | Porto Alegre: 33º de 33 | O risco da cidade no motivo |
 | `_compras_sem_prova(r, cal)` | Estima as compras de quem não tem nenhuma | cliente → compras, fonte, degrau, usou renda? | — | Tratar o dado faltante |
-| `backtest_bens_sem_compras(...)` | Finge que quem tem compras não tem e mede o erro da estimativa | imóveis → erros | Região 40,5% → região + renda 22,7% | Justifica o uso da renda |
 
 ### 1.2 Ferramentas pequenas
 | Função | O que faz | Exemplo |
@@ -113,12 +113,31 @@ Cada função do projeto, em português simples. Para cada uma: **o que faz**, *
 | `faixa_reais(lo, hi)` | "de R$ 22 mil a R$ 60 mil" ou "cerca de R$ 30 mil" | — |
 | `motivos_de_patrimonio(vinculo, bens)` | O porquê do Essencial: o prejuízo seria todo seu + quanto valem os aparelhos + danos elétricos são 53% dos acionamentos | Substituiu o antigo "não há sinais" |
 | `_em_jogo(f)` | Quanto o cliente perderia: reconstrução (ou acabamentos) e bens | "Reconstruir custaria cerca de R$ 397 mil" |
-| `_se_escolher_menos(f)` | A frase do slide 23: "Se você escolher menos, X ficará descoberto" | — |
+| `_se_escolher_menos(f)` | A frase do slide 23, em reais: "Se você escolher menos, R$ 13 mil em eletrônicos no seu apartamento ficam descobertos…" | — |
+| `nome_cidade(f)` · `na_cidade(f)` · `da_cidade(f)` | O nome da cidade com acento e a preposição certa | "Sao Paulo" → "em São Paulo"; "no Rio de Janeiro" |
+| `fato_distintivo(f)` | A frase do fato em que o cliente mais se afasta dos vizinhos, ligada ao plano; nada se ele estiver no meio | "Em eletrônicos, você está acima de 3 em cada 4 clientes com apartamento em Brasília" |
+| `risco_do_lugar(f)` | A frase do risco oficial da cidade: ANEEL se a distribuidora está entre as 25% piores; senão, chuva ou vento da Defesa Civil desde 2016; senão, nada | "Em Porto Alegre, a distribuidora de luz ficou em último lugar…" |
+| `_abertura(f)` · `_porque(f)` · `_motivo_rc(f)` | A casa e a cidade; as provas do plano; por que a RC entra | "Para o seu apartamento de 105 m² em Brasília…" |
+| `_cabe(partes)` | Tira as frases menos importantes até o texto caber em 140 palavras | — |
 | `_no_limite(f)` | Diz com franqueza que a recomendação foi por pouco | "Você está perto de precisar do Prático" |
 | `_opcao_acima(f)` | O que o plano acima acrescenta | "O Total acrescenta perda de aluguel" |
-| `_confianca(f)` | A confiança em uma frase | "a área foi estimada pelo IPTU e pela conta de luz" |
+| `_confianca(f, com_acerto=True)` | A confiança em uma frase, com o acerto medido | "a área veio do seu IPTU e da sua conta de luz, comparados aos de Recife (erro abaixo de 20% em 2 de cada 3 testes)" |
 | `_nao_elegivel(f)` | O texto de quando não pode haver proposta | — |
-| `justificativa(f)` | Junta tudo na ordem: plano e prova → em jogo → RC → menos → no limite ou acima → confirmar → confiança | O texto da planilha |
+| `justificativa(f)` | Junta tudo: casa e cidade → porquê → fato dos vizinhos → em jogo → risco da cidade → o que fica descoberto → no limite ou acima → confirmar → confiança, até 140 palavras | O texto da planilha |
+
+## 2b. `motor/assertividade.py`: quanto acerta cada cálculo (novo em 28/10)
+| Função | O que faz | Exemplo |
+|---|---|---|
+| `dobras(n)` | Sorteia cada imóvel numa das 5 dobras (semente fixa: sai igual sempre) | — |
+| `boletim(...)` | Monta o boletim de um cálculo, sempre com as mesmas chaves | — |
+| `backtest(a)` | A prova com gabarito escondido em 5 dobras: área (sinais, região e chute), padrão pelo IPTU (classe exata e intervalo) e área × padrão (pior caso × calibrada) | Área: erro 14,1% contra 44,4% do chute |
+| `faixa_area_x_padrao(...)` | A faixa de área × padrão quando faltam os dois: percentis do erro real, nunca mais estreita que a de padrão normal | Recife: 197 a 345 m² de padrão normal |
+| `backtest_bens_sem_compras(...)` | Finge que quem tem compras não tem e mede o erro (movida de motor.py) | Região 40,0% → região + renda 22,3% |
+| `teste_cep(a)` | O CEP explica o IPTU/m² melhor que um CEP sorteado? (movida de motor.py) | 0,215 contra 0,223: não |
+| `concordancias(m, bens)` | Para o que não tem gabarito: tipo (termo × complemento), vínculo, uso (luz) e bens (compras × cadastrados) | Tipo: 100% de concordância |
+| `boletins(cal)` | Junta tudo em um boletim por cálculo | `cal["assertividade"]` |
+| `com_casos_no_teste(bols, fichas)` | Diz quantos casos da base processada usam cada cálculo | Área: 92; área × padrão: 64 |
+| `frase_de_acerto(campo, cal)` | O acerto em português para o motivo; vazio sem medição | "erro abaixo de 20% em 2 de cada 3 testes" |
 
 ## 3. `motor/parametros.py`: números fixos e fontes
 | Função ou constante | O que é |

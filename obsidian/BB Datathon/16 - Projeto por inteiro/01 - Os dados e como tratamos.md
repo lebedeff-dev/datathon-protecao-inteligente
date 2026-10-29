@@ -24,7 +24,7 @@ Duas bases sintéticas com as mesmas tabelas: **desenvolvimento** (2.200 cliente
    - o erro típico da área estimada, que define a faixa (percentis de 9% e 91%);
    - as **médias da região em degraus** para área e compras;
    - a razão compras ÷ renda por município (para quem não tem compras);
-   - os **backtests fora da amostra** (seção 6) e o **teste do CEP**.
+   - os **backtests fora da amostra** (seção 6) e o **teste do CEP**. O acerto de cada cálculo, com a fórmula e a conta num cliente real, está em [[11 - Assertividade de cada cálculo (do zero)]].
 
 ## 3. Cada lacuna e o que fazemos
 Na base de teste, só 3 dos 138 casos têm tudo preenchido. Por isso o tratamento de lacunas é central.

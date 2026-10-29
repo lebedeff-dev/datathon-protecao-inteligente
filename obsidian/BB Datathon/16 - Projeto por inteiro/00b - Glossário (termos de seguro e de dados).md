@@ -62,7 +62,7 @@ Leia antes das outras notas. Cada termo tem uma explicação curta e um exemplo 
 | **SINAPI** | Custo médio do m² de construção por estado (IBGE) | PR: R$ 2.287/m² |
 | **CUB** | Custo do m² de construção dos sindicatos da construção | PR: R$ 2.739/m² |
 | **IPCA** | A inflação oficial (Banco Central/IBGE) | 4,58% em 12 meses |
-| **Teste automático** | Código que confere outro código; roda com `python -m pytest -q` | 111 testes |
+| **Teste automático** | Código que confere outro código; roda com `python -m pytest -q` | 155 testes |
 | **Reprodutível** | Rodar de novo dá exatamente o mesmo arquivo | Garantido por teste |
 
 Próxima: [[01 - Os dados e como tratamos]]
