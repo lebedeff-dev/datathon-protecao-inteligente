@@ -7,25 +7,25 @@ atualizado: 2026-10-28
 Todas saem de `motor/metricas.py` para `entrega/metricas.json` a cada `python motor/gerar.py --entrega`. Valores da base Teste Comum (138 casos).
 
 ## 1. As que a banca pediu (guia §8)
-| Métrica (`metricas.json`) | Valor | Como é calculada | Por que importa |
-|---|---|---|---|
-| `casos_processados` · `processados_pct` | 138 · 100% | Imóveis do template que ganharam ficha | Nenhum caso esquecido |
-| `com_justificativa_pct` | 100% | Linhas com motivo preenchido | O motivo é o principal (mentoria) |
-| `completude_coberturas_fixas_pct` | 100% | Casos com todas as coberturas fixas do plano | RN-21, RN-22 |
-| `linhas_de_cobertura` · `faixas_vazias` · `faixas_invertidas` | 1.232 · 0 · 0 | Linhas da planilha 2; faixas sem valor; mínimo maior que o máximo | RN-30, RN-32 |
-| `planos` | Prático 66 · Total 38 · Essencial 34 | Contagem | Distribuição coerente (nem todo mundo no Total) |
-| `elegibilidade` · `elegibilidade_por_regra` | SIM 138 · seguro existente 30 (16 "provável BB", com pergunta) · reforma 10 | Cada regra do guia 9.1 e quantos casos pegou | Elegibilidade antes de recomendar |
-| `casos_com_confirmacao_de_elegibilidade` | 37 | Casos com pendência que vira pergunta | Sinal fraco vira pergunta, não recusa |
-| `coberturas_adicionais` | RC familiar 93 | Adicionais fora do plano (todo prédio ou família abaixo do Total) | Slide 23: plano + **adicionais** |
-| `perguntas_media` · `perguntas_candidatas_media` | 2,75 · 3,5 | Perguntas feitas e possíveis | Poucas e priorizadas (RN-36) |
-| `perguntas_obrigatorias_media` · `casos_sem_pergunta_obrigatoria` | 0,34 · 94 | Perguntas que travam a contratação | Quanto dá para contratar direto |
-| `confianca` · `confianca_baixa_pct` | alta 17 · média 101 · baixa 20 (14,5%) | Nível por regra | O guia pede o % de confiança baixa |
-| `confianca_por_cobertura` | ex.: danos elétricos ALTA 69 · MÉDIA 69 | O pior dos dados que a cobertura usa | A coluna de confiança da planilha 2 informa algo |
-| `estabilidade_plano_casos_que_mudam_com_valores_5pct` | 1 | Muda compras, bens, IPTU e energia em ±5% | Estabilidade (o caso que muda está no limiar) |
-| `confianca_estabilidade_casos_que_mudam_com_pesos_20pct` | 0 | Muda os pesos das fontes em ±20% | O nível não depende de um número mágico |
-| `confianca_largura_incendio_mediana` | alta 1,89 · média 2,33 · baixa 2,56 | Máximo ÷ mínimo do incêndio por nível | Menos confiança = faixa mais larga (honesto) |
-| `sensibilidade_area_10pct_incendio_media_pct` · `..._casos_com_queda` | +4,65% · 0 | Área 10% maior: quanto sobe o incêndio | Coerência: área maior nunca reduz |
-| `casos_com_falha` · `tempo_segundos` | 0 · ~1 s | Falhas e tempo dos 138 casos | Viabilidade |
+| Métrica (`metricas.json`)                                             | Valor                                                                       | Como é calculada                                                  | Por que importa                                  |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------ |
+| `casos_processados` · `processados_pct`                               | 138 · 100%                                                                  | Imóveis do template que ganharam ficha                            | Nenhum caso esquecido                            |
+| `com_justificativa_pct`                                               | 100%                                                                        | Linhas com motivo preenchido                                      | O motivo é o principal (mentoria)                |
+| `completude_coberturas_fixas_pct`                                     | 100%                                                                        | Casos com todas as coberturas fixas do plano                      | RN-21, RN-22                                     |
+| `linhas_de_cobertura` · `faixas_vazias` · `faixas_invertidas`         | 1.232 · 0 · 0                                                               | Linhas da planilha 2; faixas sem valor; mínimo maior que o máximo | RN-30, RN-32                                     |
+| `planos`                                                              | Prático 66 · Total 38 · Essencial 34                                        | Contagem                                                          | Distribuição coerente (nem todo mundo no Total)  |
+| `elegibilidade` · `elegibilidade_por_regra`                           | SIM 138 · seguro existente 30 (16 "provável BB", com pergunta) · reforma 10 | Cada regra do guia 9.1 e quantos casos pegou                      | Elegibilidade antes de recomendar                |
+| `casos_com_confirmacao_de_elegibilidade`                              | 37                                                                          | Casos com pendência que vira pergunta                             | Sinal fraco vira pergunta, não recusa            |
+| `coberturas_adicionais`                                               | RC familiar 93                                                              | Adicionais fora do plano (todo prédio ou família abaixo do Total) | Slide 23: plano + **adicionais**                 |
+| `perguntas_media` · `perguntas_candidatas_media`                      | 2,75 · 3,5                                                                  | Perguntas feitas e possíveis                                      | Poucas e priorizadas (RN-36)                     |
+| `perguntas_obrigatorias_media` · `casos_sem_pergunta_obrigatoria`     | 0,34 · 94                                                                   | Perguntas que travam a contratação                                | Quanto dá para contratar direto                  |
+| `confianca` · `confianca_baixa_pct`                                   | alta 17 · média 101 · baixa 20 (14,5%)                                      | Nível por regra                                                   | O guia pede o % de confiança baixa               |
+| `confianca_por_cobertura`                                             | ex.: danos elétricos ALTA 69 · MÉDIA 69                                     | O pior dos dados que a cobertura usa                              | A coluna de confiança da planilha 2 informa algo |
+| `estabilidade_plano_casos_que_mudam_com_valores_5pct`                 | 1                                                                           | Muda compras, bens, IPTU e energia em ±5%                         | Estabilidade (o caso que muda está no limiar)    |
+| `confianca_estabilidade_casos_que_mudam_com_pesos_20pct`              | 0                                                                           | Muda os pesos das fontes em ±20%                                  | O nível não depende de um número mágico          |
+| `confianca_largura_incendio_mediana`                                  | alta 1,89 · média 2,33 · baixa 2,56                                         | Máximo ÷ mínimo do incêndio por nível                             | Menos confiança = faixa mais larga (honesto)     |
+| `sensibilidade_area_10pct_incendio_media_pct` · `..._casos_com_queda` | +4,65% · 0                                                                  | Área 10% maior: quanto sobe o incêndio                            | Coerência: área maior nunca reduz                |
+| `casos_com_falha` · `tempo_segundos`                                  | 0 · ~1 s                                                                    | Falhas e tempo dos 138 casos                                      | Viabilidade                                      |
 
 | `necessidades` | aluguel 38 · roubo 84 · terceiros 126 | Quantos clientes têm cada necessidade (a base do plano) | A recomendação se explica pelas necessidades |
 | `forca_da_recomendacao` | clara 124 · no limite 14 | Recomendações decididas com folga × por menos de 15% do limite | Dizer quando a decisão foi por pouco |
@@ -69,7 +69,6 @@ Todas saem de `motor/metricas.py` para `entrega/metricas.json` a cada `python mo
 | `esforco_*` | 2,77 perguntas × 19,9 campos (86% menos) | Esforço contra uma cotação comum (5 dados + 6 declarações + 1 valor por cobertura) |
 | `itv_incendio_no_maximo` · `no_minimo` · `itv_sugerido_sobre_pessimista` | 1,48 · 0,62 · **0,67** | Segurado ÷ valor em risco (abaixo de 0,8 = subseguro). O sugerido é comparado ao **cenário pessimista** (sem circularidade): cobre 67% do pior caso; 15 casos chegam a 80% |
 | `faixas_limitadas_pelo_produto` | água 134 · danos elétricos 122 | Estimativa acima do limite (limites de água e elétricos são premissa) |
-| `recomendacoes_com_coberturas_mais_acionadas_pct` | 100% (79,4% dos acionamentos da BB) | Todas têm as coberturas que mais dão sinistro na BB |
 
 ## 6. Validação fora da amostra (`backtest_fora_da_amostra` e `dados_faltantes`)
 | Métrica | Valor | O que é |

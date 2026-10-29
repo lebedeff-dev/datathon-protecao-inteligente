@@ -28,6 +28,7 @@ O índice e a linha do tempo. Comece por aqui. Cada etapa tem um documento curto
 | 24 | Críticas em papel de banca: o que corrigimos | [24-criticas-da-banca.md](24-criticas-da-banca.md) | ✅ |
 | 25 | Recomendação por necessidades e documentação completa | [25-recomendacao-por-necessidades.md](25-recomendacao-por-necessidades.md) | ✅ |
 | 26 | A assertividade de cada cálculo e o motivo feito para você | [26-assertividade-e-motivo.md](26-assertividade-e-motivo.md) | ✅ |
+| 27 | Sinistros da BB fora e o motor sem as fontes externas | [27-sinistros-fora-e-fontes.md](27-sinistros-fora-e-fontes.md) | ✅ |
 | 90 | Revisão do time (comece por aqui amanhã) | [90-revisao.md](90-revisao.md) | 📋 para revisar |
 
 ## Onde está cada coisa

@@ -8,7 +8,7 @@ tags: [cobertura]
 **Como estimar:** Eletrônicos e eletrodomésticos + consumo de energia. Com dados externos, densidade de raios ([[INPE ELAT]]).
 
 > [!metrica] A cobertura mais acionada da BB
-> Na carteira do Seguro Residencial BB, danos elétricos são **53,3%** dos acionamentos (jan/2023–mai/2026) e cerca de **66%** em jan–jul/2026. O motor cita isso no motivo. No motor, a faixa vai de eletrônicos + eletrodomésticos comprovados até o estoque estimado, a preço de hoje. Em 122 de 138 casos, ela bate no teto de R$ 30 mil, que é premissa. Ver [[Métricas do mercado x as nossas]]. O motivo também cita a posição da distribuidora da cidade no [[ANEEL continuidade|ranking de quedas de energia da ANEEL]].
+> Matérias de imprensa citam danos elétricos como a cobertura mais acionada do residencial da BB, mas esse dado saiu do motor em 29/10 (fonte secundária, sem como auditar). No motor, a faixa vai de eletrônicos + eletrodomésticos comprovados até o estoque estimado, a preço de hoje. Em 122 de 138 casos, ela bate no teto de R$ 30 mil, que é premissa. Ver [[Métricas do mercado x as nossas]]. O motivo também cita a posição da distribuidora da cidade no [[ANEEL continuidade|ranking de quedas de energia da ANEEL]].
 
 O valor final sempre respeita o mín./máx. do catálogo que a organização vai mandar.
 

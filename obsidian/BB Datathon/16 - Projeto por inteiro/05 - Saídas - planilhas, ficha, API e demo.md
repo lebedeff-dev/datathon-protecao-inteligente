@@ -29,7 +29,7 @@ Uma linha por cobertura fixa + adicional:
 | `faixa_valor_min` · `faixa_valor_max` | Passo 4, só números (RN-31) |
 | `confianca_estimativa` | Confiança da cobertura (passo 6) |
 | `dados_utilizados` · `regra_calculo_utilizada` | Os dados e a conta (ex.: "área 110 m² × R$ 2.287–2.739/m² × 25%–40% + bens") |
-| `justificativa` | Texto com os números do cliente + sinistros BB + dado da cidade |
+| `justificativa` | Texto com os números do cliente + dado da cidade |
 | `informacao_a_confirmar` | O que o cliente pode confirmar |
 | `observacao` | Cláusula das CG, subseguro, beneficiários (RN-27) |
 

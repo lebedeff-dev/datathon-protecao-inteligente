@@ -12,7 +12,7 @@ O que bancos e seguradoras medem, se a gente mede, e com que dado. Regra desta n
 > [!metrica] Os números novos (base Teste Comum, `entrega/metricas.json`)
 > - **STP (vai direto ao 1 toque):** 48,6% dos casos
 > - **Esforço:** uma cotação tradicional pede em média **19,9 campos**; a nossa jornada faz **2,7 perguntas** → **86,4% menos esforço**
-> - **Aderência aos sinistros reais:** 100% das recomendações incluem danos elétricos, danos por água e vendaval, que somam **79,4%** dos acionamentos do residencial da BB Seguros
+> - ~~Aderência aos sinistros reais~~: **retirada em 29/10**, junto com o dado de sinistros da BB (fonte de imprensa, sem como auditar)
 > - **ITV do incêndio:** o máximo da faixa cobre o valor em risco (mediana 1,46); o mínimo fica em 0,60 → mostrar valor sugerido no meio
 > - **Backtest fora da amostra:** área com erro mediano de **15%** e faixa que contém a área real em **78%** (meta: 80%); padrão pelo IPTU certo em **97,8%**
 
@@ -26,10 +26,10 @@ O que bancos e seguradoras medem, se a gente mede, e com que dado. Regra desta n
 | **Aderência ao perfil de sinistros** | Seguradoras precificam e desenham produto pela frequência de sinistros | % das recomendações com as coberturas mais acionadas | Dados da BB Seguros (abaixo) |
 | **Backtest fora da amostra** | Bancos validam modelos assim (Fed SR 11-7; BCBS 239) | Calibra em metade da base de desenvolvimento, mede na outra | Base de desenvolvimento |
 
-> [!fonte] Sinistros reais da BB Seguros (o dado mais forte)
+> [!fonte] Sinistros da BB Seguros (RETIRADO do motor em 29/10: fonte secundária, de imprensa; fica só como registro)
 > Carteira do Seguro Residencial BB, **jan/2023 a mai/2026**: danos elétricos **53,3%** · danos por água **14,6%** · vendaval e granizo **11,5%** · roubo e furto com arrombamento **2,1%**. Em **jan–jul/2026**: mais de 13,5 mil acionamentos, cerca de R$ 47 milhões em indenizações (≈ R$ 3,5 mil por acionamento) e danos elétricos em cerca de **66%**.
 > Fontes: [Monitor Mercantil, 22/07/2026](https://monitormercantil.com.br/mais-da-metade-dos-sinistros-residenciais-envolve-danos-eletricos/) · [release da Brasilseg reproduzido pelo Legismap, 09/09/2026](https://legismap.com.br/conteudos/artigos-e-noticias/os-riscos-dentro-de-casa-mudaram-e-a-forma-de-proteger-o-patrimonio-tambem). Salvo em `motor/externos/sinistros_residencial_bb.csv`.
-> **Como o motor usa:** só no texto do motivo ("Na BB Seguros, 53,3% dos acionamentos do residencial são de danos elétricos"), nunca no valor. Sem o arquivo, a frase some e nada mais muda (teste `test_motivo_cita_sinistros_reais_sem_mudar_valor`).
+> **Como o motor usava:** só no texto do motivo, nunca no valor. Saiu em 29/10 (teste `test_sem_dado_de_sinistro_da_bb`); nenhum plano ou faixa mudou.
 
 ## 2. O que conferimos contra o mercado
 | Nosso | Mercado | Bate? |

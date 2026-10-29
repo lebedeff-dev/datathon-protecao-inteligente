@@ -12,7 +12,7 @@ tags: [painel, datathon-bb]
 > **155 testes** · 0 erros nas planilhas · Prático 66 · Total 38 · Essencial 34 · elegível 138 (16 com pergunta obrigatória do seguro BB) · gerente em 26 casos (19%) · respostas para a banca em [[08 - Perguntas da banca e respostas]]
 
 > [!fonte] Dados externos em uso
-> SINAPI · CUB oficial (7 UFs) · IPCA · FipeZAP · sinistros BB · [[Atlas Digital de Desastres]] (S2iD) · [[ANEEL continuidade]]. Tudo salvo no projeto: o motor roda sem internet.
+> SINAPI · CUB oficial (7 UFs) · IPCA · FipeZAP · [[Atlas Digital de Desastres]] (S2iD) · [[ANEEL continuidade]]. Tudo salvo no projeto: o motor roda sem internet.
 
 > [!success] Pós-mentoria executado (28/10)
 > [[Plano - motivo, dados faltantes e gerente]]: motivo 2.0 (0 genéricos, 100% com fato do cliente), média regional em degraus, gerente só em último caso (71 → 35) e SINAPI/IPCA ao vivo pelas APIs do IBGE e do BC.

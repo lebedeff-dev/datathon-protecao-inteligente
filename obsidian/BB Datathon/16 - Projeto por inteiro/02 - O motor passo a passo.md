@@ -35,11 +35,11 @@ flowchart LR
 ## 3 · Plano: as três necessidades (desde 29/10)
 O motor **não soma pontos**. Ele faz três perguntas sobre o cliente. Cada "sim" precisa de uma **prova** (um dado do próprio cliente) e aponta a **cobertura que resolve**:
 
-| Necessidade | Acende quando (a prova) | Cobertura que resolve | Está em |
-|---|---|---|---|
-| **A · Aluguel em jogo** | Paga aluguel deste imóvel, **ou** recebe aluguel dele | Perda de aluguel | só no **Total** |
-| **B · Roubo e vidros** | Bens comprovados ≥ R$ 36 mil, **ou** eletrônicos ≥ R$ 10 mil, **ou** gastou com vidraçaria nos últimos 2 anos | Roubo e quebra de vidros | **Prático** e Total |
-| **C · Danos a terceiros** | Mora em prédio ou condomínio (o vizinho está colado), **ou** tem dependentes ou pet | RC familiar | no Total; nos outros, **adicional** |
+| Necessidade               | Acende quando (a prova)                                                                                       | Cobertura que resolve    | Está em                             |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------ | ----------------------------------- |
+| **A · Aluguel em jogo**   | Paga aluguel deste imóvel, **ou** recebe aluguel dele                                                         | Perda de aluguel         | só no **Total**                     |
+| **B · Roubo e vidros**    | Bens comprovados ≥ R$ 36 mil, **ou** eletrônicos ≥ R$ 10 mil, **ou** gastou com vidraçaria nos últimos 2 anos | Roubo e quebra de vidros | **Prático** e Total                 |
+| **C · Danos a terceiros** | Mora em prédio ou condomínio (o vizinho está colado), **ou** tem dependentes ou pet                           | RC familiar              | no Total; nos outros, **adicional** |
 
 **Exceções da necessidade B:** não acende em imóvel de **veraneio** (o roubo não cobre casa desocupada, CG Roubo 2.1 c) nem com bens **presumidos** (sem compras, a estimativa não é prova). "Casa fora de condomínio" não acende B sozinha: é um agravante citado no motivo quando B já acendeu.
 
@@ -129,6 +129,6 @@ Desde 28/10, o motivo é **feito para o cliente** (explicação completa em [[12
 
 Até 140 palavras: se passar, saem primeiro as frases menos importantes (opção acima, valor em jogo, risco da cidade, fato). As perguntas também dizem o porquê, em reais ("A resposta pode mudar o valor do incêndio em até R$ 148 mil").
 
-Cada cobertura também tem a sua justificativa com os números do cliente, a frequência real de sinistros da BB e o dado oficial da cidade. Números arredondados como gente fala ("R$ 49 mil"); estimativa sempre dita como estimativa.
+Cada cobertura também tem a sua justificativa com os números do cliente e o dado oficial da cidade. Números arredondados como gente fala ("R$ 49 mil"); estimativa sempre dita como estimativa.
 
 Próxima: [[03 - Cada métrica explicada]]

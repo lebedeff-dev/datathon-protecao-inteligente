@@ -82,7 +82,7 @@ Cada função do projeto, em português simples. Para cada uma: **o que faz**, *
 | `contexto_territorio(cob, r)` | Frase com dado oficial da cidade (Defesa Civil para água e vento, ANEEL para danos elétricos) | cobertura, cliente → frase | "Em Curitiba, a Defesa Civil registrou 10 vendavais..." | Motivo local |
 | `faixa_bruta_incendio(ctx)` | Incêndio antes dos limites: reconstrução + bens (segundo risco: 25–40%; inquilino de casa: só bens) | contexto → (mín, máx) | 85 mil a 217 mil | Base do incêndio e das emergências |
 | `dimensionar(cob, ctx)` | A faixa de uma cobertura, com confiança, dados usados, regra, justificativa, o que confirmar, observação e valor sugerido | cobertura → linha da planilha 2 | Danos elétricos: R$ 12,5–30 mil | RN-30 |
-| `saida(...)` (dentro de `dimensionar`) | Prende a faixa, avisa subseguro, cita sinistros reais e território, calcula o sugerido | → dicionário da cobertura | — | Evita repetir o mesmo acabamento em cada cobertura |
+| `saida(...)` (dentro de `dimensionar`) | Prende a faixa, avisa subseguro, cita o dado oficial da cidade, calcula o sugerido | → dicionário da cobertura | — | Evita repetir o mesmo acabamento em cada cobertura |
 
 ### 1.5 Perguntar e medir a confiança
 | Função | O que faz | Exemplo | Por quê |
@@ -111,7 +111,7 @@ Cada função do projeto, em português simples. Para cada uma: **o que faz**, *
 |---|---|---|
 | `reais(v)` | Escreve reais como se fala | 48.552 → "R$ 49 mil"; 1.234.567 → "R$ 1,2 milhão" |
 | `faixa_reais(lo, hi)` | "de R$ 22 mil a R$ 60 mil" ou "cerca de R$ 30 mil" | — |
-| `motivos_de_patrimonio(vinculo, bens)` | O porquê do Essencial: o prejuízo seria todo seu + quanto valem os aparelhos + danos elétricos são 53% dos acionamentos | Substituiu o antigo "não há sinais" |
+| `motivos_de_patrimonio(vinculo, bens)` | O porquê do Essencial: o prejuízo seria todo seu + quanto valem os aparelhos ("um pico de energia pode queimar vários de uma vez") | Substituiu o antigo "não há sinais" |
 | `_em_jogo(f)` | Quanto o cliente perderia: reconstrução (ou acabamentos) e bens | "Reconstruir custaria cerca de R$ 397 mil" |
 | `_se_escolher_menos(f)` | A frase do slide 23, em reais: "Se você escolher menos, R$ 13 mil em eletrônicos no seu apartamento ficam descobertos…" | — |
 | `nome_cidade(f)` · `na_cidade(f)` · `da_cidade(f)` | O nome da cidade com acento e a preposição certa | "Sao Paulo" → "em São Paulo"; "no Rio de Janeiro" |
