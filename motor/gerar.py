@@ -2,7 +2,8 @@
 
 1. Calibra a estimativa de área na base de desenvolvimento (dados/desenvolvimento).
 2. Processa a base Teste Comum (dados/teste_comum).
-3. Valida e grava as 2 planilhas, as fichas (JSON para as telas) e as métricas.
+3. Valida e grava as 2 planilhas, as fichas (JSON para as telas), as métricas e o acerto de cada
+   cálculo de dado faltante (assertividade.json).
 
 Uso:
     python motor/gerar.py                  grava em motor/saida/
@@ -73,6 +74,7 @@ def gerar(saida, entrega=False):
     met = calcular_metricas(teste, cal, fichas, resultado, cob, time.time() - inicio)
     casos = casos_contrastantes(fichas)
     (saida / "metricas.json").write_text(json.dumps(met, ensure_ascii=False, indent=1), encoding="utf-8")
+    (saida / "assertividade.json").write_text(json.dumps(met["assertividade"], ensure_ascii=False, indent=1), encoding="utf-8")
     (saida / "casos_contrastantes.json").write_text(json.dumps(casos, ensure_ascii=False, indent=1), encoding="utf-8")
     info = {**resumo(fichas, time.time() - inicio), "erros_validacao": len(erros), "erros": erros,
             "teste_justica_casos_alterados": met["teste_justica_casos_alterados"], "casos_contrastantes": casos}
@@ -80,7 +82,7 @@ def gerar(saida, entrega=False):
         escrever_fichas_demo(teste, fichas, casos)
         destino = RAIZ / "entrega"
         destino.mkdir(exist_ok=True)
-        for nome in PLANILHAS + ["metricas.json", "casos_contrastantes.json"]:
+        for nome in PLANILHAS + ["metricas.json", "casos_contrastantes.json", "assertividade.json"]:
             shutil.copy(saida / nome, destino / nome)
     return info
 

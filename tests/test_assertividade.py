@@ -121,3 +121,14 @@ def test_regra_do_incendio_explica_a_faixa_calibrada(fichas_teste):
     f = next(f for f in fichas_teste if f["valor_imovel"]["origem_padrao"] == A.ORIGEM_CALIBRADA)
     regra = next(c["regra"] for c in f["coberturas"] if c["cobertura"] == "INCENDIO_RAIO_EXPLOSAO_FUMACA")
     assert "faixa calibrada de área × padrão" in regra and "padrão do meio 1,05" in regra
+
+
+def test_gerar_grava_assertividade_com_casos_do_teste(tmp_path):
+    import json
+
+    import gerar
+    gerar.gerar(tmp_path)
+    b = json.loads((tmp_path / "assertividade.json").read_text(encoding="utf-8"))
+    assert b["area"]["casos_no_teste"] == 92 and b["area"]["erro_mediano_pct"] < 17
+    met = json.loads((tmp_path / "metricas.json").read_text(encoding="utf-8"))
+    assert met["assertividade"]["area_x_padrao"]["casos_no_teste"] == 64

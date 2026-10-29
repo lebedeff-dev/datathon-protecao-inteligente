@@ -120,6 +120,33 @@ window.FICHAS_DEMO = {
    "elegibilidade": "SIM",
    "pendencias": [],
    "avisos": [],
+   "vizinhos": {
+    "compras": {
+     "valor": 46800.0,
+     "p10": 14200.0,
+     "p25": 18950.0,
+     "p75": 42537.5,
+     "p90": 66485.0,
+     "nivel": "município e tipo",
+     "n": 180
+    },
+    "eletronicos": {
+     "valor": 12150.0,
+     "p10": 3495.0,
+     "p25": 5187.5,
+     "p75": 11775.0,
+     "p90": 17034.999999999996,
+     "nivel": "município e tipo",
+     "n": 180
+    }
+   },
+   "territorio": {
+    "agua_10_anos": 2,
+    "vento_10_anos": 1,
+    "energia_posicao": 25,
+    "energia_total": 33
+   },
+   "acerto": {},
    "plano": "PRATICO",
    "forca": "clara",
    "necessidades": [
@@ -352,7 +379,7 @@ window.FICHAS_DEMO = {
    "perguntas": [
     {
      "prioridade": 58,
-     "texto": "Seus móveis, eletrodomésticos e eletrônicos ficam entre R$ 50 mil e R$ 135 mil?",
+     "texto": "Seus móveis, eletrodomésticos e eletrônicos valem entre R$ 50 mil e R$ 135 mil? A resposta pode mudar a proteção dos seus bens em até R$ 85 mil.",
      "codigo": "BENS",
      "obrigatoria": false,
      "reduz_faixa_ate": 85000
@@ -429,14 +456,14 @@ window.FICHAS_DEMO = {
      "classe": "OBSERVADO"
     },
     "area": {
-     "valor": 265,
+     "valor": 262,
      "natureza": "ESTIMADO",
      "confianca": "MEDIA",
      "fonte": "estimada pelo IPTU (R$ 3.350/ano) e energia (R$ 700/mês) comparados a imóveis de Recife",
      "fonte_tipo": "DERIVADO",
      "idade_meses": 3,
-     "min": 193.02989505051514,
-     "max": 344.6302666651339,
+     "min": 196.59230006274672,
+     "max": 344.9457584043166,
      "peso": 0.688,
      "classe": "ESTIMADO"
     },
@@ -488,9 +515,9 @@ window.FICHAS_DEMO = {
      0.85,
      1.3
     ],
-    "origem_padrao": "não cadastrado",
-    "reconstrucao_min": 310000,
-    "reconstrucao_max": 961000,
+    "origem_padrao": "faixa calibrada de área × padrão",
+    "reconstrucao_min": 381000,
+    "reconstrucao_max": 718000,
     "segundo_risco": true,
     "estrutura_do_locador": false
    },
@@ -504,6 +531,35 @@ window.FICHAS_DEMO = {
     }
    ],
    "avisos": [],
+   "vizinhos": {
+    "compras": {
+     "valor": 45400.0,
+     "p10": 19065.0,
+     "p25": 25250.0,
+     "p75": 56500.0,
+     "p90": 73780.00000000001,
+     "nivel": "município e tipo",
+     "n": 100
+    },
+    "eletronicos": {
+     "valor": 15150.0,
+     "p10": 4780.0,
+     "p25": 6950.0,
+     "p75": 17700.0,
+     "p90": 24565.000000000025,
+     "nivel": "município e tipo",
+     "n": 100
+    }
+   },
+   "territorio": {
+    "agua_10_anos": 1,
+    "vento_10_anos": 0,
+    "energia_posicao": 21,
+    "energia_total": 33
+   },
+   "acerto": {
+    "area": "erro abaixo de 20% em 2 de cada 3 testes"
+   },
    "plano": "PRATICO",
    "forca": "clara",
    "necessidades": [
@@ -607,46 +663,46 @@ window.FICHAS_DEMO = {
     {
      "cobertura": "INCENDIO_RAIO_EXPLOSAO_FUMACA",
      "tipo": "FIXA",
-     "min": 126000,
-     "max": 516000,
+     "min": 144000,
+     "max": 418000,
      "confianca": "MEDIA",
      "dados_utilizados": "área, tipo, vínculo, UF, padrão, compras 36m, bens; SINAPI, CUB, IPCA",
-     "regra": "área 193–345 m² × R$ 1.605–R$ 2.789/m² (SINAPI PE até SINAPI PE × 1.136 (razão CUB/SINAPI das UFs com CUB oficial), padrão não cadastrado: fator 0,85 a 1,30) × 25%–40% (acabamentos) + bens",
-     "justificativa": "A estrutura tem seguro próprio (condomínio ou financiamento); o seu paga os acabamentos, estimados em de R$ 77 mil a R$ 384 mil, e repõe o que você comprou para a casa, de R$ 49 mil a R$ 131 mil.",
+     "regra": "área estimada 262 m² × padrão do meio 1,05 × 0,73–1,21 (faixa calibrada de área × padrão: erro real fora da amostra, percentis 9% e 91%) × R$ 1.605–R$ 2.789/m² (SINAPI PE até SINAPI PE × 1.136 (razão CUB/SINAPI das UFs com CUB oficial)) × 25%–40% (acabamentos) + bens",
+     "justificativa": "A estrutura tem seguro próprio (condomínio ou financiamento); o seu paga os acabamentos, estimados em de R$ 95 mil a R$ 287 mil, e repõe o que você comprou para a casa, de R$ 49 mil a R$ 131 mil.",
      "confirmar": "Área do imóvel e valor dos bens",
      "observacao": "Segundo risco (CG cl. 15.2): a estrutura é paga primeiro pelo seguro do condomínio ou do financiamento.",
      "limitada_pelo_produto": false,
-     "sugerido": 321000,
-     "valor_em_risco": 321000,
-     "valor_em_risco_max": 516000
+     "sugerido": 281000,
+     "valor_em_risco": 281000,
+     "valor_em_risco_max": 418000
     },
     {
      "cobertura": "DANOS_POR_AGUA",
      "tipo": "FIXA",
-     "min": 34000,
+     "min": 36000,
      "max": 50000,
      "confianca": "MEDIA",
      "dados_utilizados": "bens molháveis, reconstrução",
      "regra": "50%–100% dos bens molháveis + 3%–8% da reconstrução (pisos e acabamentos)",
      "justificativa": "Um cano rompido ou uma chuva forte estraga móveis e eletrodomésticos, e os seus valem hoje de R$ 49 mil a R$ 131 mil. A faixa cobre esses bens e parte de pisos e paredes. Na BB Seguros, 14,6% dos acionamentos do residencial são de danos por água (jan/2023 a mai/2026). Em Recife, a Defesa Civil registrou 8 ocorrências de chuvas intensas, alagamentos ou enxurradas desde 1991 (1 nos últimos 10 anos; a última em 2022).",
      "confirmar": "",
-     "observacao": "O máximo estimado (R$ 208.000) passa do limite do produto (R$ 50.000): o valor acima do limite fica descoberto.",
+     "observacao": "O máximo estimado (R$ 189.000) passa do limite do produto (R$ 50.000): o valor acima do limite fica descoberto.",
      "limitada_pelo_produto": true,
-     "sugerido": 42000
+     "sugerido": 43000
     },
     {
      "cobertura": "VENDAVAL_GRANIZO",
      "tipo": "FIXA",
-     "min": 31000,
+     "min": 38000,
      "max": 60000,
      "confianca": "MEDIA",
      "dados_utilizados": "tipo, reconstrução",
      "regra": "10%–20% da reconstrução",
-     "justificativa": "Vento e granizo atingem primeiro o telhado: refazer de 10% a 20% de uma casa como a sua custa de R$ 31 mil a R$ 192 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026).",
+     "justificativa": "Vento e granizo atingem primeiro o telhado: refazer de 10% a 20% de uma casa como a sua custa de R$ 38 mil a R$ 144 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026).",
      "confirmar": "",
-     "observacao": "O máximo estimado (R$ 192.000) passa do limite do produto (R$ 60.000): o valor acima do limite fica descoberto.",
+     "observacao": "O máximo estimado (R$ 144.000) passa do limite do produto (R$ 60.000): o valor acima do limite fica descoberto.",
      "limitada_pelo_produto": true,
-     "sugerido": 46000
+     "sugerido": 49000
     },
     {
      "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
@@ -712,7 +768,7 @@ window.FICHAS_DEMO = {
      "confianca": "BAIXA",
      "dados_utilizados": "tipo do imóvel, gastos com vidraçaria 24m",
      "regra": "faixa por tipo, ampliada para 1,2 × o gasto com vidraçaria",
-     "justificativa": "Numa casa de cerca de 265 m², repor box, janelas e tampos de vidro costuma custar de R$ 3 mil a R$ 8 mil.",
+     "justificativa": "Numa casa de cerca de 262 m², repor box, janelas e tampos de vidro costuma custar de R$ 3 mil a R$ 8 mil.",
      "confirmar": "Há vidros grandes (sacada, box, fachada)?",
      "observacao": "",
      "limitada_pelo_produto": false,
@@ -721,16 +777,16 @@ window.FICHAS_DEMO = {
     {
      "cobertura": "RESPONSABILIDADE_CIVIL_FAMILIAR",
      "tipo": "ADICIONAL",
-     "min": 128000,
+     "min": 126000,
      "max": 200000,
      "confianca": "MEDIA",
      "dados_utilizados": "tipo do imóvel; SINAPI, CUB",
-     "regra": "reparo de uma unidade vizinha do mesmo tamanho: 265 m² × R$ 1.605–R$ 2.789/m² (SINAPI PE até SINAPI PE × 1.136 (razão CUB/SINAPI das UFs com CUB oficial), padrão não cadastrado: fator 0,85 a 1,30) × 30%–60%",
-     "justificativa": "Um vazamento ou incêndio no seu imóvel pode atingir a unidade vizinha, de tamanho parecido com a sua (cerca de 265 m²): repará-la custa de R$ 128 mil a R$ 443 mil, e a cobertura paga isso no seu lugar.",
+     "regra": "reparo de uma unidade vizinha do mesmo tamanho: 262 m² × R$ 1.605–R$ 2.789/m² (SINAPI PE até SINAPI PE × 1.136 (razão CUB/SINAPI das UFs com CUB oficial)) × 30%–60%",
+     "justificativa": "Um vazamento ou incêndio no seu imóvel pode atingir a unidade vizinha, de tamanho parecido com a sua (cerca de 262 m²): repará-la custa de R$ 126 mil a R$ 438 mil, e a cobertura paga isso no seu lugar.",
      "confirmar": "",
-     "observacao": "Cobertura adicional ao plano Prático (guia 9.2): o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar. O máximo estimado (R$ 443.000) passa do limite do produto (R$ 200.000): o valor acima do limite fica descoberto.",
+     "observacao": "Cobertura adicional ao plano Prático (guia 9.2): o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar. O máximo estimado (R$ 438.000) passa do limite do produto (R$ 200.000): o valor acima do limite fica descoberto.",
      "limitada_pelo_produto": true,
-     "sugerido": 164000
+     "sugerido": 163000
     }
    ],
    "perguntas": [
@@ -742,14 +798,14 @@ window.FICHAS_DEMO = {
     },
     {
      "prioridade": 58,
-     "texto": "Estimamos que o imóvel tem cerca de 265 m². Confere?",
+     "texto": "Qual a área do seu imóvel? Estimamos de 197 a 345 m². A resposta pode mudar o valor do incêndio em até R$ 166 mil.",
      "codigo": "AREA",
      "obrigatoria": false,
-     "reduz_faixa_ate": 169000
+     "reduz_faixa_ate": 166000
     },
     {
      "prioridade": 56,
-     "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
+     "texto": "O acabamento do imóvel é simples, normal ou de alto padrão? A resposta pode mudar o valor do incêndio em até R$ 133 mil.",
      "codigo": "PADRAO",
      "obrigatoria": false,
      "reduz_faixa_ate": 133000
@@ -834,8 +890,8 @@ window.FICHAS_DEMO = {
      "fonte": "estimada pelo IPTU (R$ 1.000/ano) e energia (R$ 400/mês) comparados a imóveis de Salvador",
      "fonte_tipo": "DERIVADO",
      "idade_meses": 3,
-     "min": 75.8259031281665,
-     "max": 135.37748237570156,
+     "min": 77.65292267773519,
+     "max": 136.25175704660748,
      "peso": 0.688,
      "classe": "ESTIMADO"
     },
@@ -887,15 +943,44 @@ window.FICHAS_DEMO = {
      0.85,
      1.3
     ],
-    "origem_padrao": "não cadastrado",
-    "reconstrucao_min": 127000,
-    "reconstrucao_max": 395000,
+    "origem_padrao": "faixa calibrada de área × padrão",
+    "reconstrucao_min": 158000,
+    "reconstrucao_max": 298000,
     "segundo_risco": true,
     "estrutura_do_locador": false
    },
    "elegibilidade": "SIM",
    "pendencias": [],
    "avisos": [],
+   "vizinhos": {
+    "compras": {
+     "valor": 18150.0,
+     "p10": 12580.0,
+     "p25": 15650.0,
+     "p75": 45425.0,
+     "p90": 61479.99999999999,
+     "nivel": "município e tipo",
+     "n": 83
+    },
+    "eletronicos": {
+     "valor": 4400.0,
+     "p10": 2520.0,
+     "p25": 3900.0,
+     "p75": 12375.0,
+     "p90": 18809.999999999996,
+     "nivel": "município e tipo",
+     "n": 83
+    }
+   },
+   "territorio": {
+    "agua_10_anos": 2,
+    "vento_10_anos": 0,
+    "energia_posicao": 8,
+    "energia_total": 33
+   },
+   "acerto": {
+    "area": "erro abaixo de 20% em 2 de cada 3 testes"
+   },
    "plano": "ESSENCIAL",
    "forca": "clara",
    "necessidades": [
@@ -979,45 +1064,45 @@ window.FICHAS_DEMO = {
      "cobertura": "INCENDIO_RAIO_EXPLOSAO_FUMACA",
      "tipo": "FIXA",
      "min": 100000,
-     "max": 210000,
+     "max": 172000,
      "confianca": "MEDIA",
      "dados_utilizados": "área, tipo, vínculo, UF, padrão, compras 36m, bens; SINAPI, CUB, IPCA",
-     "regra": "área 76–135 m² × R$ 1.678–R$ 2.916/m² (SINAPI BA até CUB BA oficial, padrão não cadastrado: fator 0,85 a 1,30) × 25%–40% (acabamentos) + bens",
-     "justificativa": "A estrutura tem seguro próprio (condomínio ou financiamento); o seu paga os acabamentos, estimados em de R$ 32 mil a R$ 158 mil, e repõe o que você comprou para a casa, de R$ 19 mil a R$ 52 mil.",
+     "regra": "área estimada 104 m² × padrão do meio 1,05 × 0,73–1,21 (faixa calibrada de área × padrão: erro real fora da amostra, percentis 9% e 91%) × R$ 1.678–R$ 2.916/m² (SINAPI BA até CUB BA oficial) × 25%–40% (acabamentos) + bens",
+     "justificativa": "A estrutura tem seguro próprio (condomínio ou financiamento); o seu paga os acabamentos, estimados em de R$ 40 mil a R$ 119 mil, e repõe o que você comprou para a casa, de R$ 19 mil a R$ 52 mil.",
      "confirmar": "Área do imóvel e valor dos bens",
      "observacao": "Segundo risco (CG cl. 15.2): a estrutura é paga primeiro pelo seguro do condomínio ou do financiamento.",
      "limitada_pelo_produto": false,
-     "sugerido": 131000,
-     "valor_em_risco": 131000,
-     "valor_em_risco_max": 210000
+     "sugerido": 115000,
+     "valor_em_risco": 115000,
+     "valor_em_risco_max": 172000
     },
     {
      "cobertura": "DANOS_POR_AGUA",
      "tipo": "FIXA",
-     "min": 13500,
+     "min": 14500,
      "max": 50000,
      "confianca": "MEDIA",
      "dados_utilizados": "bens molháveis, reconstrução",
      "regra": "50%–100% dos bens molháveis + 3%–8% da reconstrução (pisos e acabamentos)",
      "justificativa": "Um cano rompido ou uma chuva forte estraga móveis e eletrodomésticos, e os seus valem hoje de R$ 19 mil a R$ 52 mil. A faixa cobre esses bens e parte de pisos e paredes. Na BB Seguros, 14,6% dos acionamentos do residencial são de danos por água (jan/2023 a mai/2026). Em Salvador, a Defesa Civil registrou 8 ocorrências de chuvas intensas, alagamentos ou enxurradas desde 1991 (2 nos últimos 10 anos; a última em 2022).",
      "confirmar": "",
-     "observacao": "O máximo estimado (R$ 84.000) passa do limite do produto (R$ 50.000): o valor acima do limite fica descoberto.",
+     "observacao": "O máximo estimado (R$ 76.000) passa do limite do produto (R$ 50.000): o valor acima do limite fica descoberto.",
      "limitada_pelo_produto": true,
      "sugerido": 32000
     },
     {
      "cobertura": "VENDAVAL_GRANIZO",
      "tipo": "FIXA",
-     "min": 2500,
-     "max": 19500,
+     "min": 3000,
+     "max": 15000,
      "confianca": "MEDIA",
      "dados_utilizados": "tipo, reconstrução",
      "regra": "2%–5% da reconstrução",
-     "justificativa": "Em apartamento, vento e granizo atingem sobretudo janelas e esquadrias: repor de 2% a 5% do imóvel custa de R$ 2,5 mil a R$ 20 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026). Em Salvador, a Defesa Civil registrou 1 ocorrências de vendaval, ciclone ou granizo desde 1991 (0 nos últimos 10 anos; a última em 1995).",
+     "justificativa": "Em apartamento, vento e granizo atingem sobretudo janelas e esquadrias: repor de 2% a 5% do imóvel custa de R$ 3,2 mil a R$ 15 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026). Em Salvador, a Defesa Civil registrou 1 ocorrências de vendaval, ciclone ou granizo desde 1991 (0 nos últimos 10 anos; a última em 1995).",
      "confirmar": "",
      "observacao": "",
      "limitada_pelo_produto": false,
-     "sugerido": 11000
+     "sugerido": 9000
     },
     {
      "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
@@ -1068,7 +1153,7 @@ window.FICHAS_DEMO = {
      "max": 182000,
      "confianca": "MEDIA",
      "dados_utilizados": "tipo do imóvel; SINAPI, CUB",
-     "regra": "reparo de uma unidade vizinha do mesmo tamanho: 104 m² × R$ 1.678–R$ 2.916/m² (SINAPI BA até CUB BA oficial, padrão não cadastrado: fator 0,85 a 1,30) × 30%–60%",
+     "regra": "reparo de uma unidade vizinha do mesmo tamanho: 104 m² × R$ 1.678–R$ 2.916/m² (SINAPI BA até CUB BA oficial) × 30%–60%",
      "justificativa": "Um vazamento ou incêndio no seu imóvel pode atingir a unidade vizinha, de tamanho parecido com a sua (cerca de 104 m²): repará-la custa de R$ 52 mil a R$ 182 mil, e a cobertura paga isso no seu lugar.",
      "confirmar": "",
      "observacao": "Cobertura adicional ao plano Essencial (guia 9.2): o vizinho está colado e há dependentes ou pet na casa; a RC familiar paga esse dano no seu lugar.",
@@ -1085,14 +1170,14 @@ window.FICHAS_DEMO = {
     },
     {
      "prioridade": 58,
-     "texto": "Estimamos que o imóvel tem cerca de 104 m². Confere?",
+     "texto": "Qual a área do seu imóvel? Estimamos de 78 a 136 m². A resposta pode mudar o valor do incêndio em até R$ 68 mil.",
      "codigo": "AREA",
      "obrigatoria": false,
-     "reduz_faixa_ate": 69000
+     "reduz_faixa_ate": 68000
     },
     {
      "prioridade": 56,
-     "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
+     "texto": "O acabamento do imóvel é simples, normal ou de alto padrão? A resposta pode mudar o valor do incêndio em até R$ 55 mil.",
      "codigo": "PADRAO",
      "obrigatoria": false,
      "reduz_faixa_ate": 55000
@@ -1247,6 +1332,33 @@ window.FICHAS_DEMO = {
     }
    ],
    "avisos": [],
+   "vizinhos": {
+    "compras": {
+     "valor": 29900.0,
+     "p10": 13550.0,
+     "p25": 19125.0,
+     "p75": 45550.0,
+     "p90": 67915.0,
+     "nivel": "município e tipo",
+     "n": 248
+    },
+    "eletronicos": {
+     "valor": 11350.0,
+     "p10": 3635.0,
+     "p25": 5137.5,
+     "p75": 13212.5,
+     "p90": 21560.000000000004,
+     "nivel": "município e tipo",
+     "n": 248
+    }
+   },
+   "territorio": {
+    "agua_10_anos": 4,
+    "vento_10_anos": 0,
+    "energia_posicao": 30,
+    "energia_total": 33
+   },
+   "acerto": {},
    "plano": "PRATICO",
    "forca": "clara",
    "necessidades": [
@@ -1469,14 +1581,14 @@ window.FICHAS_DEMO = {
     },
     {
      "prioridade": 58,
-     "texto": "Seus móveis, eletrodomésticos e eletrônicos ficam entre R$ 32 mil e R$ 86 mil?",
+     "texto": "Seus móveis, eletrodomésticos e eletrônicos valem entre R$ 32 mil e R$ 86 mil? A resposta pode mudar a proteção dos seus bens em até R$ 54 mil.",
      "codigo": "BENS",
      "obrigatoria": false,
      "reduz_faixa_ate": 54000
     },
     {
      "prioridade": 56,
-     "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
+     "texto": "O acabamento do imóvel é simples, normal ou de alto padrão? A resposta pode mudar o valor do incêndio em até R$ 12 mil.",
      "codigo": "PADRAO",
      "obrigatoria": false,
      "reduz_faixa_ate": 12000
@@ -1621,6 +1733,33 @@ window.FICHAS_DEMO = {
    "elegibilidade": "SIM",
    "pendencias": [],
    "avisos": [],
+   "vizinhos": {
+    "compras": {
+     "valor": 20750.0,
+     "p10": 13950.0,
+     "p25": 17700.0,
+     "p75": 47850.0,
+     "p90": 63579.99999999999,
+     "nivel": "município e tipo",
+     "n": 113
+    },
+    "eletronicos": {
+     "valor": 8800.0,
+     "p10": 3060.0,
+     "p25": 4350.0,
+     "p75": 12000.0,
+     "p90": 18160.0,
+     "nivel": "município e tipo",
+     "n": 113
+    }
+   },
+   "territorio": {
+    "agua_10_anos": 10,
+    "vento_10_anos": 7,
+    "energia_posicao": 27,
+    "energia_total": 33
+   },
+   "acerto": {},
    "plano": "PRATICO",
    "forca": "clara",
    "necessidades": [
@@ -1837,14 +1976,14 @@ window.FICHAS_DEMO = {
    "perguntas": [
     {
      "prioridade": 58,
-     "texto": "Seus móveis, eletrodomésticos e eletrônicos ficam entre R$ 22 mil e R$ 60 mil?",
+     "texto": "Seus móveis, eletrodomésticos e eletrônicos valem entre R$ 22 mil e R$ 60 mil? A resposta pode mudar a proteção dos seus bens em até R$ 38 mil.",
      "codigo": "BENS",
      "obrigatoria": false,
      "reduz_faixa_ate": 38000
     },
     {
      "prioridade": 56,
-     "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
+     "texto": "O acabamento do imóvel é simples, normal ou de alto padrão? A resposta pode mudar o valor do incêndio em até R$ 36 mil.",
      "codigo": "PADRAO",
      "obrigatoria": false,
      "reduz_faixa_ate": 36000
@@ -1990,6 +2129,42 @@ window.FICHAS_DEMO = {
    "elegibilidade": "SIM",
    "pendencias": [],
    "avisos": [],
+   "vizinhos": {
+    "compras": {
+     "valor": 18550.0,
+     "p10": 13830.0,
+     "p25": 17637.5,
+     "p75": 50000.0,
+     "p90": 71715.00000000001,
+     "nivel": "município e tipo",
+     "n": 64
+    },
+    "eletronicos": {
+     "valor": 8400.0,
+     "p10": 3145.0,
+     "p25": 4612.5,
+     "p75": 13637.5,
+     "p90": 17715.0,
+     "nivel": "município e tipo",
+     "n": 64
+    },
+    "aluguel": {
+     "valor": 1500.0,
+     "p10": 950.0,
+     "p25": 1350.0,
+     "p75": 2562.5,
+     "p90": 4055.000000000001,
+     "nivel": "município",
+     "n": 32
+    }
+   },
+   "territorio": {
+    "agua_10_anos": 0,
+    "vento_10_anos": 0,
+    "energia_posicao": 23,
+    "energia_total": 33
+   },
+   "acerto": {},
    "plano": "TOTAL",
    "forca": "clara",
    "necessidades": [
@@ -2229,14 +2404,14 @@ window.FICHAS_DEMO = {
    "perguntas": [
     {
      "prioridade": 58,
-     "texto": "Seus móveis, eletrodomésticos e eletrônicos ficam entre R$ 20 mil e R$ 54 mil?",
+     "texto": "Seus móveis, eletrodomésticos e eletrônicos valem entre R$ 20 mil e R$ 54 mil? A resposta pode mudar a proteção dos seus bens em até R$ 34 mil.",
      "codigo": "BENS",
      "obrigatoria": false,
      "reduz_faixa_ate": 34000
     },
     {
      "prioridade": 56,
-     "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
+     "texto": "O acabamento do imóvel é simples, normal ou de alto padrão? A resposta pode mudar o valor do incêndio em até R$ 34 mil.",
      "codigo": "PADRAO",
      "obrigatoria": false,
      "reduz_faixa_ate": 34000
@@ -2313,14 +2488,14 @@ window.FICHAS_DEMO = {
      "classe": "OBSERVADO"
     },
     "area": {
-     "valor": 166,
+     "valor": 162,
      "natureza": "ESTIMADO",
      "confianca": "MEDIA",
      "fonte": "estimada pelo IPTU (R$ 2.650/ano) e energia (R$ 450/mês) comparados a imóveis de Curitiba",
      "fonte_tipo": "DERIVADO",
      "idade_meses": 3,
-     "min": 120.53540444339436,
-     "max": 215.20059659694616,
+     "min": 121.49708072791307,
+     "max": 213.18181150647303,
      "peso": 0.688,
      "classe": "ESTIMADO"
     },
@@ -2372,9 +2547,9 @@ window.FICHAS_DEMO = {
      0.85,
      1.3
     ],
-    "origem_padrao": "não cadastrado",
-    "reconstrucao_min": 234000,
-    "reconstrucao_max": 766000,
+    "origem_padrao": "faixa calibrada de área × padrão",
+    "reconstrucao_min": 286000,
+    "reconstrucao_max": 567000,
     "segundo_risco": false,
     "estrutura_do_locador": false
    },
@@ -2388,6 +2563,35 @@ window.FICHAS_DEMO = {
     }
    ],
    "avisos": [],
+   "vizinhos": {
+    "compras": {
+     "valor": 39000.0,
+     "p10": 18680.0,
+     "p25": 26600.0,
+     "p75": 59600.0,
+     "p90": 79820.0,
+     "nivel": "município e tipo",
+     "n": 137
+    },
+    "eletronicos": {
+     "valor": 9050.0,
+     "p10": 4580.0,
+     "p25": 6750.0,
+     "p75": 16150.0,
+     "p90": 24800.000000000004,
+     "nivel": "município e tipo",
+     "n": 137
+    }
+   },
+   "territorio": {
+    "agua_10_anos": 10,
+    "vento_10_anos": 7,
+    "energia_posicao": 27,
+    "energia_total": 33
+   },
+   "acerto": {
+    "area": "erro abaixo de 20% em 2 de cada 3 testes"
+   },
    "plano": "TOTAL",
    "forca": "clara",
    "necessidades": [
@@ -2481,46 +2685,46 @@ window.FICHAS_DEMO = {
     {
      "cobertura": "INCENDIO_RAIO_EXPLOSAO_FUMACA",
      "tipo": "FIXA",
-     "min": 276000,
+     "min": 327000,
      "max": 600000,
      "confianca": "MEDIA",
      "dados_utilizados": "área, tipo, vínculo, UF, padrão, compras 36m, bens; SINAPI, CUB, IPCA",
-     "regra": "área 121–215 m² × R$ 1.944–R$ 3.561/m² (SINAPI PR até CUB PR oficial, padrão não cadastrado: fator 0,85 a 1,30) + bens",
-     "justificativa": "Se um incêndio atingir o imóvel, reconstruir custaria de R$ 234 mil a R$ 766 mil pelo custo oficial de construção, e repor o que você comprou para a casa, de R$ 42 mil a R$ 113 mil. Com limite único, a reconstrução é paga primeiro.",
+     "regra": "área estimada 162 m² × padrão do meio 1,05 × 0,73–1,21 (faixa calibrada de área × padrão: erro real fora da amostra, percentis 9% e 91%) × R$ 1.944–R$ 3.561/m² (SINAPI PR até CUB PR oficial) + bens",
+     "justificativa": "Se um incêndio atingir o imóvel, reconstruir custaria de R$ 286 mil a R$ 567 mil pelo custo oficial de construção, e repor o que você comprou para a casa, de R$ 42 mil a R$ 113 mil. Com limite único, a reconstrução é paga primeiro.",
      "confirmar": "Área do imóvel e valor dos bens",
-     "observacao": "Limite único prédio + conteúdo, com prioridade do prédio (CG cl. 5.5–5.6). Imóvel alugado a terceiros: os bens do inquilino são dele (locatário); confirme se o imóvel é alugado mobiliado com bens seus. O máximo estimado (R$ 879.000) passa do limite do produto (R$ 600.000): o valor acima do limite fica descoberto.",
+     "observacao": "Limite único prédio + conteúdo, com prioridade do prédio (CG cl. 5.5–5.6). Imóvel alugado a terceiros: os bens do inquilino são dele (locatário); confirme se o imóvel é alugado mobiliado com bens seus. O máximo estimado (R$ 679.000) passa do limite do produto (R$ 600.000): o valor acima do limite fica descoberto.",
      "limitada_pelo_produto": true,
-     "sugerido": 577000,
-     "valor_em_risco": 577000,
-     "valor_em_risco_max": 879000
+     "sugerido": 503000,
+     "valor_em_risco": 503000,
+     "valor_em_risco_max": 679000
     },
     {
      "cobertura": "DANOS_POR_AGUA",
      "tipo": "FIXA",
-     "min": 28000,
+     "min": 29000,
      "max": 50000,
      "confianca": "MEDIA",
      "dados_utilizados": "bens molháveis, reconstrução",
      "regra": "50%–100% dos bens molháveis + 3%–8% da reconstrução (pisos e acabamentos)",
      "justificativa": "Um cano rompido ou uma chuva forte estraga móveis e eletrodomésticos, e os seus valem hoje de R$ 42 mil a R$ 113 mil. A faixa cobre esses bens e parte de pisos e paredes. Na BB Seguros, 14,6% dos acionamentos do residencial são de danos por água (jan/2023 a mai/2026). Em Curitiba, a Defesa Civil registrou 17 ocorrências de chuvas intensas, alagamentos ou enxurradas desde 1991 (10 nos últimos 10 anos; a última em 2025).",
      "confirmar": "",
-     "observacao": "O máximo estimado (R$ 174.000) passa do limite do produto (R$ 50.000): o valor acima do limite fica descoberto.",
+     "observacao": "O máximo estimado (R$ 158.000) passa do limite do produto (R$ 50.000): o valor acima do limite fica descoberto.",
      "limitada_pelo_produto": true,
-     "sugerido": 39000
+     "sugerido": 40000
     },
     {
      "cobertura": "VENDAVAL_GRANIZO",
      "tipo": "FIXA",
-     "min": 23000,
+     "min": 29000,
      "max": 60000,
      "confianca": "MEDIA",
      "dados_utilizados": "tipo, reconstrução",
      "regra": "10%–20% da reconstrução",
-     "justificativa": "Vento e granizo atingem primeiro o telhado: refazer de 10% a 20% de uma casa como a sua custa de R$ 23 mil a R$ 153 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026). Em Curitiba, a Defesa Civil registrou 10 ocorrências de vendaval, ciclone ou granizo desde 1991 (7 nos últimos 10 anos; a última em 2025).",
+     "justificativa": "Vento e granizo atingem primeiro o telhado: refazer de 10% a 20% de uma casa como a sua custa de R$ 29 mil a R$ 113 mil. Na BB Seguros, 11,5% dos acionamentos do residencial são de vendaval e granizo (jan/2023 a mai/2026). Em Curitiba, a Defesa Civil registrou 10 ocorrências de vendaval, ciclone ou granizo desde 1991 (7 nos últimos 10 anos; a última em 2025).",
      "confirmar": "",
-     "observacao": "O máximo estimado (R$ 153.000) passa do limite do produto (R$ 60.000): o valor acima do limite fica descoberto.",
+     "observacao": "O máximo estimado (R$ 113.000) passa do limite do produto (R$ 60.000): o valor acima do limite fica descoberto.",
      "limitada_pelo_produto": true,
-     "sugerido": 42000
+     "sugerido": 44000
     },
     {
      "cobertura": "IMPACTO_VEICULOS_TERRESTRES",
@@ -2586,7 +2790,7 @@ window.FICHAS_DEMO = {
      "confianca": "BAIXA",
      "dados_utilizados": "tipo do imóvel, gastos com vidraçaria 24m",
      "regra": "faixa por tipo, ampliada para 1,2 × o gasto com vidraçaria",
-     "justificativa": "Numa casa de cerca de 166 m², repor box, janelas e tampos de vidro costuma custar de R$ 3 mil a R$ 8 mil.",
+     "justificativa": "Numa casa de cerca de 162 m², repor box, janelas e tampos de vidro costuma custar de R$ 3 mil a R$ 8 mil.",
      "confirmar": "Há vidros grandes (sacada, box, fachada)?",
      "observacao": "",
      "limitada_pelo_produto": false,
@@ -2600,7 +2804,7 @@ window.FICHAS_DEMO = {
      "confianca": "MEDIA",
      "dados_utilizados": "tipo do imóvel; SINAPI, CUB",
      "regra": "casa: faixa de referência de danos a terceiros",
-     "justificativa": "Numa casa de cerca de 166 m², o risco a terceiros vem de muro, telhado ou árvore que atinge o vizinho, ou de um acidente com dependentes ou pet; a faixa de referência vai de R$ 30 mil a R$ 60 mil.",
+     "justificativa": "Numa casa de cerca de 162 m², o risco a terceiros vem de muro, telhado ou árvore que atinge o vizinho, ou de um acidente com dependentes ou pet; a faixa de referência vai de R$ 30 mil a R$ 60 mil.",
      "confirmar": "",
      "observacao": "",
      "limitada_pelo_produto": false,
@@ -2623,16 +2827,16 @@ window.FICHAS_DEMO = {
     {
      "cobertura": "DESPESAS_EMERGENCIAIS",
      "tipo": "FIXA",
-     "min": 5500,
+     "min": 6500,
      "max": 15000,
      "confianca": "MEDIA",
      "dados_utilizados": "faixa de incêndio",
      "regra": "2%–5% da faixa de incêndio",
-     "justificativa": "Lona no telhado, retirada de entulho e outras medidas urgentes para o dano não aumentar: de 2% a 5% da faixa de incêndio, ou de R$ 5,5 mil a R$ 30 mil.",
+     "justificativa": "Lona no telhado, retirada de entulho e outras medidas urgentes para o dano não aumentar: de 2% a 5% da faixa de incêndio, ou de R$ 6,5 mil a R$ 30 mil.",
      "confirmar": "",
      "observacao": "O máximo estimado (R$ 30.000) passa do limite do produto (R$ 15.000): o valor acima do limite fica descoberto.",
      "limitada_pelo_produto": true,
-     "sugerido": 10000
+     "sugerido": 11000
     }
    ],
    "perguntas": [
@@ -2644,17 +2848,17 @@ window.FICHAS_DEMO = {
     },
     {
      "prioridade": 58,
-     "texto": "Estimamos que o imóvel tem cerca de 166 m². Confere?",
+     "texto": "Qual a área do seu imóvel? Estimamos de 121 a 213 m². A resposta pode mudar o valor do incêndio em até R$ 273 mil.",
      "codigo": "AREA",
      "obrigatoria": false,
-     "reduz_faixa_ate": 324000
+     "reduz_faixa_ate": 273000
     },
     {
      "prioridade": 56,
-     "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
+     "texto": "O acabamento do imóvel é simples, normal ou de alto padrão? A resposta pode mudar o valor do incêndio em até R$ 263 mil.",
      "codigo": "PADRAO",
      "obrigatoria": false,
-     "reduz_faixa_ate": 265000
+     "reduz_faixa_ate": 263000
     }
    ],
    "perguntas_candidatas": 4,

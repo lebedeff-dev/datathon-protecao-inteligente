@@ -5,6 +5,7 @@ from types import SimpleNamespace
 
 import pandas as pd
 
+import assertividade as A
 import motivo
 import motor
 import parametros as P
@@ -163,6 +164,8 @@ def calcular_metricas(dados, cal, fichas, resultado, coberturas, segundos):
         "mercado": metricas_de_mercado(fichas),
         "qualidade_do_motivo": qualidade_do_motivo(fichas),
         "dados_faltantes": dados_faltantes(fichas, cal),
+        # o acerto de cada cálculo de dado faltante, com quantos casos da base usam cada um (assertividade.py)
+        "assertividade": A.com_casos_no_teste(cal["assertividade"], fichas) if "assertividade" in cal else {},
     }
 
 
