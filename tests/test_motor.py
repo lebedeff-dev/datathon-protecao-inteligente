@@ -199,9 +199,10 @@ def test_plano_e_coberturas_ignoram_renda_e_idade(ficha):
 def test_criancas_e_pet_pesam_so_no_plano(ficha):
     sem = ficha(APTO_CURITIBA, quantidade_dependentes=0, possui_pet_informado="NAO")
     com = ficha(APTO_CURITIBA, quantidade_dependentes=2, possui_pet_informado="SIM")
-    assert any(m["codigo"] == "FAMILIA_DECLARADA" for m in com["motivos"])
-    assert not any(m["codigo"] == "FAMILIA_DECLARADA" for m in sem["motivos"])
-    assert com["pontos"]["total"] == sem["pontos"]["total"] + 1
+    # decisão de 29/10: a família nunca muda o plano (RN-07); só pede a RC familiar como adicional
+    assert not any(m["codigo"] == "FAMILIA_DECLARADA" for m in com["motivos"])
+    assert com["plano"] == sem["plano"] and com["pontos"] == sem["pontos"]
+    assert any(a["cobertura"] == "RESPONSABILIDADE_CIVIL_FAMILIAR" for a in com["adicionais"]) or com["plano"] == "TOTAL"
     faixa = lambda f: {c["cobertura"]: (c["min"], c["max"]) for c in f["coberturas"]}
     fs, fc = faixa(sem), faixa(com)
     assert all(fs[k] == fc[k] for k in fs.keys() & fc.keys())
@@ -244,7 +245,7 @@ def test_familia_nao_empurra_para_o_pratico(linha, cal, vazio):
               quantidade_dependentes=2, possui_pet_informado="SIM", endereco_principal_compativel="SIM", complemento="CASA")
     tipo, vinc = motor.inferir_tipo(r), motor.inferir_vinculo(r)
     rec = motor.escolher_plano(r, tipo, vinc, motor.inferir_uso(r, False), motor.estimar_bens(r, vazio))
-    assert rec["pontos"] == {"pratico": 1, "total": 1} and rec["plano"] == "ESSENCIAL"
+    assert rec["pontos"] == {"pratico": 1, "total": 0} and rec["plano"] == "ESSENCIAL"
 
 
 def test_seguro_existente_um_imovel_nao_elegivel(caso, cal, teste):
@@ -253,8 +254,11 @@ def test_seguro_existente_um_imovel_nao_elegivel(caso, cal, teste):
     r.possui_seguro_residencial, r.qtd_produtos_seguridade = "SIM", 1   # tem produto de seguridade BB
     catalogo = teste["catalogo"].groupby("plano").cobertura_fixa.apply(list).to_dict()
     f = motor.processar_caso(r, b, cal, catalogo, n_imoveis=1)
-    assert f["elegibilidade"] == "NAO" and f["pendencias"][0]["codigo"] == "SEGURO_EXISTENTE"
-    assert motor.justificativa(f).startswith("Não podemos fazer uma nova proposta")
+    # produto de seguridade pode ser vida ou previdência: é indício, não prova (RN-19) → pergunta obrigatória
+    assert f["elegibilidade"] == "SIM" and f["pendencias"][0]["codigo"] == "SEGURO_EXISTENTE"
+    assert f["pendencias"][0]["provavel_bb"] and f["jornada"] == "APP_COM_PERGUNTAS"
+    p = f["perguntas"][0]
+    assert p["obrigatoria"] and "BB Seguros" in p["texto"]
 
 
 def test_seguro_existente_sem_produto_bb_vira_pergunta(caso, cal, teste):
@@ -533,10 +537,10 @@ def test_metricas_e_casos(tmp_path):
     met = json.loads((tmp_path / "metricas.json").read_text(encoding="utf-8"))
     assert met["teste_justica_casos_alterados"] == 0
     assert met["familia_declarada_muda_valor_ou_confianca"] == 0
-    assert met["elegibilidade"].get("NAO", 0) > 0 and met["confianca"].get("BAIXA", 0) > 0
+    assert met["confianca"].get("BAIXA", 0) > 0   # NÃO só com prova (situação cadastral); a base de teste não tem nenhum
     assert met["confianca_estabilidade_casos_que_mudam_com_pesos_20pct"] == 0
     assert met["casos_com_falha"] == 0 and met["estabilidade_plano_casos_que_mudam_com_valores_5pct"] <= 5
-    assert met["elegibilidade_por_regra"]["NAO_ELEGIVEL"] == met["elegibilidade"]["NAO"]
+    assert met["elegibilidade_por_regra"]["NAO_ELEGIVEL"] == met["elegibilidade"].get("NAO", 0)
     assert met["justica_por_quinto_de_renda"]["razao_elegibilidade_menor_maior"] >= 0.8
     larg = met["confianca_largura_incendio_mediana"]
     assert larg["ALTA"] <= larg["MEDIA"] <= larg["BAIXA"]
@@ -643,7 +647,8 @@ def test_confianca_baixa_pergunta_no_app_antes_do_gerente(todas):
     assert baixa
     for f in baixa:
         assert f["jornada"] == "APP_COM_PERGUNTAS" and "gerente" in f["motivo_jornada"]
-        assert f["perguntas"][0]["codigo"] == "USO" and f["perguntas"][0]["obrigatoria"]
+        uso = [p for p in f["perguntas"] if p["codigo"] == "USO"]   # pode vir depois da do seguro BB (prioridade 100)
+        assert uso and uso[0]["obrigatoria"]
 
 
 def test_um_toque_nao_tem_pergunta_obrigatoria(todas):
@@ -707,3 +712,38 @@ def test_inquilino_de_casa_pergunta_o_contrato(ficha):
     assert f["campos"]["vinculo"]["valor"] == "INQUILINO" and not f["valor_imovel"]["segundo_risco"]
     p = next(p for p in f["perguntas"] if p["codigo"] == "SEGURO_DO_IMOVEL")
     assert not p["obrigatoria"] and "contrato" in p["texto"]
+
+
+# --- Críticas da banca (29/10) ------------------------------------------------------
+def test_ninguem_e_nao_elegivel_so_por_indicio(todas):
+    for f in todas:
+        if f["elegibilidade"] == "NAO":   # NÃO só com prova: situação cadastral irregular
+            assert f["pendencias"][0]["codigo"] == "SITUACAO_CADASTRAL", f["imovel_id"]
+
+
+def test_familia_nunca_muda_o_plano(todas):
+    assert all(not any(m["codigo"] == "FAMILIA_DECLARADA" for m in f["motivos"]) for f in todas)
+
+
+def test_inquilino_de_casa_segura_os_bens_e_nao_a_estrutura(ficha):
+    f = ficha("IMO_CASO_00011_01")
+    inc = next(c for c in f["coberturas"] if c["cobertura"] == "INCENDIO_RAIO_EXPLOSAO_FUMACA")
+    bens_max = f["campos"]["bens"]["max"]
+    assert f["valor_imovel"]["estrutura_do_locador"]
+    assert inc["max"] <= max(motor.arred(bens_max), 100000)       # sem a reconstrução (Lei do Inquilinato, art. 22, VIII)
+    assert "proprietário" in inc["justificativa"] and "contrato" in inc["justificativa"]
+
+
+def test_vidros_e_rc_falam_do_imovel_do_cliente(todas):
+    for cob in ("QUEBRA_DE_VIDROS", "RESPONSABILIDADE_CIVIL_FAMILIAR"):
+        textos = [c["justificativa"] for f in todas for c in f["coberturas"] if c["cobertura"] == cob]
+        assert len(set(textos)) > 0.5 * len(textos), cob
+
+
+def test_metricas_honestas_de_stp_e_itv(tmp_path):
+    import gerar
+    gerar.gerar(tmp_path)
+    m = json.loads((tmp_path / "metricas.json").read_text(encoding="utf-8"))["mercado"]
+    assert "stp_one_click_pct" not in m and "itv_incendio_no_sugerido_mediana" not in m   # a métrica circular saiu
+    assert 0 < m["um_toque_pct_dos_elegiveis"] < m["sem_pessoa_pct_dos_elegiveis"] <= 100
+    assert 0 < m["itv_sugerido_sobre_pessimista_mediana"] <= 1

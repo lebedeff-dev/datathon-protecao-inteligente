@@ -224,6 +224,9 @@ def metricas_de_mercado(fichas):
     - aderência aos sinistros reais: % das recomendações com as coberturas que mais
       geram acionamentos na carteira residencial da BB Seguros."""
     n = len(fichas)
+    eleg = sum(f["elegibilidade"] == "SIM" for f in fichas)
+    pess = [c["sugerido"] / c["valor_em_risco_max"] for f in fichas for c in f["coberturas"]
+            if c["cobertura"] == "INCENDIO_RAIO_EXPLOSAO_FUMACA" and c.get("valor_em_risco_max")]
     tradicional = [CAMPOS_DO_IMOVEL + DECLARACOES_ELEGIBILIDADE + len(f["coberturas"]) for f in fichas]
     nossas = [len(f["perguntas"]) for f in fichas]
     itv_max, itv_min = [], []
@@ -235,7 +238,10 @@ def metricas_de_mercado(fichas):
     limitadas = Counter(c["cobertura"] for f in fichas for c in f["coberturas"] if c.get("limitada_pelo_produto"))
     mais_acionadas = [c for c in ("DANOS_ELETRICOS", "DANOS_POR_AGUA", "VENDAVAL_GRANIZO") if P.sinistros_pct(c) is not None]
     return {
-        "stp_one_click_pct": round(100 * sum(f["canal"] == "ONE_CLICK" for f in fichas) / n, 1),
+        # STP honesto (crítica da banca): 1 toque = nenhuma pergunta obrigatória; "sem pessoa" inclui o app com perguntas
+        "um_toque_pct_dos_elegiveis": round(100 * sum(f["jornada"] == "UM_TOQUE" for f in fichas) / max(1, eleg), 1),
+        "sem_pessoa_pct_dos_elegiveis": round(100 * sum(f["jornada"] in ("UM_TOQUE", "APP_COM_PERGUNTAS") for f in fichas)
+                                              / max(1, eleg), 1),
         "esforco_campos_cotacao_tradicional_media": round(statistics.mean(tradicional), 2),
         "esforco_perguntas_nossa_jornada_media": round(statistics.mean(nossas), 2),
         "esforco_reducao_pct": round(100 * (1 - sum(nossas) / sum(tradicional)), 1),
@@ -243,9 +249,9 @@ def metricas_de_mercado(fichas):
         "itv_incendio_no_maximo_abaixo_de_80pct_casos": sum(v < 0.8 for v in itv_max),
         "itv_incendio_no_minimo_mediana": round(statistics.median(itv_min), 2) if itv_min else None,
         "itv_incendio_no_minimo_abaixo_de_80pct_casos": sum(v < 0.8 for v in itv_min),
-        "itv_incendio_no_sugerido_mediana": round(statistics.median(
-            c["sugerido"] / c["valor_em_risco"] for f in fichas for c in f["coberturas"]
-            if c["cobertura"] == "INCENDIO_RAIO_EXPLOSAO_FUMACA" and c.get("valor_em_risco")), 2),
+        # Sem circularidade: o sugerido contra o cenário pessimista (o máximo da estimativa, antes dos limites)
+        "itv_sugerido_sobre_pessimista_mediana": round(statistics.median(pess), 2) if pess else None,
+        "sugerido_cobre_80pct_do_pessimista_casos": sum(v >= 0.8 for v in pess),
         "faixas_limitadas_pelo_produto": dict(limitadas),
         "recomendacoes_com_coberturas_mais_acionadas_pct": round(100 * sum(
             set(mais_acionadas) <= {c["cobertura"] for c in f["coberturas"]} for f in fichas) / n, 1),
@@ -295,14 +301,16 @@ def casos_contrastantes(fichas):
             and (motivo(f, "ELETRONICOS") or motivo(f, "VIDROS")),
             lambda f: eleg(f) and tipo(f) == "APARTAMENTO" and f["plano"] == "PRATICO"),
         "perfil_B_casa_familiar": primeiro(
-            lambda f: eleg(f) and tipo(f).startswith("CASA") and f["plano"] == "TOTAL" and motivo(f, "FAMILIA_DECLARADA"),
+            lambda f: eleg(f) and tipo(f).startswith("CASA") and f["plano"] == "TOTAL"
+            and any(p["codigo"] == "RC_FAMILIA" for p in f["perguntas"]),
             lambda f: eleg(f) and tipo(f).startswith("CASA") and f["plano"] == "TOTAL"),
         "perfil_C_casa_lazer": primeiro(
             lambda f: eleg(f) and uso(f) == "LAZER_VERANEIO" and f["plano"] == "ESSENCIAL",
             lambda f: eleg(f) and uso(f) == "LAZER_VERANEIO",
             lambda f: eleg(f) and uso(f) == "RESIDENCIAL_LOCADO_A_TERCEIROS"),
-        "nao_elegivel_seguro_existente": primeiro(lambda f: any(p["codigo"] == "SEGURO_EXISTENTE" for p in f["pendencias"])
-                                                  and not eleg(f)),
+        # chave mantida para o protótipo ("Já segurado"): agora é o provável seguro BB a confirmar no app (RN-19)
+        "nao_elegivel_seguro_existente": primeiro(lambda f: any(p.get("provavel_bb") for p in f["pendencias"]),
+                                                  lambda f: not eleg(f)),
         "one_click_limpo": primeiro(lambda f: f["canal"] == "ONE_CLICK" and f["confianca"] == "ALTA" and not f["pendencias"]),
         "inquilino_total": primeiro(lambda f: f["campos"]["vinculo"]["valor"] == "INQUILINO" and f["plano"] == "TOTAL"),
         "elegibilidade_a_confirmar": primeiro(lambda f: any(p["codigo"] == "POSSIVEL_REFORMA" for p in f["pendencias"]))

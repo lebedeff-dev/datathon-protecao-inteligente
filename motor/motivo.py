@@ -84,6 +84,9 @@ def _em_jogo(f):
         a, b = P.FRACAO_ACABAMENTOS
         quem = "do condomínio" if f["campos"]["tipo"]["valor"] != "CASA" else "do financiamento"
         return f"A estrutura tem o seguro {quem}; o seu protege os acabamentos, cerca de {reais(rec * (a + b) / 2)}, e {seus}."
+    if vi.get("estrutura_do_locador"):
+        return (f"O imóvel é do proprietário, e o seu seguro protege {seus}; "
+                f"se o contrato pedir, inclua a reconstrução, cerca de {reais(rec)}.")
     dono = ", que é do proprietário," if vinc == "INQUILINO" else ""
     return f"Reconstruir o imóvel{dono} custaria cerca de {reais(rec)} pelo custo oficial do IBGE, fora {seus}."
 

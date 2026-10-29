@@ -3,26 +3,25 @@
  "processados_pct": 100.0,
  "com_justificativa_pct": 100.0,
  "completude_coberturas_fixas_pct": 100.0,
- "linhas_de_cobertura": 1232,
+ "linhas_de_cobertura": 1206,
  "faixas_vazias": 0,
  "faixas_invertidas": 0,
  "planos": {
-  "PRATICO": 59,
-  "ESSENCIAL": 30,
-  "TOTAL": 49
+  "PRATICO": 68,
+  "ESSENCIAL": 32,
+  "TOTAL": 38
  },
  "elegibilidade": {
-  "SIM": 122,
-  "NAO": 16
+  "SIM": 138
  },
  "casos_com_confirmacao_de_elegibilidade": 37,
  "elegibilidade_por_regra": {
   "SEGURO_EXISTENTE": 30,
-  "POSSIVEL_REFORMA": 9,
-  "NAO_ELEGIVEL": 16
+  "POSSIVEL_REFORMA": 10,
+  "NAO_ELEGIVEL": 0
  },
  "coberturas_adicionais": {
-  "RESPONSABILIDADE_CIVIL_FAMILIAR": 41
+  "RESPONSABILIDADE_CIVIL_FAMILIAR": 52
  },
  "estabilidade_plano_casos_que_mudam_com_valores_5pct": 1,
  "estabilidade_plano_casos_instaveis": [
@@ -38,8 +37,8 @@
  "confianca_estabilidade_casos_que_mudam_com_pesos_20pct": 0,
  "confianca_largura_incendio_mediana": {
   "ALTA": 1.89,
-  "MEDIA": 2.33,
-  "BAIXA": 2.56
+  "MEDIA": 2.28,
+  "BAIXA": 2.47
  },
  "confianca_por_cobertura": {
   "DANOS_ELETRICOS": {
@@ -51,8 +50,8 @@
    "ALTA": 6
   },
   "DESPESAS_EMERGENCIAIS": {
-   "MEDIA": 46,
-   "ALTA": 3
+   "MEDIA": 36,
+   "ALTA": 2
   },
   "IMPACTO_VEICULOS_TERRESTRES": {
    "MEDIA": 138
@@ -62,11 +61,11 @@
    "ALTA": 6
   },
   "PERDA_PAGAMENTO_ALUGUEL": {
-   "MEDIA": 18,
+   "MEDIA": 7,
    "ALTA": 31
   },
   "QUEBRA_DE_VIDROS": {
-   "BAIXA": 97,
+   "BAIXA": 95,
    "MEDIA": 11
   },
   "QUEDA_AERONAVE": {
@@ -76,43 +75,42 @@
    "MEDIA": 90
   },
   "ROUBO_FURTO_ARROMBAMENTO": {
-   "ALTA": 56,
-   "MEDIA": 52
+   "ALTA": 55,
+   "MEDIA": 51
   },
   "VENDAVAL_GRANIZO": {
-   "MEDIA": 126,
-   "ALTA": 12
+   "MEDIA": 128,
+   "ALTA": 10
   }
  },
  "canal": {
-  "ONE_CLICK": 100,
-  "GERENTE": 38
+  "ONE_CLICK": 112,
+  "GERENTE": 26
  },
  "jornada": {
-  "APP_COM_PERGUNTAS": 37,
-  "GERENTE": 22,
-  "UM_TOQUE": 63,
-  "SEM_NOVA_PROPOSTA": 16
+  "APP_COM_PERGUNTAS": 49,
+  "GERENTE": 26,
+  "UM_TOQUE": 63
  },
- "gerente_pct_dos_elegiveis": 18.0,
+ "gerente_pct_dos_elegiveis": 18.8,
  "gerente_motivos": {
-  "sinal de obra ou reforma, que impede a contratação e pede conversa": 9,
-  "o cliente não usa o app": 13
+  "sinal de obra ou reforma, que impede a contratação e pede conversa": 10,
+  "o cliente não usa o app": 16
  },
- "perguntas_media": 2.77,
- "perguntas_candidatas_media": 3.55,
- "perguntas_obrigatorias_media": 0.34,
- "casos_sem_pergunta_obrigatoria": 94,
+ "perguntas_media": 2.78,
+ "perguntas_candidatas_media": 3.59,
+ "perguntas_obrigatorias_media": 0.46,
+ "casos_sem_pergunta_obrigatoria": 80,
  "teste_justica_casos_alterados": 0,
  "teste_justica_casos_sem_compras_so_decisoes": 0,
  "justica_por_quinto_de_renda": {
   "quintos": {
    "Q1": {
     "casos": 28,
-    "essencial_pct": 46.4,
-    "pratico_pct": 14.3,
-    "total_pct": 39.3,
-    "elegivel_pct": 89.3,
+    "essencial_pct": 53.6,
+    "pratico_pct": 17.9,
+    "total_pct": 28.6,
+    "elegivel_pct": 100.0,
     "inquilino_pct": 25.0,
     "bens_comprovados_mediana": 18795
    },
@@ -121,45 +119,45 @@
     "essencial_pct": 44.4,
     "pratico_pct": 29.6,
     "total_pct": 25.9,
-    "elegivel_pct": 96.3,
+    "elegivel_pct": 100.0,
     "inquilino_pct": 22.2,
     "bens_comprovados_mediana": 24168
    },
    "Q3": {
     "casos": 28,
     "essencial_pct": 14.3,
-    "pratico_pct": 32.1,
-    "total_pct": 53.6,
-    "elegivel_pct": 85.7,
+    "pratico_pct": 42.9,
+    "total_pct": 42.9,
+    "elegivel_pct": 100.0,
     "inquilino_pct": 32.1,
     "bens_comprovados_mediana": 37108
    },
    "Q4": {
     "casos": 27,
     "essencial_pct": 3.7,
-    "pratico_pct": 66.7,
-    "total_pct": 29.6,
-    "elegivel_pct": 88.9,
+    "pratico_pct": 77.8,
+    "total_pct": 18.5,
+    "elegivel_pct": 100.0,
     "inquilino_pct": 14.8,
     "bens_comprovados_mediana": 47589
    },
    "Q5": {
     "casos": 28,
     "essencial_pct": 0.0,
-    "pratico_pct": 71.4,
-    "total_pct": 28.6,
-    "elegivel_pct": 82.1,
+    "pratico_pct": 78.6,
+    "total_pct": 21.4,
+    "elegivel_pct": 100.0,
     "inquilino_pct": 17.9,
     "bens_comprovados_mediana": 79217
    }
   },
-  "razao_elegibilidade_menor_maior": 0.85
+  "razao_elegibilidade_menor_maior": 1.0
  },
- "familia_declarada_muda_plano": 18,
+ "familia_declarada_muda_plano": 0,
  "familia_declarada_muda_valor_ou_confianca": 0,
- "sensibilidade_area_10pct_incendio_media_pct": 4.65,
+ "sensibilidade_area_10pct_incendio_media_pct": 4.0,
  "sensibilidade_area_casos_com_queda": 0,
- "tempo_segundos": 0.96,
+ "tempo_segundos": 0.75,
  "backtest_fora_da_amostra": {
   "metodo": "2 metades da base de desenvolvimento (calibra numa, mede na outra)",
   "area_casos": 1016,
@@ -171,22 +169,25 @@
   "padrao_intervalo_correto_pct": 97.8
  },
  "mercado": {
-  "stp_one_click_pct": 72.5,
-  "esforco_campos_cotacao_tradicional_media": 19.93,
-  "esforco_perguntas_nossa_jornada_media": 2.77,
-  "esforco_reducao_pct": 86.1,
-  "itv_incendio_no_maximo_mediana": 1.47,
+  "um_toque_pct_dos_elegiveis": 45.7,
+  "sem_pessoa_pct_dos_elegiveis": 81.2,
+  "esforco_campos_cotacao_tradicional_media": 19.74,
+  "esforco_perguntas_nossa_jornada_media": 2.78,
+  "esforco_reducao_pct": 85.9,
+  "itv_incendio_no_maximo_mediana": 1.48,
   "itv_incendio_no_maximo_abaixo_de_80pct_casos": 7,
-  "itv_incendio_no_minimo_mediana": 0.6,
-  "itv_incendio_no_minimo_abaixo_de_80pct_casos": 117,
-  "itv_incendio_no_sugerido_mediana": 1.0,
+  "itv_incendio_no_minimo_mediana": 0.62,
+  "itv_incendio_no_minimo_abaixo_de_80pct_casos": 107,
+  "itv_sugerido_sobre_pessimista_mediana": 0.67,
+  "sugerido_cobre_80pct_do_pessimista_casos": 15,
   "faixas_limitadas_pelo_produto": {
-   "DANOS_POR_AGUA": 134,
-   "VENDAVAL_GRANIZO": 66,
+   "DANOS_POR_AGUA": 132,
+   "VENDAVAL_GRANIZO": 55,
    "DANOS_ELETRICOS": 122,
-   "INCENDIO_RAIO_EXPLOSAO_FUMACA": 32,
-   "PERDA_PAGAMENTO_ALUGUEL": 29,
-   "DESPESAS_EMERGENCIAIS": 31,
+   "RESPONSABILIDADE_CIVIL_FAMILIAR": 38,
+   "INCENDIO_RAIO_EXPLOSAO_FUMACA": 26,
+   "PERDA_PAGAMENTO_ALUGUEL": 18,
+   "DESPESAS_EMERGENCIAIS": 12,
    "ROUBO_FURTO_ARROMBAMENTO": 25
   },
   "recomendacoes_com_coberturas_mais_acionadas_pct": 100.0,
@@ -199,19 +200,19 @@
   "alternativas_mostradas_pct": 100.0,
   "justificativas_com_termo_interno": 0,
   "palavras_mediana": 100.0,
-  "palavras_max": 130,
-  "palavras_entre_60_e_120_pct": 92.0,
+  "palavras_max": 128,
+  "palavras_entre_60_e_120_pct": 90.6,
   "coberturas_texto_distinto_pct": {
    "DANOS_ELETRICOS": 97.8,
    "DANOS_POR_AGUA": 94.9,
-   "DESPESAS_EMERGENCIAIS": 83.7,
+   "DESPESAS_EMERGENCIAIS": 57.9,
    "IMPACTO_VEICULOS_TERRESTRES": 1.4,
    "INCENDIO_RAIO_EXPLOSAO_FUMACA": 100.0,
-   "PERDA_PAGAMENTO_ALUGUEL": 81.6,
-   "QUEBRA_DE_VIDROS": 12.0,
+   "PERDA_PAGAMENTO_ALUGUEL": 76.3,
+   "QUEBRA_DE_VIDROS": 87.7,
    "QUEDA_AERONAVE": 0.7,
-   "RESPONSABILIDADE_CIVIL_FAMILIAR": 36.7,
-   "ROUBO_FURTO_ARROMBAMENTO": 70.4,
+   "RESPONSABILIDADE_CIVIL_FAMILIAR": 95.6,
+   "ROUBO_FURTO_ARROMBAMENTO": 69.8,
    "VENDAVAL_GRANIZO": 97.8
   }
  },
