@@ -411,6 +411,7 @@ def valor_imovel(r, tipo, vinculo, area, cal=None):
             f_lo, f_hi = pelo_iptu
             origem_padrao = "estimado pelo IPTU/m²"
     reconstrucao = (area["min"] * lo_m2 * f_lo, area["max"] * hi_m2 * f_hi)
+    area_padrao = None
     if (cal is not None and "area_padrao_q" in cal and area["natureza"] == "ESTIMADO" and not area.get("regional")
             and origem_padrao == "não cadastrado"):
         # Área estimada E padrão desconhecido: o pior caso de cada um (área mínima × padrão econômico até
@@ -419,10 +420,13 @@ def valor_imovel(r, tipo, vinculo, area, cal=None):
         # (percentis 9% e 91%, fora da amostra), sem ficar mais estreita que a faixa de quem tem padrão normal:
         # ~1,8× e contém o real em ~88% (assertividade.py).
         a_lo, a_hi = A.faixa_area_x_padrao(area["valor"], area["min"], area["max"], cal["area_padrao_q"])
-        reconstrucao = (float(a_lo) * lo_m2, float(a_hi) * hi_m2)
+        area_padrao = (float(a_lo), float(a_hi))
+        reconstrucao = (area_padrao[0] * lo_m2, area_padrao[1] * hi_m2)
         origem_padrao = A.ORIGEM_CALIBRADA
     return {
-        "area_padrao_q": cal["area_padrao_q"] if origem_padrao == A.ORIGEM_CALIBRADA else None,
+        "area_padrao_q": cal["area_padrao_q"] if area_padrao else None,
+        "area_padrao": area_padrao,   # (mín, máx) de área × padrão em m² "de padrão normal", só na faixa calibrada
+        "area_padrao_acerto": cal.get("assertividade", {}).get("area_x_padrao", {}).get("na_faixa_pct") if area_padrao else None,
         "custo_m2": (lo_m2 * f_lo, hi_m2 * f_hi),
         "custo_m2_base": (lo_m2, hi_m2),
         "fator_padrao": (f_lo, f_hi),
@@ -720,9 +724,12 @@ def dimensionar(cob, ctx):
     # O pedaço "área" da regra: a faixa da área, ou a faixa calibrada de área × padrão
     area_regra = f"área {area['min']:.0f}–{area['max']:.0f} m²"
     if calibrada:
-        q_lo, q_hi = im["area_padrao_q"]
-        area_regra = (f"área estimada {area['valor']} m² × padrão do meio {P.FATOR_PADRAO_MEIO:.2f} × {q_lo:.2f}–{q_hi:.2f} "
-                      f"(faixa calibrada de área × padrão: erro real fora da amostra, percentis 9% e 91%)").replace(".", ",")
+        a_lo, a_hi = im["area_padrao"]
+        area_regra = (f"área × padrão {a_lo:.0f}–{a_hi:.0f} m² de padrão normal (área estimada {area['valor']} m², padrão "
+                      f"desconhecido; faixa calibrada de área × padrão")
+        if im.get("area_padrao_acerto"):   # o acerto medido (assertividade.py), nunca escrito à mão
+            area_regra += f": contém o valor real em {im['area_padrao_acerto']:.0f}% dos testes fora da amostra".replace(".", ",")
+        area_regra += ")"
     if cob == "INCENDIO_RAIO_EXPLOSAO_FUMACA":
         lo, hi = faixa_bruta_incendio(ctx)
         if im.get("estrutura_do_locador"):

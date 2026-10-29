@@ -180,6 +180,7 @@ def dados_faltantes(fichas, cal):
         "padrao_cadastrado": origem.get("cadastrado", 0),
         "padrao_estimado_pelo_iptu": origem.get("estimado pelo IPTU/m²", 0),
         "padrao_faixa_aberta_com_pergunta": origem.get("não cadastrado", 0),
+        "padrao_faixa_calibrada_de_area_x_padrao": origem.get("faixa calibrada de área × padrão", 0),
         "bens_pela_media_da_regiao": sum(bool(f["campos"]["bens"].get("regional")) and not f["campos"]["bens"].get("usou_renda")
                                          for f in fichas),
         "bens_pela_regiao_e_renda": sum(bool(f["campos"]["bens"].get("usou_renda")) for f in fichas),

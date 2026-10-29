@@ -121,7 +121,7 @@ def test_casos_no_teste_contados(fichas_teste, cal):
 def test_regra_do_incendio_explica_a_faixa_calibrada(fichas_teste):
     f = next(f for f in fichas_teste if f["valor_imovel"]["origem_padrao"] == A.ORIGEM_CALIBRADA)
     regra = next(c["regra"] for c in f["coberturas"] if c["cobertura"] == "INCENDIO_RAIO_EXPLOSAO_FUMACA")
-    assert "faixa calibrada de área × padrão" in regra and "padrão do meio 1,05" in regra
+    assert "faixa calibrada de área × padrão" in regra and "m² de padrão normal" in regra
 
 
 def test_gerar_grava_assertividade_com_casos_do_teste(tmp_path):
