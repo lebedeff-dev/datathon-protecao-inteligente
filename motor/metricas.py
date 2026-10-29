@@ -140,6 +140,8 @@ def calcular_metricas(dados, cal, fichas, resultado, coberturas, segundos):
                                         for r in f["motivo_jornada"].split("; "))),
         "perguntas_media": round(sum(len(f["perguntas"]) for f in fichas) / n, 2),
         "perguntas_candidatas_media": round(sum(f["perguntas_candidatas"] for f in fichas) / n, 2),
+        "perguntas_obrigatorias_media": round(sum(p.get("obrigatoria", False) for f in fichas for p in f["perguntas"]) / n, 2),
+        "casos_sem_pergunta_obrigatoria": sum(not any(p.get("obrigatoria") for p in f["perguntas"]) for f in fichas),
         "teste_justica_casos_alterados": mudou_justica,
         "teste_justica_casos_sem_compras_so_decisoes": fora_do_teste_justica,
         "justica_por_quinto_de_renda": por_renda,

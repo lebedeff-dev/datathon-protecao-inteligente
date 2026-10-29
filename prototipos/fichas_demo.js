@@ -281,14 +281,16 @@ window.FICHAS_DEMO = {
    "perguntas": [
     {
      "prioridade": 58,
-     "texto": "Seus móveis, eletrodomésticos e eletrônicos ficam entre R$ 22.000 e R$ 60.000?",
+     "texto": "Seus móveis, eletrodomésticos e eletrônicos ficam entre R$ 22 mil e R$ 60 mil?",
      "codigo": "BENS",
+     "obrigatoria": false,
      "reduz_faixa_ate": 38000
     },
     {
      "prioridade": 56,
      "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
      "codigo": "PADRAO",
+     "obrigatoria": false,
      "reduz_faixa_ate": 36000
     }
    ],
@@ -305,7 +307,7 @@ window.FICHAS_DEMO = {
    },
    "canal": "ONE_CLICK",
    "jornada": "UM_TOQUE",
-   "motivo_jornada": "elegível, sem pendência e com confiança suficiente",
+   "motivo_jornada": "nenhuma pergunta trava a contratação: contrata com a faixa sugerida e as perguntas só ajustam o valor",
    "fontes": [
     "SINAPI 2026-09 (IBGE)",
     "CUB R8-N oficial dos Sinduscons",
@@ -638,20 +640,23 @@ window.FICHAS_DEMO = {
    "perguntas": [
     {
      "prioridade": 58,
-     "texto": "Seus móveis, eletrodomésticos e eletrônicos ficam entre R$ 77.000 e R$ 209.000?",
+     "texto": "Seus móveis, eletrodomésticos e eletrônicos ficam entre R$ 77 mil e R$ 209 mil?",
      "codigo": "BENS",
+     "obrigatoria": false,
      "reduz_faixa_ate": 131000
     },
     {
      "prioridade": 56,
      "texto": "Estimamos que o imóvel tem cerca de 165 m². Confere?",
      "codigo": "AREA",
+     "obrigatoria": false,
      "reduz_faixa_ate": 114000
     },
     {
      "prioridade": 54,
      "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
      "codigo": "PADRAO",
+     "obrigatoria": false,
      "reduz_faixa_ate": 93000
     }
    ],
@@ -933,18 +938,21 @@ window.FICHAS_DEMO = {
     {
      "prioridade": 70,
      "texto": "Este imóvel é onde você mora, uma casa de veraneio ou está alugado para outra pessoa?",
-     "codigo": "USO"
+     "codigo": "USO",
+     "obrigatoria": true
     },
     {
      "prioridade": 58,
      "texto": "Estimamos que o imóvel tem cerca de 104 m². Confere?",
      "codigo": "AREA",
+     "obrigatoria": false,
      "reduz_faixa_ate": 66000
     },
     {
      "prioridade": 56,
      "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
      "codigo": "PADRAO",
+     "obrigatoria": false,
      "reduz_faixa_ate": 54000
     }
    ],
@@ -960,9 +968,9 @@ window.FICHAS_DEMO = {
     ],
     "pct": 0
    },
-   "canal": "GERENTE",
-   "jornada": "GERENTE",
-   "motivo_jornada": "confiança baixa: não sabemos se o cliente mora no imóvel",
+   "canal": "ONE_CLICK",
+   "jornada": "APP_COM_PERGUNTAS",
+   "motivo_jornada": "confiança baixa: o app pergunta primeiro se o cliente mora no imóvel; o gerente entra se a resposta mudar o caso ou não vier",
    "fontes": [
     "SINAPI 2026-09 (IBGE)",
     "CUB R8-N oficial dos Sinduscons",
@@ -1296,20 +1304,23 @@ window.FICHAS_DEMO = {
    "perguntas": [
     {
      "prioridade": 58,
-     "texto": "Seus móveis, eletrodomésticos e eletrônicos ficam entre R$ 32.000 e R$ 86.000?",
+     "texto": "Seus móveis, eletrodomésticos e eletrônicos ficam entre R$ 32 mil e R$ 86 mil?",
      "codigo": "BENS",
+     "obrigatoria": false,
      "reduz_faixa_ate": 54000
     },
     {
      "prioridade": 56,
      "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
      "codigo": "PADRAO",
+     "obrigatoria": false,
      "reduz_faixa_ate": 12000
     },
     {
      "prioridade": 30,
      "texto": "O imóvel é seu e já está quitado?",
-     "codigo": "VINCULO"
+     "codigo": "VINCULO",
+     "obrigatoria": false
     }
    ],
    "perguntas_candidatas": 3,
@@ -1646,14 +1657,16 @@ window.FICHAS_DEMO = {
    "perguntas": [
     {
      "prioridade": 58,
-     "texto": "Seus móveis, eletrodomésticos e eletrônicos ficam entre R$ 20.000 e R$ 54.000?",
+     "texto": "Seus móveis, eletrodomésticos e eletrônicos ficam entre R$ 20 mil e R$ 54 mil?",
      "codigo": "BENS",
+     "obrigatoria": false,
      "reduz_faixa_ate": 34000
     },
     {
      "prioridade": 56,
      "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
      "codigo": "PADRAO",
+     "obrigatoria": false,
      "reduz_faixa_ate": 34000
     }
    ],
@@ -1669,7 +1682,7 @@ window.FICHAS_DEMO = {
    },
    "canal": "ONE_CLICK",
    "jornada": "UM_TOQUE",
-   "motivo_jornada": "elegível, sem pendência e com confiança suficiente",
+   "motivo_jornada": "nenhuma pergunta trava a contratação: contrata com a faixa sugerida e as perguntas só ajustam o valor",
    "fontes": [
     "SINAPI 2026-09 (IBGE)",
     "CUB R8-N oficial dos Sinduscons",
@@ -1998,18 +2011,21 @@ window.FICHAS_DEMO = {
     {
      "prioridade": 100,
      "texto": "Notamos R$ 15 mil em material de construção nos últimos 2 anos. O imóvel está em obra ou reforma agora?",
-     "codigo": "POSSIVEL_REFORMA"
+     "codigo": "POSSIVEL_REFORMA",
+     "obrigatoria": true
     },
     {
      "prioridade": 58,
      "texto": "Estimamos que o imóvel tem cerca de 166 m². Confere?",
      "codigo": "AREA",
+     "obrigatoria": false,
      "reduz_faixa_ate": 321000
     },
     {
      "prioridade": 56,
      "texto": "O acabamento do imóvel é simples, normal ou de alto padrão?",
      "codigo": "PADRAO",
+     "obrigatoria": false,
      "reduz_faixa_ate": 262000
     }
    ],

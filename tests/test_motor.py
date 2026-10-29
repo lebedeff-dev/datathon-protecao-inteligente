@@ -626,13 +626,39 @@ def test_cep_da_base_nao_tem_sinal(cal):
 
 # --- F3: gerente como último recurso (mentoria 28/10) ---------------------------
 def test_gerente_so_no_ultimo_caso(todas):
+    # gerente só com sinal de obra ou sem o app: o resto o app resolve com perguntas
     for f in todas:
         if f["jornada"] == "GERENTE":
             obra = any(p["codigo"] == "POSSIVEL_REFORMA" for p in f["pendencias"])
-            assert f["confianca"] == "BAIXA" or obra or f["canal_digital"]["usuario_app"] != "SIM", f["imovel_id"]
+            assert obra or f["canal_digital"]["usuario_app"] != "SIM", f["imovel_id"]
             assert f["motivo_jornada"]
     gerente = sum(f["jornada"] == "GERENTE" for f in todas)
-    assert gerente <= 0.3 * sum(f["elegibilidade"] == "SIM" for f in todas)
+    assert gerente <= 0.2 * sum(f["elegibilidade"] == "SIM" for f in todas)
+
+
+def test_confianca_baixa_pergunta_no_app_antes_do_gerente(todas):
+    baixa = [f for f in todas if f["confianca"] == "BAIXA" and f["elegibilidade"] == "SIM"
+             and f["canal_digital"]["usuario_app"] == "SIM"
+             and not any(p["codigo"] == "POSSIVEL_REFORMA" for p in f["pendencias"])]
+    assert baixa
+    for f in baixa:
+        assert f["jornada"] == "APP_COM_PERGUNTAS" and "gerente" in f["motivo_jornada"]
+        assert f["perguntas"][0]["codigo"] == "USO" and f["perguntas"][0]["obrigatoria"]
+
+
+def test_um_toque_nao_tem_pergunta_obrigatoria(todas):
+    um = [f for f in todas if f["jornada"] == "UM_TOQUE"]
+    assert len(um) >= 60
+    for f in um:
+        assert not any(p["obrigatoria"] for p in f["perguntas"]), f["imovel_id"]
+        assert all(p["codigo"] in ("BENS", "AREA", "PADRAO", "VINCULO", "RC_FAMILIA", "RECEBE_ALUGUEL") for p in f["perguntas"])
+
+
+def test_planilha_marca_perguntas_opcionais(planilhas):
+    res, _ = planilhas
+    com = res.perguntas_confirmacao.fillna("")
+    assert com.str.contains(r"\(opcional\)").any()
+    assert not com.str.contains("R\\$ \\d+\\.\\d{3}", regex=True).any()   # "R$ 20 mil", não "R$ 20.000"
 
 
 def test_pergunta_simples_fica_no_app(ficha):

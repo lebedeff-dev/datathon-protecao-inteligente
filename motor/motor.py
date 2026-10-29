@@ -810,14 +810,17 @@ def montar_perguntas(r, pendencias, tipo, uso, vinculo, area, bens, plano=None, 
     """Até 3 perguntas, das que mais mudam o resultado (PLANO_UNIFICADO §7).
     Ordem: elegibilidade (95-100), as que mudam o plano (60-70) e depois as que mudam o
     valor, ordenadas pelo valor da informação (58, 56, 54: quem mais aperta a faixa vem antes).
-    Pergunta de valor que aperta a faixa em menos de P.VALOR_MINIMO_PERGUNTA não é feita."""
+    Pergunta de valor que aperta a faixa em menos de P.VALOR_MINIMO_PERGUNTA não é feita.
+    Cada pergunta diz se é **obrigatória** (trava a contratação: elegibilidade, uso duvidoso,
+    tipo duvidoso) ou **opcional** (só ajusta o valor: bens, área, acabamento...). Sem
+    obrigatória, o cliente contrata direto com a faixa sugerida (1 toque de verdade)."""
     cand = [(p["prioridade"], p["pergunta"], p["codigo"]) for p in pendencias if p.get("pergunta")]
     if uso["confianca"] == "BAIXA":
         cand.append((70, "Este imóvel é onde você mora, uma casa de veraneio ou está alugado para outra pessoa?", "USO"))
     if r.credito_recorrente_compativel_aluguel == "SIM" and vinculo["valor"] != "PROPRIETARIO_LOCADOR":
         cand.append((60, "Você recebe aluguel referente a este imóvel?", "RECEBE_ALUGUEL"))
     textos = {
-        "BENS": f"Seus móveis, eletrodomésticos e eletrônicos ficam entre {brl(arred(bens['min']))} e {brl(arred(bens['max']))}?",
+        "BENS": f"Seus móveis, eletrodomésticos e eletrônicos ficam entre {M.reais(bens['min'])} e {M.reais(bens['max'])}?",
         "AREA": f"Estimamos que o imóvel tem cerca de {area['valor']} m². Confere?",
         "PADRAO": "O acabamento do imóvel é simples, normal ou de alto padrão?",
     }
@@ -837,8 +840,15 @@ def montar_perguntas(r, pendencias, tipo, uso, vinculo, area, bens, plano=None, 
                          "Ela vem no plano Total.", "RC_FAMILIA"))
     cand.sort(key=lambda x: -x[0])
     vdi = vdi if imovel else {}
-    return [{"prioridade": p, "texto": t, "codigo": c, **({"reduz_faixa_ate": arred(vdi[c])} if c in vdi else {})}
+    obrigatorias = {p["codigo"] for p in pendencias} | PERGUNTAS_QUE_TRAVAM
+    return [{"prioridade": p, "texto": t, "codigo": c, "obrigatoria": c in obrigatorias,
+             **({"reduz_faixa_ate": arred(vdi[c])} if c in vdi else {})}
             for p, t, c in cand[:P.MAX_PERGUNTAS]], len(cand)
+
+
+# Perguntas que travam a contratação além das de elegibilidade: sem saber se a pessoa mora no
+# imóvel ou se ele é casa ou apartamento, a própria recomendação pode mudar.
+PERGUNTAS_QUE_TRAVAM = {"USO", "TIPO"}
 
 
 def peso_dado(d, campo):
@@ -966,7 +976,7 @@ def processar_caso(r, bens_imovel, cal, catalogo, outro_principal=False, confirm
         campos[k]["natureza"] = "CONFIRMADO"
     faltantes = [c for c in campos_faltantes(r) if not (c == "area_cadastrada_m2" and "area" in confirmados)]
     nivel, score, motivo_conf = confianca_geral(campos, eleg, pendencias, faltantes)
-    jornada, motivo_jornada = escolher_jornada(r, eleg, pendencias, nivel, uso)
+    jornada, motivo_jornada = escolher_jornada(r, eleg, pendencias, nivel, uso, perguntas)
     return _limpo({
         "cliente_id": r.cliente_id, "imovel_id": r.imovel_id,
         "local": f"{r.municipio_real}/{r.uf_real}", "complemento": r.complemento,
@@ -989,31 +999,34 @@ def processar_caso(r, bens_imovel, cal, catalogo, outro_principal=False, confirm
     })
 
 
-def escolher_jornada(r, eleg, pendencias, nivel, uso):
+def escolher_jornada(r, eleg, pendencias, nivel, uso, perguntas=()):
     """Gerente é o último recurso, porque custa caro (mentoria de 28/10). Ordem:
     - SEM_NOVA_PROPOSTA: não elegível; o app só informa e a ficha serve para revisar a apólice;
-    - GERENTE: o app não resolve com uma pergunta de sim/não: confiança baixa (não se sabe se a
-      pessoa mora lá), sinal de obra ou cliente sem o app;
-    - APP_COM_PERGUNTAS: pendência que o app resolve ("seu seguro atual é da BB?") ou pouca
-      familiaridade com o app (modo simples, D-03);
-    - UM_TOQUE: o resto. O relatório do gerente (a ficha) existe para todos os casos."""
+    - GERENTE: o app não resolve: sinal de obra (pede conversa) ou cliente sem o app;
+    - APP_COM_PERGUNTAS: há pergunta obrigatória (elegibilidade, "você mora no imóvel?") ou pouca
+      familiaridade com o app (modo simples, D-03). Na confiança baixa, o app pergunta primeiro;
+      o gerente só entra se a resposta mudar o caso ou não vier;
+    - UM_TOQUE: nenhuma pergunta trava; contrata com a faixa sugerida e as perguntas só ajustam
+      o valor. O relatório do gerente (a ficha) existe para todos os casos."""
     if eleg != "SIM":
         return "SEM_NOVA_PROPOSTA", "não elegível para nova proposta: o app informa e a ficha serve para revisar a apólice atual"
-    obra = any(p["codigo"] == "POSSIVEL_REFORMA" for p in pendencias)
     razoes = []
-    if nivel == "BAIXA":
-        razoes.append("confiança baixa: " + ("não sabemos se o cliente mora no imóvel"
-                                             if uso["classe"] == "PRESUMIDO" else "dados críticos presumidos"))
-    if obra:
+    if any(p["codigo"] == "POSSIVEL_REFORMA" for p in pendencias):
         razoes.append("sinal de obra ou reforma, que impede a contratação e pede conversa")
     if r.usuario_app != "SIM":
         razoes.append("o cliente não usa o app")
     if razoes:
         return "GERENTE", "; ".join(razoes)
-    if pendencias or r.indice_maturidade_digital < P.MATURIDADE_MIN_ONE_CLICK:
-        return "APP_COM_PERGUNTAS", ("o app confirma " + ", ".join(p["codigo"].lower().replace("_", " ") for p in pendencias)
-                                     if pendencias else "pouca familiaridade com o app: modo simples e ajuda contextual")
-    return "UM_TOQUE", "elegível, sem pendência e com confiança suficiente"
+    obrigatorias = [p["codigo"] for p in perguntas if p.get("obrigatoria")]
+    if nivel == "BAIXA":
+        return "APP_COM_PERGUNTAS", ("confiança baixa: o app pergunta primeiro se o cliente mora no imóvel; "
+                                     "o gerente entra se a resposta mudar o caso ou não vier")
+    if obrigatorias or pendencias:
+        return "APP_COM_PERGUNTAS", "o app confirma " + ", ".join(c.lower().replace("_", " ") for c in obrigatorias or
+                                                                   [p["codigo"] for p in pendencias])
+    if r.indice_maturidade_digital < P.MATURIDADE_MIN_ONE_CLICK:
+        return "APP_COM_PERGUNTAS", "pouca familiaridade com o app: modo simples e ajuda contextual"
+    return "UM_TOQUE", "nenhuma pergunta trava a contratação: contrata com a faixa sugerida e as perguntas só ajustam o valor"
 
 
 def processar(dados, cal):
@@ -1058,7 +1071,8 @@ def para_templates(fichas, template):
             "coberturas_recomendadas": "; ".join(c["cobertura"] for c in f["coberturas"]),
             "confianca_geral": f["confianca"],
             "justificativa_recomendacao": justificativa(f),
-            "perguntas_confirmacao": " | ".join(p["texto"] for p in f["perguntas"]),
+            "perguntas_confirmacao": " | ".join(("" if p.get("obrigatoria") else "(opcional) ") + p["texto"]
+                                                for p in f["perguntas"]),
             "fontes_publicas_adicionais": "; ".join(f["fontes"]),
         })
     resultado = pd.DataFrame(linhas, columns=template.columns)

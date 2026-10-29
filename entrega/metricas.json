@@ -42,23 +42,24 @@
   "BAIXA": 2.56
  },
  "canal": {
-  "ONE_CLICK": 87,
-  "GERENTE": 51
+  "ONE_CLICK": 100,
+  "GERENTE": 38
  },
  "jornada": {
-  "APP_COM_PERGUNTAS": 20,
-  "GERENTE": 35,
-  "UM_TOQUE": 67,
+  "APP_COM_PERGUNTAS": 37,
+  "GERENTE": 22,
+  "UM_TOQUE": 63,
   "SEM_NOVA_PROPOSTA": 16
  },
- "gerente_pct_dos_elegiveis": 28.7,
+ "gerente_pct_dos_elegiveis": 18.0,
  "gerente_motivos": {
-  "confiança baixa: não sabemos se o cliente mora no imóvel": 18,
   "sinal de obra ou reforma, que impede a contratação e pede conversa": 9,
   "o cliente não usa o app": 13
  },
  "perguntas_media": 2.7,
  "perguntas_candidatas_media": 3.44,
+ "perguntas_obrigatorias_media": 0.34,
+ "casos_sem_pergunta_obrigatoria": 94,
  "teste_justica_casos_alterados": 0,
  "teste_justica_casos_sem_compras_so_decisoes": 0,
  "justica_por_quinto_de_renda": {
@@ -115,7 +116,7 @@
  "familia_declarada_muda_valor_ou_confianca": 0,
  "sensibilidade_area_10pct_incendio_media_pct": 4.65,
  "sensibilidade_area_casos_com_queda": 0,
- "tempo_segundos": 0.68,
+ "tempo_segundos": 1.19,
  "backtest_fora_da_amostra": {
   "metodo": "2 metades da base de desenvolvimento (calibra numa, mede na outra)",
   "area_casos": 1016,
@@ -127,7 +128,7 @@
   "padrao_intervalo_correto_pct": 97.8
  },
  "mercado": {
-  "stp_one_click_pct": 63.0,
+  "stp_one_click_pct": 72.5,
   "esforco_campos_cotacao_tradicional_media": 19.93,
   "esforco_perguntas_nossa_jornada_media": 2.7,
   "esforco_reducao_pct": 86.4,
