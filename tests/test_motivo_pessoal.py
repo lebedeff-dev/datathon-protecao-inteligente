@@ -144,3 +144,24 @@ def test_tamanho_e_termos(fichas):
         t = motor.justificativa(f)
         assert len(t.split()) <= motivo.MAX_PALAVRAS == 140, (f["imovel_id"], len(t.split()), t)
         assert not any(x in t for x in motivo.TERMOS_INTERNOS)
+
+
+# --- Tarefa 5 · perguntas com o porquê ------------------------------------------------
+def test_pergunta_da_area_diz_a_faixa_e_quanto_muda(fichas):
+    com = [(f, p) for f in fichas for p in f["perguntas"] if p["codigo"] == "AREA"]
+    assert com
+    for f, p in com:
+        a = f["campos"]["area"]
+        assert f"de {round(a['min'])} a {round(a['max'])} m²" in p["texto"]
+        assert "R$" in p["texto"] and "incêndio" in p["texto"]
+
+
+def test_perguntas_de_valor_dizem_por_que(fichas):
+    for f in fichas:
+        for p in f["perguntas"]:
+            if p["codigo"] in ("BENS", "PADRAO"):
+                assert "R$" in p["texto"], p["texto"]
+
+
+def test_maximo_3_perguntas_continua(fichas):
+    assert max(len(f["perguntas"]) for f in fichas) <= 3

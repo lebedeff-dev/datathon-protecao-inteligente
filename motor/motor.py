@@ -896,16 +896,20 @@ def montar_perguntas(r, pendencias, tipo, uso, vinculo, area, bens, plano=None, 
         cand.append((65, decisiva, "DECIDE_PLANO"))
     if r.credito_recorrente_compativel_aluguel == "SIM" and vinculo["valor"] != "PROPRIETARIO_LOCADOR":
         cand.append((60, "Você recebe aluguel referente a este imóvel?", "RECEBE_ALUGUEL"))
-    textos = {
-        "BENS": f"Seus móveis, eletrodomésticos e eletrônicos ficam entre {M.reais(bens['min'])} e {M.reais(bens['max'])}?",
-        "AREA": f"Estimamos que o imóvel tem cerca de {area['valor']} m². Confere?",
-        "PADRAO": "O acabamento do imóvel é simples, normal ou de alto padrão?",
-    }
     if imovel:
         vdi = valor_da_informacao(area, bens, imovel, largura_incendio)
         vdi = {k: v for k, v in vdi.items() if v >= P.VALOR_MINIMO_PERGUNTA}
     else:
         vdi = {"BENS": 1, **({"AREA": 0} if area["natureza"] == "ESTIMADO" else {})}
+    # Cada pergunta de valor diz por que é feita, em reais: quanto a resposta pode mudar (valor da informação)
+    quanto = lambda c, oque: f" A resposta pode mudar {oque} em até {M.reais(vdi[c])}." if imovel and c in vdi else ""
+    textos = {
+        "BENS": (f"Seus móveis, eletrodomésticos e eletrônicos valem entre {M.reais(bens['min'])} e {M.reais(bens['max'])}?"
+                 + quanto("BENS", "a proteção dos seus bens")),
+        "AREA": (f"Qual a área do seu imóvel? Estimamos de {round(area.get('min', area['valor']))} a "
+                 f"{round(area.get('max', area['valor']))} m²." + quanto("AREA", "o valor do incêndio")),
+        "PADRAO": "O acabamento do imóvel é simples, normal ou de alto padrão?" + quanto("PADRAO", "o valor do incêndio"),
+    }
     for i, cod in enumerate(sorted(vdi, key=lambda c: -vdi[c])):
         cand.append((58 - 2 * i, textos[cod], cod))
     if tipo.get("diverge"):
