@@ -237,14 +237,15 @@ def personalizacao_do_motivo(fichas, textos):
     contagem = Counter(esq)
     n = len(fichas)
     tem = lambda cond: round(100 * sum(cond(f, textos[f["imovel_id"]]) for f in fichas) / n, 1) if n else 0.0
+    usa = lambda frase, t: bool(frase) and frase in t
     return {
         "esqueletos_unicos": sum(contagem[e] == 1 for e in esq),
         "semelhanca_media": round(statistics.mean(pares), 3) if pares else 0.0,
         "frase_mais_repetida_n": frases.most_common(1)[0][1] if frases else 0,
         "frase_mais_repetida": frases.most_common(1)[0][0] if frases else "",
         "cita_cidade_pct": tem(lambda f, t: motivo.na_cidade(f) in t),
-        "com_fato_dos_vizinhos_pct": tem(lambda f, t: bool(motivo.fato_distintivo(f)) and motivo.fato_distintivo(f) in t),
-        "com_risco_da_cidade_pct": tem(lambda f, t: bool(motivo.risco_do_lugar(f)) and motivo.risco_do_lugar(f) in t),
+        "com_fato_dos_vizinhos_pct": tem(lambda f, t: usa(motivo.fato_distintivo(f), t)),
+        "com_risco_da_cidade_pct": tem(lambda f, t: usa(motivo.risco_do_lugar(f), t)),
     }
 
 

@@ -416,10 +416,10 @@ def valor_imovel(r, tipo, vinculo, area, cal=None):
         # Área estimada E padrão desconhecido: o pior caso de cada um (área mínima × padrão econômico até
         # área máxima × padrão superior) ficava 2,7× larga e continha o real em 97%. A área e o padrão
         # quase nunca erram para o mesmo lado: a faixa calibrada usa o erro real dos dois juntos
-        # (percentis 9% e 91%, fora da amostra), fica ~1,7× e contém o real em ~80% (assertividade.py).
-        q_lo, q_hi = cal["area_padrao_q"]
-        centro = area["valor"] * P.FATOR_PADRAO_MEIO
-        reconstrucao = (centro * q_lo * lo_m2, centro * q_hi * hi_m2)
+        # (percentis 9% e 91%, fora da amostra), sem ficar mais estreita que a faixa de quem tem padrão normal:
+        # ~1,8× e contém o real em ~88% (assertividade.py).
+        a_lo, a_hi = A.faixa_area_x_padrao(area["valor"], area["min"], area["max"], cal["area_padrao_q"])
+        reconstrucao = (float(a_lo) * lo_m2, float(a_hi) * hi_m2)
         origem_padrao = A.ORIGEM_CALIBRADA
     return {
         "area_padrao_q": cal["area_padrao_q"] if origem_padrao == A.ORIGEM_CALIBRADA else None,
@@ -858,10 +858,12 @@ def valor_da_informacao(area, bens, imovel, largura_incendio=None):
         valor["AREA"] = (area["max"] - area["min"]) * hi_m2 * f_hi * frac
     if f_hi > f_lo:
         valor["PADRAO"] = area["max"] * hi_m2 * (f_hi - f_lo) * frac
-    if largura_incendio is not None:
-        for k in ("AREA", "PADRAO"):
-            if k in valor:
-                valor[k] = min(valor[k], largura_incendio)
+    tetos = [largura_incendio] if largura_incendio is not None else []
+    if imovel.get("area_padrao_q"):   # faixa calibrada: área e padrão juntos não passam da largura da reconstrução
+        tetos.append((imovel["reconstrucao"][1] - imovel["reconstrucao"][0]) * frac)
+    for k in ("AREA", "PADRAO"):
+        if k in valor and tetos:
+            valor[k] = min([valor[k], *tetos])
     return valor
 
 

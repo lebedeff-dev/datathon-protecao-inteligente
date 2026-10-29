@@ -97,8 +97,9 @@ def test_faixa_calibrada_nos_64_casos(fichas_teste):
 
 
 def test_faixa_calibrada_contem_80(cal):
+    # percentis 9%–91% (~80%), alargados até a faixa de quem tem padrão normal (revisão de código): ~88%
     b = cal["assertividade"]["area_x_padrao"]
-    assert 77 <= b["na_faixa_pct"] <= 86
+    assert 80 <= b["na_faixa_pct"] <= 92
     assert b["largura_calibrada"] < b["largura_pior_caso"]
     lo, hi = cal["area_padrao_q"]
     assert 0.5 < lo < 1 < hi < 1.6
@@ -132,3 +133,30 @@ def test_gerar_grava_assertividade_com_casos_do_teste(tmp_path):
     assert b["area"]["casos_no_teste"] == 92 and b["area"]["erro_mediano_pct"] < 17
     met = json.loads((tmp_path / "metricas.json").read_text(encoding="utf-8"))
     assert met["assertividade"]["area_x_padrao"]["casos_no_teste"] == 64
+
+
+def test_padrao_desconhecido_nunca_tem_teto_menor_que_o_normal(ficha):
+    normal = ficha("IMO_CASO_00005_01", padrao_construtivo_cadastrado="NORMAL", area_cadastrada_m2=0)
+    nao_sei = ficha("IMO_CASO_00005_01", padrao_construtivo_cadastrado="NAO_DISPONIVEL", area_cadastrada_m2=0)
+    assert nao_sei["valor_imovel"]["origem_padrao"] == A.ORIGEM_CALIBRADA
+    assert nao_sei["valor_imovel"]["reconstrucao_min"] <= normal["valor_imovel"]["reconstrucao_min"]
+    assert nao_sei["valor_imovel"]["reconstrucao_max"] >= normal["valor_imovel"]["reconstrucao_max"]
+
+
+def test_backtest_ignora_area_que_nao_deu_para_estimar(dev):
+    m = dev["enderecos_imoveis"].merge(dev["sinais_imobiliarios"], on=["imovel_id", "cliente_id"])
+    a = m[m.area_cadastrada_m2 > 0].copy()
+    i = a[a.padrao_construtivo_cadastrado == "NORMAL"].index[0]
+    a.loc[i, ["pagamento_iptu_anual", "energia_media_mensal_6m"]] = 0
+    q = A.backtest(a)["area_padrao_quantis"]
+    assert all(math.isfinite(x) for x in q)
+
+
+def test_pergunta_nao_promete_mais_que_a_faixa_calibrada(fichas_teste):
+    for f in fichas_teste:
+        if f["valor_imovel"]["origem_padrao"] != A.ORIGEM_CALIBRADA:
+            continue
+        largura = f["valor_imovel"]["reconstrucao_max"] - f["valor_imovel"]["reconstrucao_min"]
+        for p in f["perguntas"]:
+            if p["codigo"] in ("AREA", "PADRAO"):
+                assert p["reduz_faixa_ate"] <= largura + 1000

@@ -82,6 +82,8 @@ def backtest(a):
     # pior caso (área q10–q90 × padrão 0,85–1,30) contra a faixa calibrada pelos erros fora da amostra
     ip = np.array([i for i, _, _ in padrao], dtype=int)
     fator = np.array([P.FATOR_PADRAO[p] for _, p, _ in padrao])
+    boa = np.isfinite(est[ip]) & (est[ip] > 0)   # sem IPTU nem luz não há estimativa para medir
+    ip, fator = ip[boa], fator[boa]
     alvo, centro = real[ip] * fator, est[ip] * P.FATOR_PADRAO_MEIO
     razao = alvo / centro
     f_lo, f_hi = P.FATOR_PADRAO_DESCONHECIDO
@@ -90,11 +92,13 @@ def backtest(a):
         nesta = d[ip] == k
         q1, q9 = np.quantile(razao[~nesta], P.AREA_QUANTIS)
         ql, qh = q_area[k]
-        pl, ph = est[ip][nesta] * ql * f_lo, est[ip][nesta] * qh * f_hi
+        e = est[ip][nesta]
+        pl, ph = e * ql * f_lo, e * qh * f_hi
         dentro_pior += list((alvo[nesta] >= pl) & (alvo[nesta] <= ph))
         larg_pior += list(ph / pl)
-        dentro_cal += list((alvo[nesta] >= centro[nesta] * q1) & (alvo[nesta] <= centro[nesta] * q9))
-        larg_cal += [q9 / q1] * int(nesta.sum())
+        cl, ch = faixa_area_x_padrao(e, e * ql, e * qh, (q1, q9))
+        dentro_cal += list((alvo[nesta] >= cl) & (alvo[nesta] <= ch))
+        larg_cal += list(ch / cl)
     quantis = tuple(round(float(q), 4) for q in np.quantile(razao, P.AREA_QUANTIS))
 
     return {
@@ -111,8 +115,8 @@ def backtest(a):
         "padrao_casos": len(padrao),
         "padrao_estreitados": len(estreitados),
         "padrao_intervalo_correto_pct": _pct(acertos / len(estreitados)) if estreitados else None,
-        "padrao_classe_exata_pct": _pct(np.mean([classe(rel) == p for _, p, rel in com_rel])),
-        "padrao_chute_normal_pct": _pct(np.mean([p == "NORMAL" for _, p, _ in com_rel])),
+        "padrao_classe_exata_pct": _pct(np.mean([classe(rel) == p for _, p, rel in com_rel])) if com_rel else None,
+        "padrao_chute_normal_pct": _pct(np.mean([p == "NORMAL" for _, p, _ in com_rel])) if com_rel else None,
         "area_padrao_casos": len(padrao),
         "area_padrao_erro_mediano_pct": _pct(np.median(np.abs(razao - 1))),
         "area_padrao_dentro_pior_caso_pct": _pct(np.mean(dentro_pior)),
@@ -121,6 +125,15 @@ def backtest(a):
         "area_padrao_largura_calibrada": round(float(np.median(larg_cal)), 2),
         "area_padrao_quantis": quantis,
     }
+
+
+def faixa_area_x_padrao(area, area_min, area_max, quantis):
+    """(mín, máx) de área × padrão quando os dois faltam: o centro (área × 1,05, o padrão do meio)
+    vezes os percentis 9% e 91% do erro real, nunca mais estreita que a faixa da área com padrão
+    normal (quem sabe menos não pode ter um teto menor que quem sabe que o padrão é normal)."""
+    q_lo, q_hi = quantis
+    centro = area * P.FATOR_PADRAO_MEIO
+    return np.minimum(centro * q_lo, area_min), np.maximum(centro * q_hi, area_max)
 
 
 # --- Bens sem compras e CEP (movidos de motor.py) --------------------------------
@@ -214,8 +227,9 @@ def boletins(cal):
             chute_classe_exata_pct=b["padrao_chute_normal_pct"]),
         "area_x_padrao": boletim(
             "área × padrão (o que multiplica o custo do m² na reconstrução)",
-            f"área estimada × {P.FATOR_PADRAO_MEIO:.2f} (padrão do meio) × percentis 9% e 91% do erro real".replace(".", ","),
-            True, METODO_CV, "faixa mais estreita, contendo o valor real em ~80% dos casos (a meta da área)",
+            f"área estimada × {P.FATOR_PADRAO_MEIO:.2f} (padrão do meio) × percentis 9% e 91% do erro real, "
+            "nunca mais estreita que a faixa da área com padrão normal".replace(".", ","),
+            True, METODO_CV, "faixa bem mais estreita que o pior caso e ainda contendo o valor real em quase 9 de cada 10 casos",
             b["area_padrao_erro_mediano_pct"], None, b["area_padrao_dentro_calibrada_pct"], None,
             casos_medidos=b["area_padrao_casos"], largura_calibrada=b["area_padrao_largura_calibrada"],
             largura_pior_caso=b["area_padrao_largura_pior_caso"], na_faixa_pior_caso_pct=b["area_padrao_dentro_pior_caso_pct"],

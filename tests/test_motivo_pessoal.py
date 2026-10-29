@@ -38,7 +38,7 @@ def test_aluguel_so_para_quem_paga(fichas):
 
 def test_fato_distintivo_acima(fichas):
     f = _ficha(fichas, eletronicos=_viz(13000))
-    f["necessidades"] = []   # o porquê não falou dos eletrônicos: o fato traz o valor
+    f["motivos_plano"] = []   # o porquê não falou dos eletrônicos: o fato traz o valor
     texto = motivo.fato_distintivo(f)
     assert "mais do que 9 em cada 10" in texto and f"clientes com apartamento {motivo.na_cidade(f)}" in texto
     assert "R$ 13 mil" in texto
@@ -46,14 +46,14 @@ def test_fato_distintivo_acima(fichas):
 
 def test_fato_distintivo_3_em_4(fichas):
     f = _ficha(fichas, eletronicos=_viz(9000))
-    f["necessidades"] = []
+    f["motivos_plano"] = []
     assert "mais do que 3 em cada 4" in motivo.fato_distintivo(f)
 
 
 def test_fato_sem_repetir_o_valor_do_porque(fichas):
     # o porquê já disse "pelo menos R$ 13 mil em eletrônicos" (valor de hoje): o fato não repete outro número
     f = _ficha(fichas, eletronicos=_viz(13000))
-    f["necessidades"] = [{"codigo": "ROUBO", "provas": [{"codigo": "ELETRONICOS"}]}]
+    f["motivos_plano"] = [{"codigo": "ELETRONICOS", "texto": "você tem pelo menos R$ 13 mil em eletrônicos"}]
     texto = motivo.fato_distintivo(f)
     assert texto.startswith("Em eletrônicos, você está acima de 9 em cada 10") and "R$" not in texto
 
@@ -65,7 +65,7 @@ def test_fato_distintivo_no_meio_some(fichas):
 
 def test_degrau_estado_nao_inventa_cidade(fichas):
     f = _ficha(fichas, eletronicos=_viz(13000, nivel="estado"))
-    f["necessidades"] = []
+    f["motivos_plano"] = []
     texto = motivo.fato_distintivo(f)
     assert motivo.nome_cidade(f) not in texto and f"clientes de {f['local'].split('/')[1]}" in texto
 
@@ -165,3 +165,19 @@ def test_perguntas_de_valor_dizem_por_que(fichas):
 
 def test_maximo_3_perguntas_continua(fichas):
     assert max(len(f["perguntas"]) for f in fichas) <= 3
+
+
+# --- Correções da revisão de código ---------------------------------------------------
+def test_fato_curto_so_quando_o_porque_disse_o_valor(fichas):
+    for f in fichas:
+        fato = motivo.fato_distintivo(f)
+        if fato and fato.startswith("Em "):
+            ditos = {m["codigo"] for m in f["motivos_plano"]}
+            assert ditos & {"ELETRONICOS", "BENS_ALTOS", "INQUILINO"}, (f["imovel_id"], fato)
+
+
+def test_lacuna_com_bens_presumidos_diz_que_e_estimativa(fichas):
+    f = copy.deepcopy(next(x for x in fichas if x["plano"] == "PRATICO"))
+    f["necessidades"] = [{"codigo": "ROUBO", "provas": [{"codigo": "VIDROS"}]}]
+    f["campos"]["bens"]["regional"] = "município"
+    assert "estimamos" in motivo._se_escolher_menos(f)

@@ -37,7 +37,7 @@
  "confianca_estabilidade_casos_que_mudam_com_pesos_20pct": 0,
  "confianca_largura_incendio_mediana": {
   "ALTA": 1.89,
-  "MEDIA": 2.08,
+  "MEDIA": 2.14,
   "BAIXA": 2.16
  },
  "confianca_por_cobertura": {
@@ -165,9 +165,9 @@
  },
  "familia_declarada_muda_plano": 0,
  "familia_declarada_muda_valor_ou_confianca": 0,
- "sensibilidade_area_10pct_incendio_media_pct": 4.02,
+ "sensibilidade_area_10pct_incendio_media_pct": 4.05,
  "sensibilidade_area_casos_com_queda": 0,
- "tempo_segundos": 0.73,
+ "tempo_segundos": 0.77,
  "backtest_fora_da_amostra": {
   "metodo": "validação cruzada em 5 dobras na base de desenvolvimento (aprende em 4/5, mede no 1/5 que não viu)",
   "area_casos": 1016,
@@ -188,8 +188,8 @@
   "area_padrao_erro_mediano_pct": 13.0,
   "area_padrao_dentro_pior_caso_pct": 97.8,
   "area_padrao_largura_pior_caso": 2.7,
-  "area_padrao_dentro_calibrada_pct": 80.6,
-  "area_padrao_largura_calibrada": 1.65,
+  "area_padrao_dentro_calibrada_pct": 88.3,
+  "area_padrao_largura_calibrada": 1.76,
   "area_padrao_quantis": [
    0.7332,
    1.2148
@@ -203,16 +203,16 @@
   "esforco_reducao_pct": 86.2,
   "itv_incendio_no_maximo_mediana": 1.47,
   "itv_incendio_no_maximo_abaixo_de_80pct_casos": 4,
-  "itv_incendio_no_minimo_mediana": 0.66,
+  "itv_incendio_no_minimo_mediana": 0.65,
   "itv_incendio_no_minimo_abaixo_de_80pct_casos": 101,
-  "itv_sugerido_sobre_pessimista_mediana": 0.69,
+  "itv_sugerido_sobre_pessimista_mediana": 0.68,
   "sugerido_cobre_80pct_do_pessimista_casos": 15,
   "faixas_limitadas_pelo_produto": {
    "DANOS_POR_AGUA": 131,
-   "VENDAVAL_GRANIZO": 54,
+   "VENDAVAL_GRANIZO": 55,
    "DANOS_ELETRICOS": 122,
    "RESPONSABILIDADE_CIVIL_FAMILIAR": 40,
-   "INCENDIO_RAIO_EXPLOSAO_FUMACA": 20,
+   "INCENDIO_RAIO_EXPLOSAO_FUMACA": 21,
    "PERDA_PAGAMENTO_ALUGUEL": 18,
    "DESPESAS_EMERGENCIAIS": 10,
    "ROUBO_FURTO_ARROMBAMENTO": 24
@@ -228,11 +228,11 @@
   "justificativas_com_termo_interno": 0,
   "palavras_mediana": 127.0,
   "palavras_max": 140,
-  "palavras_entre_60_e_120_pct": 24.6,
+  "palavras_entre_60_e_120_pct": 25.4,
   "coberturas_texto_distinto_pct": {
    "DANOS_ELETRICOS": 97.8,
    "DANOS_POR_AGUA": 94.9,
-   "DESPESAS_EMERGENCIAIS": 55.3,
+   "DESPESAS_EMERGENCIAIS": 57.9,
    "IMPACTO_VEICULOS_TERRESTRES": 1.4,
    "INCENDIO_RAIO_EXPLOSAO_FUMACA": 100.0,
    "PERDA_PAGAMENTO_ALUGUEL": 76.3,
@@ -240,10 +240,10 @@
    "QUEDA_AERONAVE": 0.7,
    "RESPONSABILIDADE_CIVIL_FAMILIAR": 94.7,
    "ROUBO_FURTO_ARROMBAMENTO": 69.2,
-   "VENDAVAL_GRANIZO": 97.8
+   "VENDAVAL_GRANIZO": 98.6
   },
   "esqueletos_unicos": 125,
-  "semelhanca_media": 0.207,
+  "semelhanca_media": 0.206,
   "frase_mais_repetida_n": 32,
   "frase_mais_repetida": "Se você escolher menos, # em eletrônicos na sua casa ficam descobertos contra roubo e quebra de vidros.",
   "cita_cidade_pct": 100.0,
@@ -317,16 +317,16 @@
   },
   "area_x_padrao": {
    "o_que_estima": "área × padrão (o que multiplica o custo do m² na reconstrução)",
-   "como": "área estimada × 1,05 (padrão do meio) × percentis 9% e 91% do erro real",
+   "como": "área estimada × 1,05 (padrão do meio) × percentis 9% e 91% do erro real, nunca mais estreita que a faixa da área com padrão normal",
    "tem_gabarito": true,
    "metodo": "validação cruzada em 5 dobras na base de desenvolvimento (aprende em 4/5, mede no 1/5 que não viu)",
    "erro_mediano_pct": 13.0,
    "ate_20pct_pct": null,
-   "na_faixa_pct": 80.6,
+   "na_faixa_pct": 88.3,
    "chute_erro_mediano_pct": null,
-   "veredito": "faixa mais estreita, contendo o valor real em ~80% dos casos (a meta da área)",
+   "veredito": "faixa bem mais estreita que o pior caso e ainda contendo o valor real em quase 9 de cada 10 casos",
    "casos_medidos": 273,
-   "largura_calibrada": 1.65,
+   "largura_calibrada": 1.76,
    "largura_pior_caso": 2.7,
    "na_faixa_pior_caso_pct": 97.8,
    "quantis": [

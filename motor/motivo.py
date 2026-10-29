@@ -103,14 +103,14 @@ def fato_distintivo(f):
                   "PRATICO": [("eletronicos", "mais"), ("compras", "mais")],
                   "ESSENCIAL": [("eletronicos", "menos"), ("compras", "mais"), ("compras", "menos")]}[plano]
     ja_ditos = {"eletronicos": "ELETRONICOS", "compras": "BENS_ALTOS", "aluguel": "INQUILINO"}
-    provas = {p["codigo"] for n in f.get("necessidades", []) for p in n["provas"]}
+    ditos = {m["codigo"] for m in f.get("motivos_plano", [])}   # o que o porquê mostrou ao cliente
     for campo, lado in tentativas:
         v = viz.get(campo)
         pos = _posicao(v) if v else None
         if not pos or pos[0] != lado:
             continue
         grupo = _grupo(f, v["nivel"])
-        if ja_ditos[campo] in provas:   # o porquê já deu o valor (corrigido pelo IPCA): aqui, só a comparação
+        if ja_ditos[campo] in ditos:   # o porquê já deu o valor (corrigido pelo IPCA): aqui, só a comparação
             rotulo = {"eletronicos": "Em eletrônicos", "compras": "Em compras para a casa", "aluguel": "No aluguel"}[campo]
             return f"{rotulo}, você está {'acima' if lado == 'mais' else 'abaixo'} de {pos[1]} {grupo}."
         if campo == "aluguel":
@@ -179,6 +179,8 @@ def _se_escolher_menos(f):
         bens, provas = f["campos"]["bens"], _provas(f, "ROUBO")
         if "ELETRONICOS" in provas:
             oque = f"{reais(bens['portateis']['min'])} em eletrônicos"
+        elif bens.get("regional"):   # sem compras, o valor é da região: dizer que é estimativa (RN-09)
+            oque = f"os bens que estimamos em {reais(bens['min'])}"
         else:
             oque = f"{reais(bens['min'])} em bens"
         onde = "no seu apartamento" if f["campos"]["tipo"]["valor"] == "APARTAMENTO" else "na sua casa"
@@ -334,13 +336,13 @@ def justificativa(f):
     primeiro (opção acima, valor em jogo, risco da cidade, fato dos vizinhos): o porquê e a lacuna já
     trazem os valores em reais, e o que é só deste cliente vale mais que o que se repete."""
     partes = [(100, _nao_elegivel(f))] if f["elegibilidade"] == "NAO" else []
-    porque = _porque(f)
+    porque, menos = _porque(f), (_se_escolher_menos(f) if f["elegibilidade"] == "SIM" else "")
     # o valor em jogo sai cedo, a não ser que seja o único jeito de o texto ter dois valores em reais
-    em_jogo = 93 if porque.count("R$") < 2 and f["plano"] != "PRATICO" and "aluguel por mês" not in _se_escolher_menos(f) else 60
+    em_jogo = 93 if (porque + menos).count("R$") < 2 else 60
     partes += [(100, _abertura(f)), (95, porque), (72, fato_distintivo(f)), (em_jogo, _em_jogo(f)),
                (70, risco_do_lugar(f))]
     if f["elegibilidade"] == "SIM":   # alternativas só fazem sentido para uma proposta nova (RN-37)
-        partes.append((90, _se_escolher_menos(f)))
+        partes.append((90, menos))
         if not f["pendencias"]:   # com elegibilidade a confirmar, o texto prioriza a confirmação (RN-51: equilíbrio)
             limite = _no_limite(f)
             # no Essencial, o plano acima é a única alternativa do texto (RN-37): não sai
