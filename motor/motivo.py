@@ -48,6 +48,78 @@ TERMOS_INTERNOS = ("presumido", "estimado:", "sinais ainda são fracos", "não h
 
 
 
+# --- O fato que diferencia o cliente dos vizinhos ---------------------------------
+# A base grava as cidades sem acento; o cliente lê o nome certo, com a preposição certa
+NOME_CIDADE = {"Sao Paulo": "São Paulo", "Brasilia": "Brasília", "Goiania": "Goiânia"}
+CIDADE_COM_NO = {"Rio de Janeiro"}
+
+
+def nome_cidade(f):
+    cidade = f["local"].split("/")[0]
+    return NOME_CIDADE.get(cidade, cidade)
+
+
+def na_cidade(f):
+    """'em São Paulo', 'no Rio de Janeiro'."""
+    cidade = nome_cidade(f)
+    return f"{'no' if cidade in CIDADE_COM_NO else 'em'} {cidade}"
+
+
+def da_cidade(f):
+    """'de São Paulo', 'do Rio de Janeiro'."""
+    cidade = nome_cidade(f)
+    return f"{'do' if cidade in CIDADE_COM_NO else 'de'} {cidade}"
+
+
+def _grupo(f, nivel):
+    """Com quem o cliente foi comparado, sem nunca dar o nome errado da cidade."""
+    uf = f["local"].split("/")[1]
+    casa = "apartamento" if f["campos"]["tipo"]["valor"] == "APARTAMENTO" else "casa"
+    return {"município e tipo": f"clientes com {casa} {na_cidade(f)}", "município": f"clientes {da_cidade(f)}",
+            "estado": f"clientes de {uf}"}.get(nivel, "nossos clientes")
+
+
+def _posicao(v):
+    """'mais do que 9 em cada 10', 'menos do que 3 em cada 4' ou None (o meio não diferencia ninguém)."""
+    x = v["valor"]
+    if x > v["p90"]:
+        return "mais", "9 em cada 10"
+    if x > v["p75"]:
+        return "mais", "3 em cada 4"
+    if x < v["p10"]:
+        return "menos", "9 em cada 10"
+    if x < v["p25"]:
+        return "menos", "3 em cada 4"
+    return None
+
+
+def fato_distintivo(f):
+    """Uma frase com o fato em que o cliente mais se afasta dos vizinhos, ligado ao plano:
+    Total de inquilino → o aluguel; Prático → eletrônicos (ou compras) acima dos vizinhos;
+    Essencial → eletrônicos abaixo (explica por que o roubo pesa menos) ou compras acima.
+    None quando o cliente está no meio: não inventamos diferença (RN-53)."""
+    viz, plano = f.get("vizinhos") or {}, f["plano"]
+    tentativas = {"TOTAL": [("aluguel", "mais"), ("eletronicos", "mais"), ("compras", "mais")],
+                  "PRATICO": [("eletronicos", "mais"), ("compras", "mais")],
+                  "ESSENCIAL": [("eletronicos", "menos"), ("compras", "mais"), ("compras", "menos")]}[plano]
+    for campo, lado in tentativas:
+        v = viz.get(campo)
+        pos = _posicao(v) if v else None
+        if not pos or pos[0] != lado:
+            continue
+        quem = f"{pos[0]} do que {pos[1]} {_grupo(f, v['nivel'])}"
+        if campo == "aluguel":
+            return f"O seu aluguel, de {reais(v['valor'])} por mês, é maior que o de {pos[1]} {_grupo(f, v['nivel'])} que pagam aluguel."
+        oque = "em eletrônicos" if campo == "eletronicos" else "para a casa"
+        texto = f"Você comprou {reais(v['valor'])} {oque} em 3 anos, {quem}"
+        if lado == "menos":   # nunca como crítica: explica por que o Essencial basta
+            return f"{texto}: o roubo pesa menos para você."
+        if plano == "ESSENCIAL":
+            return f"{texto}: um incêndio ou um dano elétrico levaria mais do que na maioria das casas."
+        return f"{texto}."
+    return None
+
+
 # --- Motivos do Essencial (antes: "não há sinais fortes", um não-argumento) ----
 def motivos_de_patrimonio(vinculo, bens):
     """Para quem não tem sinal de roubo nem de terceiros, o porquê é o próprio patrimônio

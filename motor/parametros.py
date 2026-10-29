@@ -242,6 +242,9 @@ AREA_QUANTIS = (0.09, 0.91)
 # Média da região em degraus (mentoria de 28/10): município + tipo → município → estado → geral.
 # Um degrau só vale com pelo menos este número de imóveis na base de desenvolvimento.
 REGIONAL_MIN_IMOVEIS = 20
+# Comparar o cliente com os vizinhos: só vira frase quem está fora do meio (abaixo do percentil 25
+# ou acima do 75, "3 em cada 4"; abaixo do 10 ou acima do 90, "9 em cada 10"). O meio não diferencia ninguém.
+QUANTIS_VIZINHOS = (0.10, 0.25, 0.75, 0.90)
 # O CEP agregado da base é fictício (guia; RN-10) e não tem sinal: explica a variação do IPTU/m²
 # tanto quanto um CEP embaralhado (calibrar() refaz esse teste). Ligar só com CEP real.
 USAR_CEP = False

@@ -56,6 +56,11 @@ def calibrar(dados):
     compras = m.compras_moveis_36m + m.compras_eletrodomesticos_36m + m.compras_eletronicos_36m
     com_compras = m.assign(compras=compras)[compras > 0]
     cal["regional"] = {"area": _degraus(a, "area_cadastrada_m2"), "compras": _degraus(com_compras, "compras")}
+    # Os vizinhos (percentis 10, 25, 75 e 90 por degrau): o fato que diferencia o cliente no motivo
+    inquilinos = m[(m.pagamento_aluguel_recorrente == "SIM") & (m.valor_aluguel_recorrente > 0)]
+    for campo, df, coluna in (("compras", com_compras, "compras"), ("eletronicos", com_compras, "compras_eletronicos_36m"),
+                              ("aluguel", inquilinos, "valor_aluguel_recorrente")):
+        cal["regional"][f"{campo}_pares"] = _degraus(df, coluna, P.QUANTIS_VIZINHOS)
     cal["compras_por_renda"] = _compras_por_renda(com_compras)
     cal["backtest_bens_sem_compras"] = A.backtest_bens_sem_compras(com_compras)
     tot = com_compras.compras.sum()
@@ -76,19 +81,20 @@ DEGRAUS = [("município e tipo", "municipio_tipo", ["codigo_ibge_municipio", "ti
            ("estado", "uf", ["uf_real"])]
 
 
-def _degraus(df, coluna):
+def _degraus(df, coluna, quantis=None):
     """Mediana de `coluna` em cada degrau regional, só nos grupos com pelo menos
-    P.REGIONAL_MIN_IMOVEIS imóveis. Chave: 'nivel|valores' → (mediana, n)."""
+    P.REGIONAL_MIN_IMOVEIS imóveis. Chave: 'nivel|valores' → (mediana, n).
+    Com `quantis`, guarda os percentis em vez da mediana (para comparar o cliente com os vizinhos)."""
+    resumo = (lambda s: tuple(float(s.quantile(q)) for q in quantis)) if quantis else (lambda s: float(s.median()))
     df = df.assign(tipo_simples=_tipo_simples(df))
     niveis = ([("cep", "cep", ["cep_agregado"])] if P.USAR_CEP else []) + DEGRAUS
     tabela = {}
     for _, nivel, cols in niveis:
-        g = df.groupby(cols)[coluna].agg(["median", "size"])
-        for chave, linha in g.iterrows():
-            if linha["size"] >= P.REGIONAL_MIN_IMOVEIS:
+        for chave, s in df.groupby(cols)[coluna]:
+            if len(s) >= P.REGIONAL_MIN_IMOVEIS:
                 partes = chave if isinstance(chave, tuple) else (chave,)
-                tabela["|".join([nivel, *map(str, partes)])] = (float(linha["median"]), int(linha["size"]))
-    tabela["geral"] = (float(df[coluna].median()), int(df[coluna].notna().sum()))
+                tabela["|".join([nivel, *map(str, partes)])] = (resumo(s), int(len(s)))
+    tabela["geral"] = (resumo(df[coluna].dropna()), int(df[coluna].notna().sum()))
     return tabela
 
 
@@ -207,6 +213,23 @@ def iptu_relativo(r, cal):
         return None
     ref = cal["iptu_m2"].get(str(r.codigo_ibge_municipio), cal["iptu_m2_geral"])
     return (r.pagamento_iptu_anual / r.area_cadastrada_m2) / ref if ref else None
+
+
+def comparar_com_vizinhos(r, cal):
+    """O cliente contra os clientes do mesmo degrau (cidade + tipo → cidade → estado → geral):
+    compras para a casa e eletrônicos de 36 meses e, para quem paga, o aluguel. Só números:
+    quem escreve a frase é motivo.fato_distintivo(). Nunca usa idade nem renda (RN-07)."""
+    t = cal.get("regional", {})
+    valores = {"compras": r.compras_moveis_36m + r.compras_eletrodomesticos_36m + r.compras_eletronicos_36m,
+               "eletronicos": r.compras_eletronicos_36m}
+    if r.pagamento_aluguel_recorrente == "SIM" and r.valor_aluguel_recorrente > 0:
+        valores["aluguel"] = r.valor_aluguel_recorrente
+    vizinhos = {}
+    for campo, valor in valores.items():
+        if f"{campo}_pares" in t and valor > 0:
+            (p10, p25, p75, p90), nivel, n = regional(cal, f"{campo}_pares", r)
+            vizinhos[campo] = {"valor": float(valor), "p10": p10, "p25": p25, "p75": p75, "p90": p90, "nivel": nivel, "n": n}
+    return vizinhos
 
 
 # --- Utilidades ----------------------------------------------------------------
@@ -1033,6 +1056,7 @@ def processar_caso(r, bens_imovel, cal, catalogo, outro_principal=False, confirm
                          "reconstrucao_min": arred(imovel["reconstrucao"][0]), "reconstrucao_max": arred(imovel["reconstrucao"][1]),
                          "segundo_risco": imovel["segundo_risco"], "estrutura_do_locador": imovel["estrutura_do_locador"]},
         "elegibilidade": eleg, "pendencias": pendencias, "avisos": avisos,
+        "vizinhos": comparar_com_vizinhos(r, cal),
         **rec,
         "coberturas": coberturas, "perguntas": perguntas, "perguntas_candidatas": n_cand,
         "confianca": nivel, "confianca_score": score, "confianca_motivo": motivo_conf,
