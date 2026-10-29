@@ -15,6 +15,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+import assertividade as A   # só usado dentro das funções (assertividade também importa este módulo)
 import motivo as M
 import parametros as P
 
@@ -43,22 +44,26 @@ def carregar(origem):
 def calibrar(dados):
     """Aprende R$ de IPTU e de energia por m² por município, nos imóveis com área
     cadastrada, e o erro típico da estimativa para montar a faixa. Também guarda o
-    backtest fora da amostra da área e do padrão pelo IPTU (ver backtest())."""
+    acerto de cada cálculo de dado faltante, medido fora da amostra (assertividade.py)."""
     m = dados["enderecos_imoveis"].merge(dados["sinais_imobiliarios"], on=["imovel_id", "cliente_id"])
     m = m.merge(dados["clientes"][["cliente_id", "renda_mensal"]], on="cliente_id", how="left", validate="many_to_one")
     a = m[m.area_cadastrada_m2 > 0].copy()
     cal = _calibrar_area(a)
-    cal["backtest"] = backtest(a)
+    cal["backtest"] = A.backtest(a)
+    # Faixa de área × padrão (imóvel sem área e sem padrão): percentis do erro fora da amostra
+    cal["area_padrao_q"] = cal["backtest"]["area_padrao_quantis"]
     # Média da região em degraus para o que faltar (área sem IPTU nem energia; imóvel sem compras)
     compras = m.compras_moveis_36m + m.compras_eletrodomesticos_36m + m.compras_eletronicos_36m
     com_compras = m.assign(compras=compras)[compras > 0]
     cal["regional"] = {"area": _degraus(a, "area_cadastrada_m2"), "compras": _degraus(com_compras, "compras")}
     cal["compras_por_renda"] = _compras_por_renda(com_compras)
-    cal["backtest_bens_sem_compras"] = backtest_bens_sem_compras(com_compras)
+    cal["backtest_bens_sem_compras"] = A.backtest_bens_sem_compras(com_compras)
     tot = com_compras.compras.sum()
     cal["fracao_compras"] = {"eletronicos": float(com_compras.compras_eletronicos_36m.sum() / tot),
                              "eletricos": float((com_compras.compras_eletronicos_36m + com_compras.compras_eletrodomesticos_36m).sum() / tot)}
-    cal["teste_cep"] = teste_cep(a)
+    cal["teste_cep"] = A.teste_cep(a)
+    cal["concordancias"] = A.concordancias(m, dados["bens_compras"])
+    cal["assertividade"] = A.boletins(cal)   # o acerto de cada cálculo (ver assertividade.py)
     return cal
 
 
@@ -146,41 +151,6 @@ def _compras_sem_prova(r, cal):
     return _regiao_e_renda(med, pela_renda), f"{fonte} combinada com a renda mensal ({brl(_renda(r))})", nivel, True
 
 
-def backtest_bens_sem_compras(com_compras):
-    """Fora da amostra: finge que quem tem compras não tem e estima as compras (2 metades da base
-    de desenvolvimento). Compara só a média da região com a região combinada com a renda."""
-    c = com_compras.reset_index(drop=True)
-    erros = {"regiao": [], "regiao_e_renda": []}
-    for metade in (0, 1):
-        treino, prova = c[c.index % 2 != metade], c[c.index % 2 == metade]
-        mini = {"regional": {"compras": _degraus(treino, "compras")}, "compras_por_renda": _compras_por_renda(treino)}
-        for r in prova.itertuples(index=False):
-            med = regional(mini, "compras", r)[0]
-            pela_renda = compras_pela_renda(r, mini)
-            erros["regiao"].append(abs(med - r.compras) / r.compras)
-            erros["regiao_e_renda"].append(abs(_regiao_e_renda(med, pela_renda) - r.compras) / r.compras
-                                           if pela_renda else erros["regiao"][-1])
-    return {"metodo": "2 metades da base de desenvolvimento, imóveis com compras tratados como se não tivessem",
-            "casos": len(erros["regiao"]),
-            "erro_mediano_so_regiao_pct": round(100 * float(np.median(erros["regiao"])), 1),
-            "erro_mediano_regiao_e_renda_pct": round(100 * float(np.median(erros["regiao_e_renda"])), 1)}
-
-
-def teste_cep(a):
-    """O CEP agregado explica a variação do IPTU/m² melhor que um CEP sorteado? (R² entre grupos
-    com 3+ imóveis.) Se não, ele é ruído e não entra como degrau regional (RN-10)."""
-    a = a.assign(rel=(a.pagamento_iptu_anual / a.area_cadastrada_m2))
-    a = a.assign(rel=a.rel / a.groupby("codigo_ibge_municipio").rel.transform("median"))
-
-    def r2(col):
-        x = a[a[col].map(a[col].value_counts()) >= 3]
-        media = x.groupby(col).rel.transform("mean")
-        return float(1 - ((x.rel - media) ** 2).sum() / ((x.rel - x.rel.mean()) ** 2).sum())
-    embaralhado = a.cep_agregado.sample(frac=1, random_state=0).to_numpy()
-    a = a.assign(cep_embaralhado=embaralhado)
-    return {"r2_cep": round(r2("cep_agregado"), 3), "r2_cep_embaralhado": round(r2("cep_embaralhado"), 3)}
-
-
 def _calibrar_area(a):
     """A parte da calibração que aprende com imóveis de área conhecida (`a`)."""
     a = a.copy()
@@ -209,48 +179,15 @@ def _calibrar_area(a):
     return cal
 
 
-def backtest(a):
-    """Validação fora da amostra, como os bancos fazem com modelos de estimativa: divide os
-    imóveis de área conhecida em 2 metades, calibra numa e mede na outra (e vice-versa).
-    Área: erro percentual (MAPE e mediana) e % da área real dentro da faixa q10–q90 (meta: ~80%).
-    Padrão: nos imóveis com padrão cadastrado, % em que o intervalo pelo IPTU contém o padrão real."""
-    a = a.reset_index(drop=True)
-    erros, dentro = [], []
-    estreitou = acertou = com_padrao = 0
-    for metade in (0, 1):
-        treino, prova = a[a.index % 2 != metade], a[a.index % 2 == metade]
-        c = _calibrar_area(treino)
-        for r in prova.itertuples(index=False):
-            est = _area_estimada(r, c)
-            if math.isfinite(est) and est > 0:
-                erros.append(abs(est - r.area_cadastrada_m2) / r.area_cadastrada_m2)
-                dentro.append(est * c["razao_q10"] <= r.area_cadastrada_m2 <= est * c["razao_q90"])
-            fator = P.FATOR_PADRAO.get(str(r.padrao_construtivo_cadastrado).upper())
-            if fator:
-                com_padrao += 1
-                intervalo = P.fator_padrao_pelo_iptu(iptu_relativo(r, c))
-                if intervalo:
-                    estreitou += 1
-                    acertou += intervalo[0] <= fator <= intervalo[1]
-    return {
-        "metodo": "2 metades da base de desenvolvimento (calibra numa, mede na outra)",
-        "area_casos": len(erros),
-        "area_mape_pct": round(100 * float(np.mean(erros)), 1),
-        "area_erro_mediano_pct": round(100 * float(np.median(erros)), 1),
-        "area_dentro_da_faixa_pct": round(100 * float(np.mean(dentro)), 1),
-        "padrao_casos": com_padrao,
-        "padrao_estreitados": estreitou,
-        "padrao_intervalo_correto_pct": round(100 * acertou / estreitou, 1) if estreitou else None,
-    }
-
-
 def _positivo(v):
     return v is not None and math.isfinite(float(v)) and float(v) > 0
 
 
 def _area_estimada(r, cal):
-    """Área pelo IPTU (peso 0,6) e pela energia (0,4). Se um dos dois vier zerado ou vazio,
-    usa só o outro com o peso inteiro: um IPTU isento não pode encolher a área em 60%.
+    """Área pelo IPTU (peso 0,6) e pela energia (0,4), em média geométrica: os pesos que a
+    regressão aprendeu sozinha (0,59 e 0,42) e erro fora da amostra de 14% contra 15% da média
+    comum (assertividade.py). Se um dos dois vier zerado ou vazio, usa só o outro com o peso
+    inteiro: um IPTU isento não pode encolher a área em 60%.
     Sem nenhum dos dois, devolve NaN (inferir_area usa a mediana de imóveis parecidos)."""
     k = str(r.codigo_ibge_municipio)
     partes = []
@@ -260,7 +197,7 @@ def _area_estimada(r, cal):
         partes.append((0.4, r.energia_media_mensal_6m / cal["energia_m2"].get(k, cal["energia_m2_geral"])))
     if not partes:
         return float("nan")
-    return sum(p * v for p, v in partes) / sum(p for p, _ in partes)
+    return math.exp(sum(p * math.log(v) for p, v in partes) / sum(p for p, _ in partes))
 
 
 def iptu_relativo(r, cal):
@@ -450,12 +387,24 @@ def valor_imovel(r, tipo, vinculo, area, cal=None):
         if pelo_iptu:
             f_lo, f_hi = pelo_iptu
             origem_padrao = "estimado pelo IPTU/m²"
+    reconstrucao = (area["min"] * lo_m2 * f_lo, area["max"] * hi_m2 * f_hi)
+    if (cal is not None and "area_padrao_q" in cal and area["natureza"] == "ESTIMADO" and not area.get("regional")
+            and origem_padrao == "não cadastrado"):
+        # Área estimada E padrão desconhecido: o pior caso de cada um (área mínima × padrão econômico até
+        # área máxima × padrão superior) ficava 2,7× larga e continha o real em 97%. A área e o padrão
+        # quase nunca erram para o mesmo lado: a faixa calibrada usa o erro real dos dois juntos
+        # (percentis 9% e 91%, fora da amostra), fica ~1,7× e contém o real em ~80% (assertividade.py).
+        q_lo, q_hi = cal["area_padrao_q"]
+        centro = area["valor"] * P.FATOR_PADRAO_MEIO
+        reconstrucao = (centro * q_lo * lo_m2, centro * q_hi * hi_m2)
+        origem_padrao = A.ORIGEM_CALIBRADA
     return {
+        "area_padrao_q": cal["area_padrao_q"] if origem_padrao == A.ORIGEM_CALIBRADA else None,
         "custo_m2": (lo_m2 * f_lo, hi_m2 * f_hi),
         "custo_m2_base": (lo_m2, hi_m2),
         "fator_padrao": (f_lo, f_hi),
         "origem_padrao": origem_padrao,
-        "reconstrucao": (area["min"] * lo_m2 * f_lo, area["max"] * hi_m2 * f_hi),
+        "reconstrucao": reconstrucao,
         "segundo_risco": tipo["valor"] in ("APARTAMENTO", "CASA_EM_CONDOMINIO") or vinculo["valor"] == "FINANCIADO",
         # Inquilino de casa: o seguro contra fogo do imóvel é do locador (Lei do Inquilinato, art. 22, VIII),
         # salvo contrato em contrário. Por padrão, só os bens; a pergunta do contrato inclui a estrutura (D-07).
@@ -730,9 +679,16 @@ def dimensionar(cob, ctx):
     repoe = "repõe os seus bens, que estimamos" if estimados else "repõe o que você comprou para a casa,"
     custo = f"{brl(im['custo_m2'][0])}–{brl(im['custo_m2'][1])}/m² (SINAPI {r.uf_real} até {P.fonte_custo(r.uf_real)}"
     f_lo, f_hi = im["fator_padrao"]
-    if f_lo != f_hi:
+    calibrada = im["origem_padrao"] == A.ORIGEM_CALIBRADA
+    if f_lo != f_hi and not calibrada:
         custo += f", padrão {im['origem_padrao']}: fator {f_lo:.2f} a {f_hi:.2f}".replace(".", ",")
     custo += ")"
+    # O pedaço "área" da regra: a faixa da área, ou a faixa calibrada de área × padrão
+    area_regra = f"área {area['min']:.0f}–{area['max']:.0f} m²"
+    if calibrada:
+        q_lo, q_hi = im["area_padrao_q"]
+        area_regra = (f"área estimada {area['valor']} m² × padrão do meio {P.FATOR_PADRAO_MEIO:.2f} × {q_lo:.2f}–{q_hi:.2f} "
+                      f"(faixa calibrada de área × padrão: erro real fora da amostra, percentis 9% e 91%)").replace(".", ",")
     if cob == "INCENDIO_RAIO_EXPLOSAO_FUMACA":
         lo, hi = faixa_bruta_incendio(ctx)
         if im.get("estrutura_do_locador"):
@@ -742,13 +698,13 @@ def dimensionar(cob, ctx):
                     f"a faixa protege o que é seu, {seus_bens}. Se o seu contrato pedir que você segure o imóvel, inclua a "
                     f"reconstrução, cerca de {M.reais((rec[0] + rec[1]) / 2)}.")
         elif im["segundo_risco"]:
-            regra = f"área {area['min']:.0f}–{area['max']:.0f} m² × {custo} × 25%–40% (acabamentos) + bens"
+            regra = f"{area_regra} × {custo} × 25%–40% (acabamentos) + bens"
             obs = "Segundo risco (CG cl. 15.2): a estrutura é paga primeiro pelo seguro do condomínio ou do financiamento. " + obs_aluguel
             a, b = P.FRACAO_ACABAMENTOS
             just = (f"A estrutura tem seguro próprio (condomínio ou financiamento); o seu paga os acabamentos, estimados em "
                     f"{M.faixa_reais(rec[0] * a, rec[1] * b)}, e {repoe} {seus_bens}.")
         else:
-            regra = f"área {area['min']:.0f}–{area['max']:.0f} m² × {custo} + bens"
+            regra = f"{area_regra} × {custo} + bens"
             obs = "Limite único prédio + conteúdo, com prioridade do prédio (CG cl. 5.5–5.6). " + obs_aluguel
             just = (f"Se um incêndio atingir o imóvel, reconstruir custaria {M.faixa_reais(rec[0], rec[1])} pelo custo oficial "
                     f"de construção, e {repor} {seus_bens}. Com limite único, a reconstrução é paga primeiro.")

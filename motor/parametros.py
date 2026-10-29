@@ -76,6 +76,9 @@ FATOR_PADRAO = {"ECONOMICO": 0.85, "NORMAL": 1.0, "SUPERIOR": 1.30}
 # Padrão não cadastrado (98 dos 138 casos de teste): em vez de supor "normal", a faixa vai do
 # econômico ao superior. A incerteza do dado aparece no valor, e a pergunta do padrão ganha prioridade.
 FATOR_PADRAO_DESCONHECIDO = (0.85, 1.30)
+# O "padrão do meio" quando ele é desconhecido: média geométrica de 0,85 e 1,30 (√(0,85 × 1,30) = 1,05).
+# Centro da faixa calibrada de área × padrão (assertividade.py).
+FATOR_PADRAO_MEIO = (0.85 * 1.30) ** 0.5
 
 
 def fator_padrao(padrao):

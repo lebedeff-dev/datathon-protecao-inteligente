@@ -293,12 +293,25 @@ def test_seguro_existente_dois_imoveis_pergunta_qual(caso, cal, teste):
 
 
 def test_padrao_desconhecido_abre_a_faixa(ficha):
-    # sem área cadastrada, o IPTU não serve para o padrão (seria circular): a faixa abre inteira
-    normal = ficha(APTO_CURITIBA, padrao_construtivo_cadastrado="NORMAL", area_cadastrada_m2=0)
+    # sem área cadastrada, o IPTU não serve para o padrão (seria circular). Desde 28/10 a faixa não é mais
+    # o pior caso de cada um (área mín. × econômico até área máx. × superior): é a faixa calibrada de
+    # área × padrão, que contém o real em ~80% (assertividade.py). Ela fica entre o econômico e o superior.
+    econ = ficha(APTO_CURITIBA, padrao_construtivo_cadastrado="ECONOMICO", area_cadastrada_m2=0)
+    sup = ficha(APTO_CURITIBA, padrao_construtivo_cadastrado="SUPERIOR", area_cadastrada_m2=0)
     nao_sei = ficha(APTO_CURITIBA, padrao_construtivo_cadastrado="NAO_DISPONIVEL", area_cadastrada_m2=0)
-    a, b = _cob(normal, "INCENDIO_RAIO_EXPLOSAO_FUMACA"), _cob(nao_sei, "INCENDIO_RAIO_EXPLOSAO_FUMACA")
-    assert b["min"] <= a["min"] and b["max"] >= a["max"] and nao_sei["valor_imovel"]["fator_padrao"] == [0.85, 1.3]
+    vi = nao_sei["valor_imovel"]
+    assert vi["origem_padrao"] == "faixa calibrada de área × padrão" and vi["fator_padrao"] == [0.85, 1.3]
+    assert econ["valor_imovel"]["reconstrucao_min"] <= vi["reconstrucao_min"]
+    assert vi["reconstrucao_max"] <= sup["valor_imovel"]["reconstrucao_max"]
     assert any(p["codigo"] == "PADRAO" for p in nao_sei["perguntas"]) or nao_sei["perguntas_candidatas"] > 3
+
+
+def test_padrao_desconhecido_com_area_cadastrada_abre_o_fator_inteiro(ficha, caso, cal):
+    # área cadastrada e IPTU/m² no meio (0,90 a 1,15): o padrão não estreita e o fator vai de 0,85 a 1,30
+    r, _ = caso(APTO_CURITIBA)
+    rel = motor.iptu_relativo(r, cal)
+    f = ficha(APTO_CURITIBA, padrao_construtivo_cadastrado="NAO_DISPONIVEL", pagamento_iptu_anual=r.pagamento_iptu_anual / rel)
+    assert f["valor_imovel"]["origem_padrao"] == "não cadastrado" and f["valor_imovel"]["fator_padrao"] == [0.85, 1.3]
 
 
 def test_padrao_pelo_iptu_estreita_a_faixa(ficha, caso, cal):
